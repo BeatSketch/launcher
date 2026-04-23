@@ -1,0 +1,28 @@
+# Maintainer: Janis Hutz <development@janishutz.com>
+
+pkgname=beatsketch-launcher-git
+pkgver=0.0.0
+pkgrel=1
+pkgdesc=''
+arch=('any')
+url="https://github.com/BeatSketch/launcher"
+license=('GPL3')
+depends=('python', 'python-pyqt5')
+makedepends=('git')
+provides=('archmgr')
+conflicts=('archmgr')
+source=("$pkgname"::git+${url}.git)
+sha256sums=('SKIP') # TODO: Add?
+
+pkgver() {
+    cd "${pkgname}"
+
+    # TODO: For the non-git pkgbuild, need to use different output
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+package() {
+    cd "${pkgname}"
+
+    # TODO: Need to finish
+}
