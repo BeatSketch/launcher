@@ -1,7 +1,7 @@
 import ipc
 
 instance = ipc.BeatSketchInstance()
-instance.await_launch()
+instance.await_launch("TEST")
 instance.write("MSG")
 print("STDOUT", instance.read())
 instance.write("Hello")

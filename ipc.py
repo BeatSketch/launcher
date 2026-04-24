@@ -66,9 +66,17 @@ class BeatSketchInstance:
             self._process.stdin.write(msg + "\n")
             self._process.stdin.flush()
 
-    def await_launch(self) -> None:
-        """Wait for the VR application to finish initialization"""
-        while self.read() != "TEST\n":
+    def await_launch(self, msg: str) -> None:
+        """Wait for the VR application to finish initialization
+
+        Args:
+            msg: The message that is sent on completed initialization
+                 NOTE: Linebreak is appended automatically if not present
+        """
+        if not msg.endswith("\n"):
+            msg = msg + "\n"
+
+        while self.read() != msg:
             pass
 
     def await_close(self) -> int:

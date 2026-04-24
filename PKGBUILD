@@ -9,8 +9,8 @@ url="https://github.com/BeatSketch/launcher"
 license=('GPL3')
 depends=('python', 'python-pyqt5')
 makedepends=('git')
-provides=('archmgr')
-conflicts=('archmgr')
+provides=('beatsketch-launcher')
+conflicts=('beatsketch', 'beatsketch-launcher')
 source=("$pkgname"::git+${url}.git)
 sha256sums=('SKIP') # TODO: Add?
 
