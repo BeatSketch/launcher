@@ -1,4 +1,4 @@
-import util.ipc as ipc
+import util.ipc.ipc as ipc
 
 instance = ipc.BeatSketchInstance()
 instance.await_launch("TEST")
