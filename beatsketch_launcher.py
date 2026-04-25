@@ -1,15 +1,5 @@
-import ipc
+from gui.main import launch_ui
 
-instance = ipc.BeatSketchInstance()
-instance.await_launch("TEST")
-instance.write("MSG")
-print("STDOUT", instance.read())
-instance.write("Hello")
-print("STDOUT", instance.read())
-instance.write("WORLD")
-print("STDOUT", instance.read())
-
-instance = None
-
-import time
-time.sleep(2)
+# TODO: Controllers and stuff here;
+# launch_ui is probably gonna get renamed and will take some args likely
+launch_ui()
