@@ -1,6 +1,6 @@
 import util.ipc.ipc as ipc
 
-instance = ipc.BeatSketchInstance()
+instance = ipc.BeatSketchInstance(["lua", "test.lua"], ["BeatSketch.exe"])
 instance.await_launch("TEST")
 instance.write("MSG")
 print("STDOUT", instance.read())
