@@ -7,8 +7,10 @@ class BeatSketchInstance:
     """Launch a BeatSketch VR instance with the current settings"""
 
     def __init__(self) -> None:
+        self._main_name_unix = ["lua", "test.lua"]
+        self._main_name_windows = ["BeatSketch.exe"]
         self._process = sp.Popen(
-            self._command(["test.lua", "TEST"]),
+            self._command(["TEST"]),
             text=True,
             stdout=sp.PIPE,
             stderr=sp.PIPE,
@@ -25,24 +27,28 @@ class BeatSketchInstance:
                 os.getenv("XDG_BACKEND") == "wayland"
                 or os.getenv("XDG_SESSION_TYPE") == "wayland"
             ):
-                return ["gamescope", "lua"] + args
-            return ["lua"] + args
+                return ["gamescope"] + self._main_name_unix + args
+            return self._main_name_unix + args
         elif platform.system() == "Mac":
-            return ["lua"] + args
+            return self._main_name_unix + args
         else:
             # FIXME: Handle for Windows (and Mac if we support that)
             # TODO: This is currently set to lanch a non-existent executable
-            return ["start BeatSketch.exe"] + args
+            return ["start"] + self._main_name_windows + args
 
     def read(self) -> str:
         """Read a line from stdout from the BeatSketch process.
         Will hang until new line becomes available
 
         Returns:
-            The line that was read
+            The line that was read or empty string
         """
         if self._process.stdout:
-            return self._process.stdout.readline()
+            data = self._process.stdout.readline()
+            if data == "proc:instr-await\n":
+                self.write("proc:last-instr")
+                return ""
+            return data
         return ""
 
     def read_stderr(self) -> str:
@@ -58,6 +64,7 @@ class BeatSketchInstance:
 
     def write(self, msg: str) -> None:
         """Write to the stdin of the BeatSketch process
+            USE SPARINGLY! (Can cause the child process to hang)
 
         Args:
             msg: The message to send
