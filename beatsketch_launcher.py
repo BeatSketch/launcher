@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from gui.main import launch_ui
 
 # TODO: Controllers and stuff here;

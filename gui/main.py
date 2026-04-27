@@ -2,11 +2,12 @@ from PyQt5.QtGui import QFont
 import PyQt5.QtWidgets as qt
 import PyQt5.QtCore as qtcore
 
+from gui.button import create_button
 from gui.file_picker import file_picker
 from gui.input import input_widget
 
 
-# NOTE: Likely going to use the return of the UI application 
+# NOTE: Likely going to use the return of the UI application
 # (we should probably close it when the VR app launches)
 # We can then re-launch the GUI when the VR app exits (except user hits exit to desktop in VR?)
 def launch_ui():
@@ -26,9 +27,28 @@ def launch_ui():
     title_wrapper.addWidget(t)
     box.addLayout(title_wrapper)
 
-    box.addLayout(input_widget("Song name"))
-    box.addLayout(input_widget("Song artist"))
+    # TODO: Actually do that, or remove this
+    note = qt.QLabel()
+    note.setText(
+        "When you select an audio file, we will attempt to find a title and artist in the metadata"
+    )
+    box.addWidget(note)
     box.addLayout(file_picker("Audio file", lambda x: print("file", x)))
+
+    # Config
+    song_name = input_widget("Song name")
+    song_artist = input_widget("Song artist")
+    mapper = input_widget("Mapper names")
+    bpm = input_widget("BPM")
+    box.addLayout(song_name)
+    box.addLayout(song_artist)
+    box.addLayout(mapper)
+    box.addLayout(bpm)
+    # TODO: Preview window (start and duration)
+    # TODO: Save location for the map
+    box.addLayout(file_picker("Cover Art", lambda x: print("Cover art", x)))
+
+    box.addWidget(create_button(lambda: print("BOO"), "Record map"))
 
     wrapper = qt.QWidget()
     wrapper.setLayout(box)
