@@ -26,7 +26,7 @@ def input_widget(
     layout.addWidget(le)
 
     def get_text():
-        return t.text()
+        return le.text()
 
     return layout, get_text
 
