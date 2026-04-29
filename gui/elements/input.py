@@ -1,7 +1,10 @@
+from typing import Callable
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QLineEdit
 
 
-def input_widget(msg: str, max_length: int = 50) -> QHBoxLayout:
+def input_widget(
+    msg: str, max_length: int = 50
+) -> tuple[QHBoxLayout, Callable[[], str]]:
     """Create a text input widget, with the message displayed left of it.
         It will auto-shrink and grow
 
@@ -22,7 +25,10 @@ def input_widget(msg: str, max_length: int = 50) -> QHBoxLayout:
     layout.addWidget(t)
     layout.addWidget(le)
 
-    return layout
+    def get_text():
+        return t.text()
+
+    return layout, get_text
 
 
 def simple_input_widget(max_length: int = 50) -> QLineEdit:

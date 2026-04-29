@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QPushButton
 
 def file_picker_button(
     picked_file: Callable[[str], None],
-    filter: str = "Supported audio (*.ogg, *.mp3)",
+    filter: str = "Supported audio (*.ogg, *.mp3, *.wav)",
     picker_text: str = "Select the song file",
     button_text: str = "Select File",
 ):
@@ -34,7 +34,7 @@ def file_picker_button(
 def file_picker(
     msg: str,
     picked_file: Callable[[str], None],
-    filter: str = "Supported audio (*.ogg, *.mp3)",
+    filter: str = "Supported audio (*.ogg *.mp3)",
     picker_text: str = "Select the song file",
     button_text: str = "Select File",
 ):
