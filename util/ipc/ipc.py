@@ -10,11 +10,11 @@ class NoAliveSubprocessException(Exception):
 class BeatSketchInstance:
     """Launch a BeatSketch VR instance with the current settings"""
 
-    def __init__(self, unix_cmd: list[str], windows_cmd: list[str]) -> None:
+    def __init__(self, unix_cmd: list[str], windows_cmd: list[str], app_args: list[str] = []) -> None:
         self._main_name_unix = unix_cmd
         self._main_name_windows = windows_cmd
         self._process = sp.Popen(
-            self._command(["TEST"]),
+            self._command(["TEST"] + app_args),
             text=True,
             stdout=sp.PIPE,
             stderr=sp.PIPE,

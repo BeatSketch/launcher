@@ -1,16 +1,17 @@
+from typing import Callable
 from PyQt5.QtGui import QFont
 import PyQt5.QtWidgets as qt
 import PyQt5.QtCore as qtcore
 
 from gui.button import create_button
-from gui.file_picker import file_picker
+from gui.file_picker import directory_picker, file_picker
 from gui.input import input_widget
 
 
 # NOTE: Likely going to use the return of the UI application
 # (we should probably close it when the VR app launches)
 # We can then re-launch the GUI when the VR app exits (except user hits exit to desktop in VR?)
-def launch_ui():
+def launch_launcher(launch: Callable[[list[str]], None]):
     # TODO: Theming, maybe using this: https://pypi.org/project/qt-themes/
     app = qt.QApplication([])
     window = qt.QMainWindow()
@@ -46,9 +47,13 @@ def launch_ui():
     box.addLayout(bpm)
     # TODO: Preview window (start and duration)
     # TODO: Save location for the map
+    box.addLayout(
+        directory_picker("Map save directory", lambda x: print("Map directory", x))
+    )
     box.addLayout(file_picker("Cover Art", lambda x: print("Cover art", x)))
 
-    box.addWidget(create_button(lambda: print("BOO"), "Record map"))
+    # TODO: Pass in the args and other data
+    box.addWidget(create_button(lambda: launch([]), "Record map"))
 
     wrapper = qt.QWidget()
     wrapper.setLayout(box)
