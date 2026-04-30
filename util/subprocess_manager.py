@@ -18,4 +18,6 @@ def start_vr_app(args: list[str]):
 def _run(args: list[str]):
     com = BeatSketchInstanceDataDecoder(args)
     while True:
-        print(com.get_data())
+        data = com.get_data()
+        if isinstance(data, dict):
+            print(com.parse_data(data))

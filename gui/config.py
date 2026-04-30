@@ -24,7 +24,7 @@ def create_config_interface(launch_func: Callable[[], None] = ident_func):
     mapper, get_mapper = input_widget("Mapper names")
     bpm, get_bpm = input_widget("BPM")
 
-    # TODO: Actually do that, or remove this
+    # TODO: Actually do what the label says, or remove it
     note = qt.QLabel()
     note.setText(
         "When you select an audio file, we will attempt to find a title and artist in the metadata"
@@ -79,7 +79,8 @@ def launch_wrapper(
     ):
         # TODO: Err msg, same checks also for other params
         # TODO: More elaborate checks
-        return print("Missing config")
+        # return 
+        print("Missing config")
 
     # TODO: Decide on args / data sent to VR (can adjust here,
     # the args are passed in as in the array there)

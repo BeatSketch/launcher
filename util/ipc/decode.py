@@ -1,6 +1,23 @@
-from typing import Any
+from typing import Any, TypedDict
 from util.ipc.ipc import BeatSketchInstance
 import json
+import numpy as np
+
+# import quaternion as quat
+
+
+class BeatSketchTrackedItemData(TypedDict):
+    timestamp: int  # TODO: Possibly is float
+    pos: np.ndarray
+    direction: np.ndarray
+    quat: np.ndarray  # TODO: Use the quaternion package instead
+    tip: np.ndarray
+    buttons: list[str]
+
+
+class BeatSketchVRData(TypedDict):
+    left: BeatSketchTrackedItemData
+    right: BeatSketchTrackedItemData
 
 
 class NoRunningBeatSketchInstanceError(Exception):
@@ -9,7 +26,9 @@ class NoRunningBeatSketchInstanceError(Exception):
 
 class BeatSketchInstanceDataDecoder:
     def __init__(self, args: list[str] = []) -> None:
-        self._com = BeatSketchInstance(["lovr", "../BeatSketch/"], ["BeatSketch.exe"], args)
+        self._com = BeatSketchInstance(
+            ["lovr", "../BeatSketch/"], ["BeatSketch.exe"], args
+        )
         self._com.await_launch("[BeatSketch] IPC INIT COMPLETE")
         self._alive = True
 
@@ -23,6 +42,26 @@ class BeatSketchInstanceDataDecoder:
         elif data == "proc:has-quit":
             self._alive = False
         return data
+
+    def parse_data(self, data: dict) -> BeatSketchVRData:
+        return {
+            "left": {
+                "buttons": data["left"]["buttons"],
+                "pos": np.array(data["left"]["pos"]),
+                "direction": np.array(data["left"]["direction"]),
+                "quat": np.array(data["left"]["quat"]),
+                "tip": np.array(data["left"]["tip"]),
+                "timestamp": int(data["left"]["timestamp"]),
+            },
+            "right": {
+                "buttons": data["right"]["buttons"],
+                "pos": np.array(data["right"]["pos"]),
+                "direction": np.array(data["right"]["direction"]),
+                "quat": np.array(data["right"]["quat"]),
+                "tip": np.array(data["right"]["tip"]),
+                "timestamp": int(data["right"]["timestamp"]),
+            },
+        }
 
     def send_json(self, data: dict | list[Any]) -> None:
         self._com.write("json:" + json.dumps(data))
