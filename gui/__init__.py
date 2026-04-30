@@ -1,14 +1,14 @@
+from typing import Callable
 from PyQt5.QtGui import QFont
 import PyQt5.QtWidgets as qt
 import PyQt5.QtCore as qtcore
 
-from gui.config import create_config_interface
+from gui.config import create_config_interface, ident_func
 
 
-# NOTE: Likely going to use the return of the UI application
-# (we should probably close it when the VR app launches)
+# TODO: we should probably close it when the VR app launches
 # We can then re-launch the GUI when the VR app exits (except user hits exit to desktop in VR?)
-def create_launcher_app():
+def create_launcher_app(launch_func: Callable[[], None] = ident_func):
     # TODO: Theming, maybe using this: https://pypi.org/project/qt-themes/
     app = qt.QApplication([])
     window = qt.QMainWindow()
@@ -25,7 +25,7 @@ def create_launcher_app():
     title_wrapper.addWidget(t)
     box.addLayout(title_wrapper)
 
-    box.addLayout(create_config_interface())
+    box.addLayout(create_config_interface(launch_func))
 
     wrapper = qt.QWidget()
     wrapper.setLayout(box)
@@ -35,5 +35,5 @@ def create_launcher_app():
 
 
 def close_window(app: qt.QApplication):
-    print("KEYBOARD")
     app.exit()
+    exit(130)
