@@ -7,3 +7,4 @@ The BeatSketch launcher
 - Build for Windows probably using something like Pyinstaller (TBD)
 - For Arch Linux I will provide a PKGBUILD, for RPM and DEB distros I will try to get a build done
 - I will provide a bash script for building (which we can then possibly use with CI/CD)
+- For training data, can use bsor and this parser: https://github.com/Schippi/py-bsor

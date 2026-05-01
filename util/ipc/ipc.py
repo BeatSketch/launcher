@@ -10,7 +10,9 @@ class NoAliveSubprocessException(Exception):
 class BeatSketchInstance:
     """Launch a BeatSketch VR instance with the current settings"""
 
-    def __init__(self, unix_cmd: list[str], windows_cmd: list[str], app_args: list[str] = []) -> None:
+    def __init__(
+        self, unix_cmd: list[str], windows_cmd: list[str], app_args: list[str] = []
+    ) -> None:
         self._main_name_unix = unix_cmd
         self._main_name_windows = windows_cmd
         self._process = sp.Popen(
@@ -55,6 +57,10 @@ class BeatSketchInstance:
 
         self._alive = self._process.poll() is None
         return self._alive
+
+    def read_with_logging(self) -> str:
+        # TODO: Store the full logs of subprocess
+        return self.read()
 
     def read(self) -> str:
         """Read a line from stdout from the BeatSketch process.
