@@ -85,4 +85,4 @@ def launch_wrapper(
     # TODO: Decide on args / data sent to VR (can adjust here,
     # the args are passed in as in the array there)
     launch_func()
-    start_vr_app([f'"{files["song"]}"', bpm])
+    start_vr_app([f'song="{files["song"]}"', f"bpm={bpm}"])

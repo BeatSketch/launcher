@@ -1,5 +1,5 @@
 import multiprocessing as mp
-from util.ipc.decode import BeatSketchInstanceDataDecoder
+from util.ipc import BeatSketchVRApplication
 
 global proc
 proc: None | mp.Process = None
@@ -16,8 +16,11 @@ def start_vr_app(args: list[str]):
 
 
 def _run(args: list[str]):
-    com = BeatSketchInstanceDataDecoder(args)
+    com = BeatSketchVRApplication(args)
     while True:
         data = com.get_data()
         if isinstance(data, dict):
             print(com.parse_data(data))
+        elif data == "proc:has-quit":
+            print("\n\nEXITING SUBPROCESS\n\n")
+            return

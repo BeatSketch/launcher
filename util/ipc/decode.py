@@ -18,6 +18,7 @@ class BeatSketchTrackedItemData(TypedDict):
 class BeatSketchVRData(TypedDict):
     left: BeatSketchTrackedItemData
     right: BeatSketchTrackedItemData
+    head: BeatSketchTrackedItemData
 
 
 class NoRunningBeatSketchInstanceError(Exception):
@@ -60,6 +61,14 @@ class BeatSketchInstanceDataDecoder:
                 "quat": np.array(data["right"]["quat"]),
                 "tip": np.array(data["right"]["tip"]),
                 "timestamp": int(data["right"]["timestamp"]),
+            },
+            "head": {
+                "buttons": data["head"]["buttons"],
+                "pos": np.array(data["head"]["pos"]),
+                "direction": np.array(data["head"]["direction"]),
+                "quat": np.array(data["head"]["quat"]),
+                "tip": np.array(data["head"]["tip"]),
+                "timestamp": int(data["head"]["timestamp"]),
             },
         }
 
