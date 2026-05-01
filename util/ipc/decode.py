@@ -19,6 +19,7 @@ class BeatSketchVRData(TypedDict):
     left: BeatSketchTrackedItemData
     right: BeatSketchTrackedItemData
     head: BeatSketchTrackedItemData
+    paused: bool
 
 
 class NoRunningBeatSketchInstanceError(Exception):
@@ -70,6 +71,7 @@ class BeatSketchInstanceDataDecoder:
                 "tip": np.array(data["head"]["tip"]),
                 "timestamp": int(data["head"]["timestamp"]),
             },
+            "paused": data["paused"],
         }
 
     def send_json(self, data: dict | list[Any]) -> None:

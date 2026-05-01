@@ -8,3 +8,4 @@ The BeatSketch launcher
 - For Arch Linux I will provide a PKGBUILD, for RPM and DEB distros I will try to get a build done
 - I will provide a bash script for building (which we can then possibly use with CI/CD)
 - For training data, can use bsor and this parser: https://github.com/Schippi/py-bsor
+- Do we want to send the infered blocks back to VR? (To render and show the user if they seek back)
