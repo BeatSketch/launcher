@@ -1,5 +1,5 @@
 # launcher
-The BeatSketch launcher
+The BeatSketch launcher. You may be looking for the VR application, which can be found [here](https://github.com/BeatSketch/BeatSketch)
 
 ## TODOs
 - Windows and Mac launch (Mac should be similar to Linux that is already implemented)
