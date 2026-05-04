@@ -44,7 +44,7 @@ class BeatMapColorNote(TypedDict):
     Attributes:
         b: The beat at which to set
         x: The lane number (0 - 3)
-        y: The layer number (0 - 3)
+        y: The layer number (0 - 2)
         c: The hand used for the slice
         d: The cut direction
     """

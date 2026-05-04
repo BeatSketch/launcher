@@ -24,7 +24,7 @@ class BeatMap:
         Args:
             beat: The beat on which the block should be added
             x: The lane to use (0 - 3)
-            y: The layer to use (0 - 3)
+            y: The layer to use (0 - 2)
             hand: The hand that was used
             direction: The direction in which the block was cut
         """
