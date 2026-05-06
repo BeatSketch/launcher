@@ -1,5 +1,5 @@
 from typing import Callable
-import PyQt5.QtWidgets as qt
+import PyQt6.QtWidgets as qt
 from gui.elements.button import create_button
 from gui.elements.file_picker import directory_picker, file_picker
 from gui.elements.input import input_widget
@@ -25,6 +25,7 @@ def create_config_interface(launch_func: Callable[[], None] = ident_func):
     bpm, get_bpm = input_widget("BPM")
 
     # TODO: Actually do what the label says, or remove it
+    # possible library https://github.com/tinytag/tinytag
     note = qt.QLabel()
     note.setText(
         "When you select an audio file, we will attempt to find a title and artist in the metadata"

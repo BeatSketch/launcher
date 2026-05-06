@@ -1,5 +1,5 @@
 from typing import Callable
-from PyQt5.QtWidgets import QHBoxLayout, QLabel, QLineEdit
+from PyQt6.QtWidgets import QHBoxLayout, QLabel, QLineEdit
 
 
 def input_widget(

@@ -1,5 +1,5 @@
 from typing import Callable
-from PyQt5.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QPushButton
+from PyQt6.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QPushButton
 
 
 def file_picker_button(

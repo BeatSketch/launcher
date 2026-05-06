@@ -1,7 +1,7 @@
 from typing import Callable
-from PyQt5.QtGui import QFont
-import PyQt5.QtWidgets as qt
-import PyQt5.QtCore as qtcore
+from PyQt6.QtGui import QFont
+import PyQt6.QtWidgets as qt
+import PyQt6.QtCore as qtcore
 
 from gui.config import create_config_interface, ident_func
 
@@ -18,7 +18,7 @@ def create_launcher_app(launch_func: Callable[[], None] = ident_func):
 
     title_wrapper = qt.QHBoxLayout()
     # NOTE: Pyright may show this as error. It isn't.
-    title_wrapper.setAlignment(qtcore.Qt.AlignCenter)
+    title_wrapper.setAlignment(qtcore.Qt.AlignmentFlag.AlignCenter)
     t = qt.QLabel()
     t.setText("BeatSketch Launcher")
     t.setFont(QFont("sans", 40))
