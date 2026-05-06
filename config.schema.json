@@ -1,5 +1,41 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
     "type": "object",
-    "properties": {}
+    "properties": {
+        "saber_angle": {
+            "type": "object",
+            "description": "Configure saber angles related to the default position",
+            "properties": {
+                "x": {
+                    "type": "number",
+                    "description": "The angle in degrees rotated around the x axis, clockwise",
+                    "default": 20
+                },
+                "y": {
+                    "type": "number",
+                    "description": "The angle in degrees rotated around the y axis, clockwise",
+                    "default": 0
+                },
+                "z": {
+                    "type": "number",
+                    "description": "The angle in degrees rotated around the z axis, clockwise",
+                    "default": 20
+                }
+            },
+            "additionalProperties": false
+        },
+        "default_save_path": {
+            "type": "string",
+            "description": "The default path for where to save the map to (creates a folder there for each map). Has to end in slash",
+            "default": "~/",
+            "pattern": "^(^(~|\\.|\\.\\.)?\\/)?([\\w\\/.-]+(?!.*[^\\w\\/.-]+))\\/$"
+        },
+        "folder_loc_for_picker": {
+            "type": "string",
+            "description": "The folder in which the picker should open. Has to end in slash",
+            "default": "~/Downloads/",
+            "pattern": "^(^(~|\\.|\\.\\.)?\\/)?([\\w\\/.-]+(?!.*[^\\w\\/.-]+))\\/$"
+        }
+    },
+    "additionalProperties": false
 }
