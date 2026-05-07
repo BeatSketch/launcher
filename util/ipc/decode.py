@@ -29,8 +29,13 @@ class NoRunningBeatSketchInstanceError(Exception):
 class BeatSketchInstanceDataDecoder:
     def __init__(self, args: list[str] = []) -> None:
         self._com = BeatSketchInstance(["lovr", "../vr/"], ["BeatSketch.exe"], args)
-        self._com.await_launch("[BeatSketch] IPC INIT COMPLETE")
-        self._alive = True
+        self._alive = self._com.await_launch("[BeatSketch] IPC INIT COMPLETE")
+
+    def get_alive(self) -> bool:
+        return self._alive
+
+    def get_status_code(self) -> int:
+        return self._com.get_status_code()
 
     def get_data(self) -> dict | str:
         if not self._alive:

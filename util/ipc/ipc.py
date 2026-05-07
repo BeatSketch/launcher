@@ -27,6 +27,9 @@ class BeatSketchInstance:
     def __del__(self) -> None:
         self.await_close()
 
+    def get_status_code(self) -> int:
+        return self._process.returncode
+
     def _command(self, args: list[str]) -> list[str]:
         if platform.system() == "Linux":
             # Detect Wayland
@@ -111,7 +114,7 @@ class BeatSketchInstance:
             return True
         return False
 
-    def await_launch(self, msg: str) -> None:
+    def await_launch(self, msg: str) -> bool:
         """Wait for the VR application to finish initialization
 
         Args:
@@ -122,7 +125,9 @@ class BeatSketchInstance:
             msg = msg + "\n"
 
         while self.read() != msg:
-            pass
+            if not self.check_alive():
+                return False
+        return True
 
     def await_close(self) -> int:
         """Wait for the VR application to exit

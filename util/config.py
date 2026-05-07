@@ -26,10 +26,10 @@ def _load_config_file(file: str) -> dict:
     """Loads and parses the yaml file at the specified location
 
     Args:
-        file: [TODO:description]
+        file: Filepath to the config file to be loaded
 
     Returns:
-        [TODO:return]
+        A dict containing the parsed yaml file
     """
     with open(file, "r") as f:
         parsed = yaml.load(f, Loader=yaml.FullLoader)
