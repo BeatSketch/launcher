@@ -34,6 +34,9 @@ class BeatSketchInstanceDataDecoder:
     def get_alive(self) -> bool:
         return self._alive
 
+    def stop(self) -> int:
+        return self._com.await_close()
+
     def get_status_code(self) -> int:
         return self._com.get_status_code()
 

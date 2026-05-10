@@ -4,7 +4,7 @@ from gui.elements import dialog
 from gui.elements.button import create_button
 from gui.elements.file_picker import directory_picker, file_picker
 from gui.elements.input import input_widget
-from util.subprocess_manager import StartupHandlerThread, start_vr_app
+from util.subprocess_manager import start_vr_app
 
 
 def ident_func():
@@ -49,21 +49,10 @@ def create_config_interface(launch_func: Callable[[], None] = ident_func):
 
     box.addLayout(directory_picker("Map save directory", lambda x: set_file(x, "save")))
 
-    def launch_status_handler(status: int):
-        print("Subprocess exited with status code", status)
-        if status != 0:
-            dialog.open_msg_dialog(
-                "The VR Application has failed to launch. Exit code: " + str(status),
-                title="Launching VR Application failed",
-            )
-
-    helper = StartupHandlerThread()
-    helper.result_ready.connect(launch_status_handler)
-
     box.addWidget(
         create_button(
             lambda: launch_wrapper(
-                get_song(), get_artist(), get_mapper(), get_bpm(), files, launch_func, helper
+                get_song(), get_artist(), get_mapper(), get_bpm(), files, launch_func
             ),
             "Record map",
         )
@@ -79,7 +68,6 @@ def launch_wrapper(
     bpm: str,
     files: dict[str, str],
     launch_func: Callable[[], None],
-    helper_thread: StartupHandlerThread
 ):
     # TODO: Decide which ones are mandatory
     if (
@@ -99,4 +87,15 @@ def launch_wrapper(
     # TODO: Decide on args / data sent to VR (can adjust here,
     # the args are passed in as in the array there)
     launch_func()
-    start_vr_app([f'song="{files["song"]}"', f"bpm={bpm}"], helper_thread)
+    status, proc = start_vr_app([f'song="{files["song"]}"', f"bpm={bpm}"])
+    def launch_status_handler(status: int):
+        if status != 0:
+            dialog.open_msg_dialog(
+                "The VR Application has failed to launch. Exit code: " + str(status),
+                title="Launching VR Application failed",
+            )
+
+    if proc and status:
+        proc.exit_code.connect(launch_status_handler)
+    else:
+        launch_status_handler(254)
