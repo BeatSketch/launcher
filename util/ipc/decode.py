@@ -7,7 +7,7 @@ import numpy as np
 
 
 class BeatSketchTrackedItemData(TypedDict):
-    timestamp: int  # TODO: Possibly is float
+    timestamp: float
     pos: np.ndarray
     direction: np.ndarray
     quat: np.ndarray  # TODO: Use the quaternion package instead
