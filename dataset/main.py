@@ -92,6 +92,7 @@ def generate_training_data(file: str, bpm: int):
                 normal[2] = 0
 
                 angle = np.arccos(normal.dot(angle_comp_vec) / (np.linalg.norm(normal))) / np.pi * 180
+                cross = np.linalg.cross(angle_comp_vec, normal)
                 # TODO: Positive / negative angle
                 print(
                     "Block for hand",
@@ -102,6 +103,8 @@ def generate_training_data(file: str, bpm: int):
                     block.event_time - block.cut.timeDeviation,
                     "angle",
                     angle,
+                    "side",
+                    "left" if cross[2] < 0 else "right"
                 )
             else:
                 print("Miss or bad cut")
