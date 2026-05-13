@@ -95,8 +95,8 @@ def orientation_from_angle(angle: float) -> int:
 
 
 def compute_angle(vec: np.ndarray):
+    # Do cheapo projection (just setting the z axis to 0) to compute the cut angle using a [0, 1, 0] vector
     vec[2] = 0
-
     angle = np.arccos(vec.dot(angle_comp_vec) / (np.linalg.norm(vec))) / np.pi * 180
     cross = np.linalg.cross(angle_comp_vec, vec)
     left_side = cross[2] < 0
