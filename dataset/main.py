@@ -1,7 +1,7 @@
 import sys
 import time
 
-from generator import generate_training_data
+from generator import generate_training_data, get_no_block_share
 from loader import load_replay_data
 from util import write_cache
 
@@ -13,7 +13,8 @@ def process_file(file: str):
     start = time.time()
     data = load_replay_data(file)
     mid = time.time()
-    print(generate_training_data(data[0], data[1], data[2]))
+    training_data = generate_training_data(data[0], data[1], data[2])
+    print(len(training_data), "datapoints were generated from this file, with no block share of", str(get_no_block_share(training_data) * 100) + "%")
     print(
         "\n",
         "Processing took",

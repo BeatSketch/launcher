@@ -1,6 +1,7 @@
 from dtype import BeatSketchBlock, BeatSketchTrackingData, BeatSketchTrainingData
 import math
 
+# TODO: Find out what the grid size actually is
 GRID_FIELD_WIDTH = 0.5
 GRID_FIELD_HEIGHT = 0.5
 
@@ -120,17 +121,17 @@ def determine_possible_locs(
     return coords
 
 
-def filter_training_data(
-    no_block_share: float, training_data: list[BeatSketchTrainingData]
-) -> list[BeatSketchTrainingData]:
+def get_no_block_share(training_data: list[BeatSketchTrainingData]):
     no_block_idxs: list[int] = []
 
     for idx, d in enumerate(training_data):
         if not d["has_block"]:
             no_block_idxs.append(idx)
 
-    print(
-        "Share is", len(no_block_idxs) / len(training_data), "target is", no_block_share
-    )
+    return len(no_block_idxs) / len(training_data)
+
+def filter_training_data(
+    no_block_share: float, training_data: list[BeatSketchTrainingData]
+) -> list[BeatSketchTrainingData]:
 
     return training_data
