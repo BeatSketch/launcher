@@ -9,6 +9,7 @@ def filesystem_walker(dir: str) -> list[str]:
         if os.path.isdir(path):
             file_list += filesystem_walker(path)
         else:
-            file_list.append(path)
+            if file.split(".")[-1] == "bsor":
+                file_list.append(path)
 
     return file_list
