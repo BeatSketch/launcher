@@ -1,9 +1,13 @@
+from typing import cast
 from dtype import BeatSketchBlock, BeatSketchTrackingData, BeatSketchTrainingData
 import math
+import numpy as np
 
 # TODO: Find out what the grid size actually is
 GRID_FIELD_WIDTH = 0.5
 GRID_FIELD_HEIGHT = 0.5
+GRID_Y_MIN_VAL = 0
+GRID_X_MIN_VAL = -1
 
 # Into how mnay parts to split each beat (should be power of 2 and no more than 8)
 # I do also think we should make this configurable for the user? (or provide 2 settings?)
@@ -111,27 +115,45 @@ def determine_possible_locs(
         for line in range(3):
             for col in range(4):
                 if (
-                    hand[0] < -1 + (col + 1) * GRID_FIELD_WIDTH
-                    and hand[0] > -1 + col * GRID_FIELD_WIDTH
-                    and hand[1] < 0 + (line + 1) * GRID_FIELD_HEIGHT
-                    and hand[1] > 0 + line * GRID_FIELD_HEIGHT
+                    hand[0] < GRID_X_MIN_VAL + (col + 1) * GRID_FIELD_WIDTH
+                    and hand[0] > GRID_X_MIN_VAL + col * GRID_FIELD_WIDTH
+                    and hand[1] < GRID_Y_MIN_VAL + (line + 1) * GRID_FIELD_HEIGHT
+                    and hand[1] > GRID_Y_MIN_VAL + line * GRID_FIELD_HEIGHT
                 ):
-                    coords.append((0, 0))
+                    coords.append((line, col))
 
     return coords
 
 
 def get_no_block_share(training_data: list[BeatSketchTrainingData]):
+    return len(split_blocks_and_no_blocks(training_data)) / len(training_data)
+
+
+def split_blocks_and_no_blocks(training_data: list[BeatSketchTrainingData]):
     no_block_idxs: list[int] = []
+    block_idxs: list[int] = []
 
     for idx, d in enumerate(training_data):
         if not d["has_block"]:
             no_block_idxs.append(idx)
+        else:
+            block_idxs.append(idx)
 
-    return len(no_block_idxs) / len(training_data)
+    return no_block_idxs, block_idxs
+
 
 def filter_training_data(
     no_block_share: float, training_data: list[BeatSketchTrainingData]
 ) -> list[BeatSketchTrainingData]:
+    split = split_blocks_and_no_blocks(training_data)
+    no_block_idxs = np.array(split[0])
+    block_idxs = np.array(split[1])
+    cnt = int(len(no_block_idxs) * no_block_share)
+    # TODO: Should probably be unique random picks
+    rand_picks = np.astype(np.round(np.random.rand(cnt) * cnt), np.int32)
+    idxs = no_block_idxs[rand_picks]
+    np_training_data = np.array(training_data)
 
-    return training_data
+    return cast(list[BeatSketchTrainingData], np_training_data[idxs].tolist()) + cast(
+        list[BeatSketchTrainingData], np_training_data[block_idxs].tolist()
+    )
