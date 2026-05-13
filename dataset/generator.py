@@ -1,4 +1,3 @@
-import time
 from dtype import BeatSketchBlock, BeatSketchTrackingData, BeatSketchTrainingData
 import math
 
