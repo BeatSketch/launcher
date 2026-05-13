@@ -28,7 +28,7 @@ def load_replay_data(file: str):
         # I am almost certain this is correct
         bsor = make_bsor(f)
 
-        print(get_bpm_for_song(bsor.info.songHash))
+        bpm = get_bpm_for_song(bsor.info.songHash)
 
         # Discard map criteria
         if bsor.info.speed != 0:
@@ -36,8 +36,7 @@ def load_replay_data(file: str):
             exit(0)
         tracking_data: list[BeatSketchTrackingData] = []
 
-        # for frame in bsor.frames:
-        for frame in [bsor.frames[0]]:
+        for frame in bsor.frames:
             hand_l = frame.left_hand
             hand_r = frame.left_hand
             quat_l = quaternion.quaternion(
@@ -86,7 +85,7 @@ def load_replay_data(file: str):
                         "y": 0,
                     }
                 )
-    return tracking_data, block_data
+    return tracking_data, block_data, bpm
 
 
 def orientation_from_angle(angle: float) -> int:

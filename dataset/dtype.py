@@ -5,6 +5,7 @@ class BeatSketchTrainingData(TypedDict):
     tracking: list[BeatSketchTrackingData]
     beat: float
     has_block: bool
+    is_right_hand: bool
     x: int
     y: int
 
