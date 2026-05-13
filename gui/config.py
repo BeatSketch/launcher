@@ -1,10 +1,9 @@
 from typing import Callable
 import PyQt6.QtWidgets as qt
-from gui.elements import dialog
 from gui.elements.button import create_button
 from gui.elements.file_picker import directory_picker, file_picker
 from gui.elements.input import input_widget
-from util.subprocess_manager import start_vr_app
+from util.launch import launch_wrapper
 
 
 def ident_func():
@@ -33,6 +32,12 @@ def create_config_interface(launch_func: Callable[[], None] = ident_func):
     )
     box.addWidget(note)
     box.addLayout(file_picker("Audio file", lambda x: set_file(x, "song")))
+    box.addLayout(bpm)
+    box.addLayout(song_name)
+    box.addLayout(song_artist)
+    box.addLayout(mapper)
+    # TODO: Preview window (start and duration)
+
     box.addLayout(
         file_picker(
             "Cover Art",
@@ -40,12 +45,6 @@ def create_config_interface(launch_func: Callable[[], None] = ident_func):
             filter="Supported image formats (*.jpg *.jpeg)",
         )
     )
-
-    box.addLayout(song_name)
-    box.addLayout(song_artist)
-    box.addLayout(mapper)
-    box.addLayout(bpm)
-    # TODO: Preview window (start and duration)
 
     box.addLayout(directory_picker("Map save directory", lambda x: set_file(x, "save")))
 
@@ -59,43 +58,3 @@ def create_config_interface(launch_func: Callable[[], None] = ident_func):
     )
 
     return box
-
-
-def launch_wrapper(
-    song_name: str,
-    song_artist: str,
-    mapper: str,
-    bpm: str,
-    files: dict[str, str],
-    launch_func: Callable[[], None],
-):
-    # TODO: Decide which ones are mandatory
-    if (
-        files["song"] == ""
-        or files["cover"] == ""
-        or files["save"] == ""
-        or song_name == ""
-        or song_artist == ""
-        or mapper == ""
-        or bpm == ""
-    ):
-        # TODO: Err msg, same checks also for other params
-        # TODO: More elaborate checks
-        # return 
-        print("Missing config")
-
-    # TODO: Decide on args / data sent to VR (can adjust here,
-    # the args are passed in as in the array there)
-    launch_func()
-    status, proc = start_vr_app([f'song="{files["song"]}"', f"bpm={bpm}"])
-    def launch_status_handler(status: int):
-        if status != 0:
-            dialog.open_msg_dialog(
-                "The VR Application has failed to launch. Exit code: " + str(status),
-                title="Launching VR Application failed",
-            )
-
-    if proc and status:
-        proc.exit_code.connect(launch_status_handler)
-    else:
-        launch_status_handler(254)
