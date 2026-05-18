@@ -3,6 +3,8 @@ from util.ipc.ipc import BeatSketchInstance
 import json
 import numpy as np
 
+from util.map.dtype.beatmap import CutDirection, SaberHand
+
 # import quaternion as quat
 
 
@@ -22,11 +24,19 @@ class BeatSketchVRData(TypedDict):
     paused: bool
 
 
+class BeatSketchBlock(TypedDict):
+    x: int
+    y: int
+    orientation: CutDirection
+    beat: float
+    hand: SaberHand
+
+
 class NoRunningBeatSketchInstanceError(Exception):
     pass
 
 
-class BeatSketchInstanceDataDecoder:
+class BeatSketchInstanceDataHandler:
     def __init__(self, args: list[str] = []) -> None:
         self._com = BeatSketchInstance(["lovr", "../vr/"], ["BeatSketch.exe"], args)
         self._alive = self._com.await_launch("[BeatSketch] IPC INIT COMPLETE")
@@ -82,6 +92,11 @@ class BeatSketchInstanceDataDecoder:
 
     def send_json(self, data: dict | list[Any]) -> None:
         self._com.write("json:" + json.dumps(data))
+
+    def send_blocks(self, data: list[BeatSketchBlock]) -> None:
+        self.send_text("proc:send-blocks")
+        self.send_json(data)
+        self.send_text("proc:last-instr")
 
     def send_text(self, data: str) -> None:
         self._com.write("str:" + data)

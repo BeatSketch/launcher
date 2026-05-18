@@ -1,5 +1,5 @@
-from util.ipc.decode import BeatSketchInstanceDataDecoder
+from util.ipc.decode import BeatSketchInstanceDataHandler
 
 
-class BeatSketchVRApplication(BeatSketchInstanceDataDecoder):
+class BeatSketchVRApplication(BeatSketchInstanceDataHandler):
     pass
