@@ -1,0 +1,47 @@
+from typing import Literal
+from ml.dtype import BeatSketchTrackingDataDetails
+import numpy as np
+
+from util.map.dtype.beatmap import CutDirection
+
+# TODO: Check what base vector produces correct results (likely will be e_y)
+base_vec = np.array([0, 1, 0])
+translation = [
+    CutDirection.UP,
+    CutDirection.UP_LEFT,
+    CutDirection.LEFT,
+    CutDirection.DOWN_LEFT,
+    CutDirection.DOWN,
+    CutDirection.DOWN_RIGHT,
+    CutDirection.RIGHT,
+    CutDirection.UP_RIGHT,
+]
+
+
+def determine_cut_direction(
+    data: BeatSketchTrackingDataDetails,
+    strat: Literal["average"] | Literal["startend"] = "startend",
+) -> CutDirection:
+    count = len(data["tracking"])
+    tracking = np.array(data["tracking"])
+    if strat == "startend":
+        return get_orientation(compute_angle(tracking[-1] - tracking[0]))
+    elif strat == "average":
+        # Numpy magic
+        avgs: np.ndarray = (tracking[1:] - tracking[:-1]).sum(0) / (count - 1)
+        return get_orientation(compute_angle(avgs))
+
+
+def compute_angle(vec: np.ndarray) -> float:
+    # Do cheapo projection (just setting the z axis to 0) to compute the cut angle
+    vec[2] = 0
+    angle = np.arccos(vec.dot(base_vec) / (np.linalg.norm(vec))) / np.pi * 180
+    cross = np.linalg.cross(base_vec, vec)
+    left_side = cross[2] < 0
+    return 360 - angle if left_side else angle
+
+
+def get_orientation(angle: float) -> CutDirection:
+    loc = int(((angle + 22.5) % 360) // 45)
+
+    return translation[loc]

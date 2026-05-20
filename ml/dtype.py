@@ -9,8 +9,14 @@ class BeatSketchTrackingData(TypedDict):
 
 class BeatSketchTrackingDataDetails(TypedDict):
     tracking: list[np.ndarray]  # 3 elements (x, y, z coords)
-    hits: list[tuple[int, int]]
+    x: int
+    y: int
     beat: float
+
+
+class BeatSketchPredictions(TypedDict):
+    left: list[bool]
+    right: list[bool]
 
 
 HANDS: list[Literal["left"] | Literal["right"]] = ["left", "right"]

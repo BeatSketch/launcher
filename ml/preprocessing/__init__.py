@@ -23,4 +23,4 @@ DATA_SLACK_AFTER = 4
 
 
 def preprocess(data: list[BeatSketchVRData], bpm: int, njs: float):
-    processed = _prepare(data, bpm, njs)
+    return _prepare(data, bpm, njs)

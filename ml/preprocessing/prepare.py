@@ -45,8 +45,14 @@ def prepare(
 
             # Add the to be processed buckets
             hits = hit_locations(els)
-            processed[hand].append(
-                {"beat": unit / BEAT_SPLIT, "tracking": els, "hits": hits}
-            )
+            for hit in hits:
+                processed[hand].append(
+                    {
+                        "beat": unit / BEAT_SPLIT,
+                        "tracking": els,
+                        "x": hit[0],
+                        "y": hit[1],
+                    }
+                )
 
     return processed
