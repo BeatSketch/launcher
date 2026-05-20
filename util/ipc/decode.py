@@ -38,19 +38,48 @@ class NoRunningBeatSketchInstanceError(Exception):
 
 class BeatSketchInstanceDataHandler:
     def __init__(self, args: list[str] = []) -> None:
+        """Initialize a new VR application
+
+        Args:
+            args: The CLI args to pass in. Typically should be list of key=val,
+            because that's what the VR app uses
+        """
         self._com = BeatSketchInstance(["lovr", "../vr/"], ["BeatSketch.exe"], args)
         self._alive = self._com.await_launch("[BeatSketch] IPC INIT COMPLETE")
 
     def get_alive(self) -> bool:
+        """Check if the VR application is running
+
+        Returns:
+            True if running, False otherwise
+        """
         return self._alive
 
     def stop(self) -> int:
+        """Stop the VR application
+
+        Returns:
+            The exit code of the app
+        """
         return self._com.await_close()
 
     def get_status_code(self) -> int:
+        """Retrieve the status code
+
+        Returns:
+            The status code, if available
+        """
         return self._com.get_status_code()
 
     def get_data(self) -> dict | str:
+        """Read data from the stdout of the VR application
+
+        Returns:
+            The parsed data (if applicable) or the raw data
+
+        Raises:
+            NoRunningBeatSketchInstanceError: If no instance is running
+        """
         if not self._alive:
             raise NoRunningBeatSketchInstanceError()
 
@@ -61,7 +90,21 @@ class BeatSketchInstanceDataHandler:
             self._alive = False
         return data
 
-    def parse_data(self, data: dict) -> BeatSketchVRData:
+    def parse_single_tracking_data_frame(self, data: dict) -> BeatSketchVRData:
+        """Parse the VR data into a usable format. For a single data point only
+
+        Args:
+            data: The data received
+
+        Returns:
+            The parsed data
+
+        Raises:
+            ValueError: If the passed in data is not in fact a dict
+        """
+        if not isinstance(type(data), dict):
+            raise ValueError("Passed in data is not a dictionary")
+
         return {
             "left": {
                 "buttons": data["left"]["buttons"],
@@ -91,12 +134,29 @@ class BeatSketchInstanceDataHandler:
         }
 
     def send_json(self, data: dict | list[Any]) -> None:
+        """Send JSON data to the VR application
+
+        Args:
+            data: The data to send
+        """
+        # TODO: Probably want to use a queue here,
+        # or in the abstraction to not block the VR app
         self._com.write("json:" + json.dumps(data))
 
     def send_blocks(self, data: list[BeatSketchBlock]) -> None:
+        """Send the processed blocks back to VR
+
+        Args:
+            data: The blocks
+        """
         self.send_text("proc:send-blocks")
         self.send_json(data)
         self.send_text("proc:last-instr")
 
     def send_text(self, data: str) -> None:
+        """Send a plain instruction, of any format to VR
+
+        Args:
+            data: The data to send
+        """
         self._com.write("str:" + data)

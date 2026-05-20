@@ -7,6 +7,14 @@ from gui.config import create_config_interface, ident_func
 
 
 def create_launcher_app(launch_func: Callable[[], None] = ident_func):
+    """Launcher start function. This actually opens the window
+
+    Args:
+        launch_func: A function to run once the VR application launches. Optional
+
+    Returns:
+        The Qt application and the window. Application can be used with close_window to kill the app
+    """
     # TODO: Theming? (not really needed because QT Themes will make it feel more native)
     # If so, maybe using this: https://pypi.org/project/qt-themes/
     app = qt.QApplication([])
@@ -33,5 +41,10 @@ def create_launcher_app(launch_func: Callable[[], None] = ident_func):
 
 
 def close_window(app: qt.QApplication):
+    """Close the whole application
+
+    Args:
+        app: The Qt application object received from create_launcher_app
+    """
     app.exit()
     exit(130)

@@ -22,6 +22,19 @@ def determine_cut_direction(
     data: BeatSketchTrackingDataDetails,
     strat: Literal["average"] | Literal["startend"] = "startend",
 ) -> CutDirection:
+    """Determine in which direction the cut happened.
+    Combines the other two functions provided by this script
+
+    Args:
+        data: The data to process
+        strat: 
+            The way in which the direction is determined. There are two options:
+                - average (taking the average direction vector)
+                - startend (difference between start and end points)
+
+    Returns:
+        The CutDirection of the block
+    """
     count = len(data["tracking"])
     tracking = np.array(data["tracking"])
     if strat == "startend":
@@ -33,6 +46,14 @@ def determine_cut_direction(
 
 
 def compute_angle(vec: np.ndarray) -> float:
+    """Compute the cut angle from a direction vector
+
+    Args:
+        vec: The direction vector to compute from
+
+    Returns:
+        The cut angle
+    """
     # Do cheapo projection (just setting the z axis to 0) to compute the cut angle
     vec[2] = 0
     angle = np.arccos(vec.dot(base_vec) / (np.linalg.norm(vec))) / np.pi * 180
@@ -42,6 +63,14 @@ def compute_angle(vec: np.ndarray) -> float:
 
 
 def get_orientation(angle: float) -> CutDirection:
+    """Get the CutDirection from an angle
+
+    Args:
+        angle: The cut angle
+
+    Returns:
+        The cut direction
+    """
     loc = int(((angle + 22.5) % 360) // 45)
 
     return translation[loc]

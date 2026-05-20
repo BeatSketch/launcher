@@ -8,7 +8,7 @@ class BeatSketchTrackingData(TypedDict):
 
 
 class BeatSketchTrackingDataDetails(TypedDict):
-    tracking: list[np.ndarray]  # 3 elements (x, y, z coords)
+    tracking: list[np.ndarray]  # 3 elements each (x, y, z coords)
     x: int
     y: int
     beat: float

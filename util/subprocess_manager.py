@@ -43,7 +43,7 @@ class BeatSketchVRAppRunner(QThread):
                 # because likely resource intensive
                 # CONSIDERATION: Do processing only once map is fully played or user hits pause
                 # THEN: Send data back to the VR application so we can move back to adjust?
-                all_data.append(self._com.parse_data(data))
+                all_data.append(self._com.parse_single_tracking_data_frame(data))
             elif data == "proc:has-quit":
                 print("\n\nEXITING SUBPROCESS\n\n")
                 time_diff = datetime.datetime.now().timestamp() - start_time
@@ -71,6 +71,17 @@ def _wayland_checks() -> bool:
 
 
 def start_vr_app(args: list[str]) -> tuple[bool, BeatSketchVRAppRunner | None]:
+    """Start the VR Application. Automatically manages the process.
+    Any arguments passed should be of form key=value since this is the format
+    the VR application uses, but this is not enforced
+
+    Args:
+        args: Arguments to pass to the VR application.
+
+    Returns:
+        A tuple of launch status and the process. The latter can be used to
+        attach to pyqt signals to update the UI.
+    """
     global proc
     if proc and proc.isRunning():
         return False, proc

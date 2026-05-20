@@ -14,6 +14,7 @@ def generate(
     if len(tracking) != len(pred):
         print("Mismatched length!!")
         # TODO: Better handling of this
+        # (tho this should never happen!)
 
     for i in range(min(len(tracking), len(pred))):
         if pred[i]:

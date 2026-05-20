@@ -9,6 +9,17 @@ import numpy as np
 def prepare(
     data: list[BeatSketchVRData], bpm: int, njs: float
 ) -> BeatSketchTrackingData:
+    """Convert the BeatSketchVRData into a more easily manageable format
+    that is then further processed into other formats
+
+    Args:
+        data: The tracking data
+        bpm: The BPM of the song
+        njs: The Note Jump Speed of the song
+
+    Returns:
+        The converted tracking data.
+    """
     processed: BeatSketchTrackingData = {"left": [], "right": []}
     sec_per_unit = 60 / (bpm * BEAT_SPLIT)
 

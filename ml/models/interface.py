@@ -22,6 +22,8 @@ class MlModelInterface(ABC):
             data: The data to run the prediction on
 
         Returns:
-            True if there is a block for the given data, False otherwise
+            A list of predictions, which are booleans indicating if in the specified point,
+            there is a block or not.
+            The indices correspond to the ones in the input data.
         """
         pass

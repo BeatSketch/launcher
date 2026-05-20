@@ -1,4 +1,6 @@
-pyqt6
+PyQt6
+colorama
 numpy
+jsonschema
+pyaml
 onnxruntime
-# numpy-quaternion

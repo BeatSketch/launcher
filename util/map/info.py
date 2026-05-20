@@ -11,10 +11,21 @@ class BeatSaberInfoFile:
         subtitle: str,
         author: str,
         bpm: int,
-        audio_file: str,
         song_duration: int,
+        audio_file: str = "song.ogg",
         cover_file: str = "cover.png",
     ) -> None:
+        """Create a new Info File
+
+        Args:
+            name: Name of the song
+            subtitle: Subtitle of the song
+            author: Author / Artist of the song
+            bpm: The BPM of the song
+            song_duration: The duration of the song
+            audio_file: The filename of the audio file (optional, defaults to song.ogg)
+            cover_file: The cover art file (optional, defaults to cover.png)
+        """
         self._data = {
             "version": "4.0.0",
             "difficultyBeatmaps": [],
@@ -33,11 +44,23 @@ class BeatSaberInfoFile:
             "songPreviewFilename": audio_file,
         }
 
-    def save(self, dir):
+    def save(self, dir: str):
+        """Save the info file to the specified directory
+
+        Args:
+            dir: The directory to save to
+        """
         with open(dir + "/Info.dat", "w") as file:
             file.write(json.dumps(self._data))
 
     def add_beatmap(self, difficulty: DifficultyLevels, njs: int, njs_offset: int):
+        """Add a beatmap, i.e. difficulty
+
+        Args:
+            difficulty: the difficulty level such as Expert+
+            njs: The NoteJumpSpeed
+            njs_offset: The NoteJumpSpeed Offset (typically 0)
+        """
         self._data["difficultyBeatmaps"].append(
             {
                 "beatmapAuthors": {"mappers": ["BeatSketch"], "lighters": []},

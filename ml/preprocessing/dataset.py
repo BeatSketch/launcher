@@ -5,6 +5,14 @@ import numpy as np
 def generate_model_readable_data(
     data: BeatSketchTrackingData,
 ) -> DATASET:
+    """Convert the BeatSketchTrackingData into a format usable by the models
+
+    Args:
+        data: The TrackingData to convert
+
+    Returns:
+        Model-compatible data format
+    """
     processed: tuple[list[np.ndarray], list[np.ndarray]] = ([], [])
     for hand_idx, hand in enumerate(HANDS):
         details_list = data[hand]

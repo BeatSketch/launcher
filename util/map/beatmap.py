@@ -5,14 +5,24 @@ import json
 class BeatMap:
     _data: BeatMapData
 
-    def __init__(self, bpm) -> None:
+    def __init__(self, bpm: int) -> None:
+        """Create a new BeatMap (data for the difficulty)
+
+        Args:
+            bpm: The BPM of the map
+        """
         self._data = {
             "version": "3.0.0",
             "bpmEvents": [{"b": 0, "m": bpm}],
             "colorNotes": [],
         }
 
-    def save(self, path):
+    def save(self, path: str):
+        """Save the beatmap to the specified filepath
+
+        Args:
+            path: The path to save to
+        """
         with open(path, "w") as file:
             file.write(json.dumps(self._data))
 
