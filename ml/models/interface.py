@@ -1,7 +1,6 @@
 # Interface definition of a model handler
-
 from abc import ABC, abstractmethod
-from ml.dtype import BeatSketchTrackingDataDetails
+from numpy import ndarray
 
 
 class MlModelInterface(ABC):
@@ -16,7 +15,7 @@ class MlModelInterface(ABC):
         super().__init__()
 
     @abstractmethod
-    def predict(self, data: BeatSketchTrackingDataDetails) -> bool:
+    def predict(self, data: ndarray) -> list[bool]:
         """Apply the model to the data
 
         Args:

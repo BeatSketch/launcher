@@ -10,6 +10,6 @@ def process(
     njs: float,
     model: models_type,
 ) -> list[BeatSketchBlock]:
-    preprocessed = preprocess(data, bpm, njs)
+    preprocessed, orig = preprocess(data, bpm, njs)
     pred = create_predictions(model, preprocessed)
-    return postprocess(preprocessed, pred)
+    return postprocess(orig, pred)

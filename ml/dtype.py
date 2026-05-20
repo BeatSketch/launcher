@@ -20,3 +20,4 @@ class BeatSketchPredictions(TypedDict):
 
 
 HANDS: list[Literal["left"] | Literal["right"]] = ["left", "right"]
+DATASET = tuple[np.ndarray, np.ndarray]

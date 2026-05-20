@@ -1,3 +1,5 @@
+from ml.dtype import DATASET, BeatSketchTrackingData
+from ml.preprocessing.dataset import generate_model_readable_data
 from ml.preprocessing.prepare import prepare as _prepare
 from util.ipc.decode import BeatSketchVRData
 
@@ -22,5 +24,8 @@ DATA_SLACK_BEFORE = 4
 DATA_SLACK_AFTER = 4
 
 
-def preprocess(data: list[BeatSketchVRData], bpm: int, njs: float):
-    return _prepare(data, bpm, njs)
+def preprocess(
+    data: list[BeatSketchVRData], bpm: int, njs: float
+) -> tuple[DATASET, BeatSketchTrackingData]:
+    prepared = _prepare(data, bpm, njs)
+    return generate_model_readable_data(prepared), prepared

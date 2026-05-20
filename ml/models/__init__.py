@@ -1,6 +1,6 @@
 from typing import Literal
 
-from ml.dtype import HANDS, BeatSketchPredictions, BeatSketchTrackingData
+from ml.dtype import DATASET, HANDS, BeatSketchPredictions
 from ml.models.interface import MlModelInterface
 from ml.models.testing import TestingModel
 
@@ -9,7 +9,7 @@ models_type = Literal["testing"] | Literal["mlp"]
 models: dict[models_type, MlModelInterface] = {"testing": TestingModel("")}
 
 
-def create_predictions(model: models_type, data: BeatSketchTrackingData):
+def create_predictions(model: models_type, data: DATASET):
     """Run the data through the specified model
 
     Args:
@@ -21,8 +21,7 @@ def create_predictions(model: models_type, data: BeatSketchTrackingData):
         indicating if the corresponding field should be filled
     """
     predictions: BeatSketchPredictions = {"left": [], "right": []}
-    for hand in HANDS:
-        for tracking_data in data[hand]:
-            predictions[hand].append(models[model].predict(tracking_data))
+    for idx, hand in enumerate(HANDS):
+        predictions[hand] = models[model].predict(data[idx])
 
     return predictions
