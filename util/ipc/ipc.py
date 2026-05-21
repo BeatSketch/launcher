@@ -1,6 +1,7 @@
 import platform
 import os
 import subprocess as sp
+import queue
 
 
 class NoAliveSubprocessException(Exception):
@@ -13,6 +14,7 @@ class BeatSketchInstance:
     def __init__(
         self, unix_cmd: list[str], windows_cmd: list[str], app_args: list[str] = []
     ) -> None:
+        self._send_queue: queue.Queue[str] = queue.Queue()
         self._main_name_unix = unix_cmd
         self._main_name_windows = windows_cmd
         self._process = sp.Popen(
@@ -78,8 +80,12 @@ class BeatSketchInstance:
         if self._process.stdout:
             data = self._process.stdout.readline()
             if data == "proc:instr-await\n":
-                self.write("proc:last-instr")
-                return ""
+                while not self._send_queue.empty():
+                    self._write(self._send_queue.get())
+                self._write("proc:last-instr")
+
+                # Read again to give real output
+                return self.read()
             return data
         return ""
 
@@ -98,8 +104,22 @@ class BeatSketchInstance:
         return ""
 
     def write(self, msg: str) -> bool:
-        """Write to the stdin of the BeatSketch process
-            USE SPARINGLY! (Can cause the child process to hang)
+        """Write to the stdin of the VR process.
+        This doesn't actually send it, but puts it into a queue to send
+        when the next fetch request is received
+
+        Args:
+            msg: The message to send
+        Returns:
+            True if successfully added, False if exited
+        """
+        if not self.check_alive():
+            return False
+        self._send_queue.put(msg)
+        return True
+
+    def _write(self, msg: str) -> bool:
+        """Write to the stdin of the VR process
 
         Args:
             msg: The message to send
