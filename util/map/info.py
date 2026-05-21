@@ -53,10 +53,11 @@ class BeatSaberInfoFile:
         with open(dir + "/Info.dat", "w") as file:
             file.write(json.dumps(self._data))
 
-    def add_beatmap(self, difficulty: DifficultyLevels, njs: int, njs_offset: int):
+    def add_beatmap(self, name: str, difficulty: DifficultyLevels, njs: float):
         """Add a beatmap, i.e. difficulty
 
         Args:
+            name: The name of the map (will be the filename)
             difficulty: the difficulty level such as Expert+
             njs: The NoteJumpSpeed
             njs_offset: The NoteJumpSpeed Offset (typically 0)
@@ -64,13 +65,13 @@ class BeatSaberInfoFile:
         self._data["difficultyBeatmaps"].append(
             {
                 "beatmapAuthors": {"mappers": ["BeatSketch"], "lighters": []},
-                "beatmapDataFilename": difficulty + ".dat",
+                "beatmapDataFilename": name + ".dat",
                 "characteristic": "Standard",
                 "difficulty": difficulty,
                 "environmentNameIdx": 0,
                 "lightShowDataFilename": "Lightshow.dat",
                 "beatmapColorSchemeIdx": -1,
                 "noteJumpMovementSpeed": njs,
-                "noteJumpStartBeatOffset": njs_offset,
+                "noteJumpStartBeatOffset": 0,
             }
         )

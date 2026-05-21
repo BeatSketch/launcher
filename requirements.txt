@@ -4,3 +4,4 @@ numpy
 jsonschema
 pyaml
 onnxruntime
+regex

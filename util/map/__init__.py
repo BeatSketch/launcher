@@ -1,13 +1,18 @@
 from typing import cast
+from util.ipc.decode import BeatSketchBlock
 from util.map.beatmap import BeatMap
+from util.map.dtype.beatmap import BeatMapColorNote, CutDirection, SaberHand
+from util.map.dtype.info import DifficultyLevels
 from util.map.info import BeatSaberInfoFile
 import shutil
+import regex
 
 
 class BeatSaberMap:
     _info: BeatSaberInfoFile
     _maps: dict[str, BeatMap]
     _out_dir: str
+    _bpm: int
 
     def __init__(
         self,
@@ -19,8 +24,23 @@ class BeatSaberMap:
         bpm: int,
         duration: int,
     ):
+        """Create a new map.
+        The provided folder path needs to exist. The existance is not checked until an attempt
+        to write to it is made
+
+        Args:
+            folder: The folder to save the map to
+            audio_file: The path to the audio file
+            song_name: The name of the song
+            song_subtitle: Subtitle of the song
+            song_artist: The artist / composer of the song
+            bpm: The BPM of the song
+            duration: The duration of the song
+        """
+        # TODO: Can theoretically get duration from the VR app
         self._out_dir = folder
         self._maps = {}
+        self._bpm = bpm
 
         # Copy over the audio file
         filetype = audio_file.split(".")[-1]
@@ -30,21 +50,132 @@ class BeatSaberMap:
             song_name, song_subtitle, song_artist, bpm, duration, "song." + filetype
         )
 
+    def _pathify_name(self, name: str) -> str:
+        path = ""
+        regexp = regex.compile("/[a-zA-Z]/")
+        regexp.split(name)
+        capitalize_next = False
+        for i in range(len(name)):
+            if regexp.match(name[i]):
+                # A letter
+                if capitalize_next:
+                    path += name[i].capitalize()
+                    capitalize_next = False
+                else:
+                    path += name[i]
+            else:
+                capitalize_next = True
+
+        return path
+
     def save_map(self):
-        pass
+        """Save the map to the configured folder"""
+        self._info.save(self._out_dir + "/Info.dat")
+        for name in self._maps:
+            self._maps[name].save(
+                self._out_dir + "/" + self._pathify_name(name) + ".dat"
+            )
 
-    def add_difficulty(self):
-        pass
+    def add_difficulty(self, name: str, difficulty: DifficultyLevels, njs: float):
+        """Add a new beatmap / difficulty to the map
 
-    def update_beatmap(self):
-        # To update the blocks
-        pass
+        Args:
+            name: The name of the beatmap
+            difficulty: The difficulty the map is going to be (such as Expert+)
+            njs: The note jump speed
+        """
+        self._info.add_beatmap(name, difficulty, njs)
+        self._maps[name] = BeatMap(self._bpm)
 
-    def update_beatmap_details(self):
-        # To update any config
-        pass
+    def add_blocks_to_beatmap_from_real_type(
+        self, beatmap: str, blocks: list[BeatMapColorNote]
+    ):
+        """Add a list of blocks, already in the correct format
+
+        Args:
+            beatmap: The beatmap to add to
+            blocks: The blocks to add
+        """
+        for block in blocks:
+            self._maps[beatmap].add_block_from_real_type(block)
+
+    def add_blocks_to_beatmap_from_internal_type(
+        self, beatmap: str, blocks: list[BeatSketchBlock]
+    ):
+        """Add a list of internal Block data types. They are automatically converted to the beatmap format.
+
+        Args:
+            beatmap: The beatmap to add to
+            blocks: A list of blocks to add
+        """
+        for block in blocks:
+            self._maps[beatmap].add_block_from_internal_block_type(block)
+
+    def add_block_to_beatmap(
+        self,
+        beatmap: str,
+        beat: float,
+        x: int,
+        y: int,
+        hand: SaberHand,
+        direction: CutDirection,
+    ):
+        """Add a block to the beatmap
+
+        Args:
+            beatmap: The beatmap to add it to
+            beat: The beat at which this block is placed
+            x: The lane of the block
+            y: The layer of the block
+            hand: The hand that this block is for
+            direction: The cut direction for the block
+        """
+        self._maps[beatmap].add_block(beat, x, y, hand, direction)
+
+    def remove_blocks_from_beatmap(self, beatmap: str, blocks: list[int]):
+        """Remove the blocsk from the beatmap by their index
+
+        Args:
+            beatmap: The name of the beatmap to remove from
+            blocks: List of block indices to remove
+        """
+        for offset, block in enumerate(blocks):
+            self._maps[beatmap].remove_block(block - offset)
+
+    def remove_blocks_from_beatmap_by_time(
+        self, beatmap: str, start: float, end: float
+    ):
+        """Remove all blocks in the time frame specified
+
+        Args:
+            beatmap: The name of the beatmap to remove it from
+            start: The start of the time interval, in beats
+            end: The end of the time interval, in beats
+        """
+        offset = 0
+        for idx, block in enumerate(self.get_blocks(beatmap)):
+            if block["b"] >= start and block["b"] < end:
+                self._maps[beatmap].remove_block(idx - offset)
+                offset += 1
+
+    def get_blocks(self, beatmap: str):
+        """Get all blocks of the beatmap
+
+        Args:
+            beatmap: The beatmap to retrieve it for
+
+        Returns:
+            A list of blocks
+        """
+        return self._maps[beatmap].get_blocks()
 
     def list_beatmaps(self) -> list[str]:
+        """List all the beatmaps for the current map
+
+        Returns:
+            A list of the beatmap names
+        """
+        # TODO: Also return the difficulty for each of them?
         return cast(list[str], self._maps.keys())
 
 

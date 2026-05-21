@@ -1,5 +1,10 @@
 from util.ipc.decode import BeatSketchBlock
-from util.map.dtype.beatmap import BeatMapData, CutDirection, SaberHand
+from util.map.dtype.beatmap import (
+    BeatMapColorNote,
+    BeatMapData,
+    CutDirection,
+    SaberHand,
+)
 import json
 
 
@@ -28,7 +33,7 @@ class BeatMap:
             file.write(json.dumps(self._data))
 
     def add_block(
-        self, beat: int, x: int, y: int, hand: SaberHand, direction: CutDirection
+        self, beat: float, x: int, y: int, hand: SaberHand, direction: CutDirection
     ):
         """Add a block to the beatmap
 
@@ -42,6 +47,9 @@ class BeatMap:
         self._data["colorNotes"].append(
             {"b": beat, "x": x, "y": y, "c": hand, "d": direction}
         )
+
+    def add_block_from_real_type(self, block: BeatMapColorNote):
+        self._data["colorNotes"].append(block)
 
     def add_block_from_internal_block_type(self, block: BeatSketchBlock):
         self._data["colorNotes"].append(
@@ -70,3 +78,9 @@ class BeatMap:
             The current BPM
         """
         return self._data["bpmEvents"][len(self._data["bpmEvents"]) - 1]["m"]
+
+    def get_blocks(self) -> list[BeatMapColorNote]:
+        return self._data["colorNotes"]
+
+    def remove_block(self, idx: int):
+        self._data["colorNotes"].remove(self._data["colorNotes"][idx])

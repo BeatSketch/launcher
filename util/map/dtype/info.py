@@ -92,8 +92,8 @@ class BeatMapDifficulty(TypedDict):
     difficulty: DifficultyLevels
     beatmapAuthors: BeatMapAuthors
     environmentNameIdx: int
-    noteJumpMovementSpeed: int
-    noteJumpStartBeatOffset: int
+    noteJumpMovementSpeed: float
+    noteJumpStartBeatOffset: float
     beatmapDataFilename: str
     lightShowDataFilename: str
     beatmapColorSchemeIdx: int
