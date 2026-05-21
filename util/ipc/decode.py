@@ -32,6 +32,14 @@ class BeatSketchBlock(TypedDict):
     hand: SaberHand
 
 
+class BeatSketchSerializableBlock(TypedDict):
+    x: int
+    y: int
+    orientation: int
+    beat: float
+    hand: int
+
+
 class NoRunningBeatSketchInstanceError(Exception):
     pass
 
@@ -141,7 +149,9 @@ class BeatSketchInstanceDataHandler:
         """
         # TODO: Probably want to use a queue here,
         # or in the abstraction to not block the VR app
-        self._com.write("json:" + json.dumps(data))
+        serialized = json.dumps(data)
+        print(serialized)
+        self._com.write("json:" + serialized)
 
     def send_blocks(self, data: list[BeatSketchBlock]) -> None:
         """Send the processed blocks back to VR
@@ -149,9 +159,21 @@ class BeatSketchInstanceDataHandler:
         Args:
             data: The blocks
         """
+        blocks: list[BeatSketchSerializableBlock] = []
+        for block in data:
+            blocks.append(
+                {
+                    "beat": block["beat"],
+                    "hand": block["hand"].value,
+                    "orientation": block["orientation"].value,
+                    "x": block["x"],
+                    "y": block["y"],
+                }
+            )
+
+        print("sending data")
         self.send_text("proc:send-blocks")
-        self.send_json(data)
-        self.send_text("proc:last-instr")
+        self.send_json(blocks)
 
     def send_text(self, data: str) -> None:
         """Send a plain instruction, of any format to VR

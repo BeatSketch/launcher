@@ -44,7 +44,8 @@ class BeatSketchVRAppRunner(QThread):
                 processor.add_data(self._com.parse_single_tracking_data_frame(data))
             elif data == "proc:has-quit":
                 break
-            elif data == "proc:do-processing":
+            elif data.strip() == "proc:do-processing":
+                print(" ==> Starting processing")
                 data_processing = processing.DataProcessing(
                     processor, self._bpm, self._njs, self._model
                 )
@@ -53,7 +54,8 @@ class BeatSketchVRAppRunner(QThread):
             # Send data to VR
             if data_processing and data_processing.is_complete():
                 # TODO: Map stiching, for when processing done mid-map, or jumping back
-                processing.send_data(self._com, data_processing.get_data())
+                self._com.send_blocks(data_processing.get_data())
+                data_processing = None
 
         # After VR process exit, process the full map
         print(

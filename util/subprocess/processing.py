@@ -1,9 +1,7 @@
 from ml.dtype import MODELS
-from util.ipc import BeatSketchVRApplication
 from util.ipc.decode import BeatSketchBlock, BeatSketchVRData
 import ml
 import multiprocessing as mp
-
 
 class VRDataStorage:
     def __init__(self) -> None:
@@ -23,12 +21,6 @@ class VRDataStorage:
 
     def get_data(self) -> list[BeatSketchVRData]:
         return self._data
-
-
-def send_data(com: BeatSketchVRApplication, data: list[BeatSketchBlock]):
-    # TODO: Possibly need to change this a bit?
-    com.send_text("data:blocks")
-    com.send_json(data)
 
 
 class DataProcessing:
