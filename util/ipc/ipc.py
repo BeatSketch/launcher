@@ -22,7 +22,7 @@ class BeatSketchInstance:
             text=True,
             stdout=sp.PIPE,
             stderr=sp.PIPE,
-            stdin=sp.PIPE,
+            stdin=sp.PIPE
         )
         self._alive = True
 

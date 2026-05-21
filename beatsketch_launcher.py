@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from sys import argv
 from gui import close_window, create_launcher_app
 import colorama
 
@@ -14,7 +15,7 @@ if __name__ == "__main__":
 
                         LAUNCHER
     """ + colorama.Style.RESET_ALL)
-    app, window = create_launcher_app()
+    app, window = create_launcher_app(testing_mode=(len(argv) > 1 and argv[1] == "testing"))
     try:
         window.show()
         app.exec()

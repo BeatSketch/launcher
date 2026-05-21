@@ -1,9 +1,7 @@
 import os
 from typing import Callable, TypedDict
-
 from gui.elements import dialog
 from util.subprocess import start_vr_app
-
 
 class BeatSketchSelectedFileList(TypedDict):
     song: str
@@ -19,6 +17,7 @@ def launch_wrapper(
     njs: str,
     files: BeatSketchSelectedFileList,
     launch_func: Callable[[], None],
+    testing_mode: bool = False
 ):
     """A convenience wrapper for the VR app launch procedure.
 
@@ -31,13 +30,13 @@ def launch_wrapper(
         files: The files that the user picked
         launch_func: A function to run before the launch happens
     """
-    if files["song"] == "" or bpm == "" or njs == "":
+    if (files["song"] == "" or bpm == "" or njs == "") and not testing_mode:
         dialog.open_msg_dialog(
             "Song file, BPM and/or NJS are missing", title="Missing configuration"
         )
         return
 
-    if not os.access(files["song"], os.R_OK):
+    if not os.access(files["song"], os.R_OK) and not testing_mode:
         dialog.open_msg_dialog(
             "Song file is nonexistent or don't have read access",
             title="Missing configuration",
@@ -56,15 +55,21 @@ def launch_wrapper(
         print("Missing config, non-critical for now")
 
     launch_func()
+    args = [
+        f'song="{files["song"]}"',
+        f"bpm={bpm}",
+        f"rx={0}",
+        f"ry={0}",
+        f"rz={0}",
+        f"njs={njs}",
+    ]
+    if testing_mode:
+        args = []
+        bpm = "100"
+        njs = "10"
+
     status, proc = start_vr_app(
-        [
-            f'song="{files["song"]}"',
-            f"bpm={bpm}",
-            f"rx={0}",
-            f"ry={0}",
-            f"rz={0}",
-            f"njs={njs}",
-        ],
+        args,
         int(bpm),
         float(njs),
         "testing",

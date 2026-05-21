@@ -6,7 +6,7 @@ import PyQt6.QtCore as qtcore
 from gui.config import create_config_interface, ident_func
 
 
-def create_launcher_app(launch_func: Callable[[], None] = ident_func):
+def create_launcher_app(launch_func: Callable[[], None] = ident_func, testing_mode: bool = False):
     """Launcher start function. This actually opens the window
 
     Args:
@@ -15,8 +15,9 @@ def create_launcher_app(launch_func: Callable[[], None] = ident_func):
     Returns:
         The Qt application and the window. Application can be used with close_window to kill the app
     """
-    # TODO: Theming? (not really needed because QT Themes will make it feel more native)
-    # If so, maybe using this: https://pypi.org/project/qt-themes/
+    if testing_mode:
+        print("TESTING MODE ACTIVE")
+
     app = qt.QApplication([])
     window = qt.QMainWindow()
     window.setWindowTitle("BeatSketch Launcher")
@@ -31,7 +32,7 @@ def create_launcher_app(launch_func: Callable[[], None] = ident_func):
     title_wrapper.addWidget(t)
     box.addLayout(title_wrapper)
 
-    box.addLayout(create_config_interface(launch_func))
+    box.addLayout(create_config_interface(launch_func, testing_mode=testing_mode))
 
     wrapper = qt.QWidget()
     wrapper.setLayout(box)

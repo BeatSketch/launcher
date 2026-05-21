@@ -41,6 +41,11 @@
             "description": "The model to use for processing. TODO: Add all opts",
             "default": "testing",
             "pattern": "^(testing|mlp)"
+        },
+        "mirror": {
+            "type": "boolean",
+            "description": "Whether to output a mirrored view of the headset or a 3rd person view to the desktop screen",
+            "default": false
         }
     },
     "additionalProperties": false

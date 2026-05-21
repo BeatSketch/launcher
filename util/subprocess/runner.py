@@ -48,8 +48,6 @@ class BeatSketchVRAppRunner(QThread):
                 data_processing = processing.DataProcessing(
                     processor, self._bpm, self._njs, self._model
                 )
-            elif data == "proc:recording-done":
-                processing.DataProcessing(processor, self._bpm, self._njs, self._model)
             # TODO: Instruction to jump back to earlier time (maybe not explicitly needed)
 
             # Send data to VR

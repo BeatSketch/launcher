@@ -10,7 +10,7 @@ def ident_func():
     pass
 
 
-def create_config_interface(launch_func: Callable[[], None] = ident_func):
+def create_config_interface(launch_func: Callable[[], None] = ident_func, testing_mode: bool = False):
     def set_file(path: str, kind: str):
         if path == "":
             return
@@ -60,6 +60,7 @@ def create_config_interface(launch_func: Callable[[], None] = ident_func):
                 get_njs(),
                 files,
                 launch_func,
+                testing_mode=testing_mode
             ),
             "Record map",
         )
