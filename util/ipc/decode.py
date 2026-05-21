@@ -96,7 +96,7 @@ class BeatSketchInstanceDataHandler:
             return json.loads(data[5:])
         elif data == "proc:has-quit":
             self._alive = False
-        return data
+        return data.strip()
 
     def parse_single_tracking_data_frame(self, data: dict | list) -> BeatSketchVRData:
         """Parse the VR data into a usable format. For a single data point only
@@ -150,7 +150,6 @@ class BeatSketchInstanceDataHandler:
         # TODO: Probably want to use a queue here,
         # or in the abstraction to not block the VR app
         serialized = json.dumps(data)
-        print(serialized)
         self._com.write("json:" + serialized)
 
     def send_blocks(self, data: list[BeatSketchBlock]) -> None:
@@ -171,8 +170,7 @@ class BeatSketchInstanceDataHandler:
                 }
             )
 
-        print("sending data")
-        self.send_text("proc:send-blocks")
+        self._com.write("data:blocks")
         self.send_json(blocks)
 
     def send_text(self, data: str) -> None:

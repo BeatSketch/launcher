@@ -17,7 +17,8 @@ def launch_wrapper(
     njs: str,
     files: BeatSketchSelectedFileList,
     launch_func: Callable[[], None],
-    testing_mode: bool = False
+    testing_mode: bool = False,
+    vr_debug: bool = False
 ):
     """A convenience wrapper for the VR app launch procedure.
 
@@ -73,6 +74,7 @@ def launch_wrapper(
         int(bpm),
         float(njs),
         "testing",
+        debug=vr_debug
     )
     # TODO: Load rotation offsets for sabers from config
     # TODO: Change model here, or move to somewhere else, like config

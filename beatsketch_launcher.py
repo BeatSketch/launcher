@@ -15,7 +15,16 @@ if __name__ == "__main__":
 
                         LAUNCHER
     """ + colorama.Style.RESET_ALL)
-    app, window = create_launcher_app(testing_mode=(len(argv) > 1 and argv[1] == "testing"))
+    # TODO: Parse from CLI
+    testing = False
+    debug = False
+    for arg in argv:
+        if arg == "testing":
+            testing = True
+        elif arg == "debug":
+            debug = True
+
+    app, window = create_launcher_app(testing_mode=testing, vr_debug=debug)
     try:
         window.show()
         app.exec()

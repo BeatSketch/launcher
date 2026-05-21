@@ -6,7 +6,7 @@ import PyQt6.QtCore as qtcore
 from gui.config import create_config_interface, ident_func
 
 
-def create_launcher_app(launch_func: Callable[[], None] = ident_func, testing_mode: bool = False):
+def create_launcher_app(launch_func: Callable[[], None] = ident_func, testing_mode: bool = False, vr_debug: bool = False):
     """Launcher start function. This actually opens the window
 
     Args:
@@ -17,6 +17,8 @@ def create_launcher_app(launch_func: Callable[[], None] = ident_func, testing_mo
     """
     if testing_mode:
         print("TESTING MODE ACTIVE")
+    if vr_debug:
+        print("VR DEBUG MODE ACTIVE (print output of VR app)")
 
     app = qt.QApplication([])
     window = qt.QMainWindow()
@@ -32,7 +34,7 @@ def create_launcher_app(launch_func: Callable[[], None] = ident_func, testing_mo
     title_wrapper.addWidget(t)
     box.addLayout(title_wrapper)
 
-    box.addLayout(create_config_interface(launch_func, testing_mode=testing_mode))
+    box.addLayout(create_config_interface(launch_func, testing_mode=testing_mode, vr_debug=vr_debug))
 
     wrapper = qt.QWidget()
     wrapper.setLayout(box)

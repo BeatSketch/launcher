@@ -10,7 +10,11 @@ def ident_func():
     pass
 
 
-def create_config_interface(launch_func: Callable[[], None] = ident_func, testing_mode: bool = False):
+def create_config_interface(
+    launch_func: Callable[[], None] = ident_func,
+    testing_mode: bool = False,
+    vr_debug: bool = False,
+):
     def set_file(path: str, kind: str):
         if path == "":
             return
@@ -60,7 +64,8 @@ def create_config_interface(launch_func: Callable[[], None] = ident_func, testin
                 get_njs(),
                 files,
                 launch_func,
-                testing_mode=testing_mode
+                testing_mode=testing_mode,
+                vr_debug=vr_debug,
             ),
             "Record map",
         )

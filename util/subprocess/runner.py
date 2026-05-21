@@ -11,12 +11,13 @@ class BeatSketchVRAppRunner(QThread):
     launch_success = pyqtSignal(bool)
     _com: BeatSketchVRApplication | None
 
-    def __init__(self, args: list[str], bpm: int, njs: float, model: MODELS) -> None:
+    def __init__(self, args: list[str], bpm: int, njs: float, model: MODELS, debug: bool = False) -> None:
         super().__init__()
         self._args = args
         self._njs = njs
         self._bpm = bpm
         self._model: MODELS = model
+        self._debug = debug
 
     def __del__(self) -> None:
         if self._com:
@@ -44,11 +45,13 @@ class BeatSketchVRAppRunner(QThread):
                 processor.add_data(self._com.parse_single_tracking_data_frame(data))
             elif data == "proc:has-quit":
                 break
-            elif data.strip() == "proc:do-processing":
+            elif data == "proc:do-processing":
                 print(" ==> Starting processing")
                 data_processing = processing.DataProcessing(
                     processor, self._bpm, self._njs, self._model
                 )
+            elif self._debug:
+                print(data)
             # TODO: Instruction to jump back to earlier time (maybe not explicitly needed)
 
             # Send data to VR
