@@ -1,5 +1,5 @@
 from ml.dtype import HANDS, BeatSketchTrackingData
-from ml.preprocessing import BEAT_SPLIT, TRACKING_PER_UNIT
+from ml.preprocessing.values import BEAT_SPLIT, TRACKING_PER_UNIT
 from ml.preprocessing.locations import hit_locations
 from util.ipc.decode import BeatSketchVRData
 import math
@@ -27,17 +27,21 @@ def prepare(
     buckets: dict[int, tuple[list[int], list[int]]] = {}
     for idx, frame in enumerate(data):
         for i, hand in enumerate(HANDS):
-            time = int(
+            beat = int(
                 (frame[hand]["timestamp"] + frame[hand]["pos"][2] / njs) / sec_per_unit
             )
             try:
-                buckets[time][i].append(idx)
+                buckets[beat][i].append(idx)
             except Exception:
-                buckets[time] = ([], [])
-                buckets[time][i].append(idx)
+                buckets[beat] = ([], [])
+                buckets[beat][i].append(idx)
 
     for unit in range(len(buckets)):
-        bucket = buckets[unit]
+        bucket: tuple[list[int], list[int]] = ([], [])
+        try:
+            bucket = buckets[unit]
+        except KeyError:
+            pass
         for i, indices in enumerate(bucket):
             # Limit the number of data points used
             hand = "left" if i == 0 else "right"
@@ -46,13 +50,14 @@ def prepare(
 
             if len(indices) < TRACKING_PER_UNIT:
                 print(
-                    f"WARNING: Skipped data points filled in with {TRACKING_PER_UNIT - len(indices)} 0s"
+                    f"WARNING: Data point filled in with {TRACKING_PER_UNIT - len(indices)} 0s"
                 )
                 for _ in range(TRACKING_PER_UNIT - len(indices)):
-                    els.append(np.array([0, 0, 0]))
+                    els.append(np.array([0, 0, 0, 0, 0, 0]))
 
             for k in range(min(TRACKING_PER_UNIT, len(indices))):
-                els.append(data[indices[math.floor(one_every_n_els * k)]][hand]["tip"])
+                loc = data[indices[math.floor(one_every_n_els * k)]][hand]
+                els.append(np.concatenate((loc["tip"], loc["direction"])))
 
             # Add the to be processed buckets
             hits = hit_locations(els)

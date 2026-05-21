@@ -1,15 +1,12 @@
-from typing import Literal
-
-from ml.dtype import DATASET, HANDS, BeatSketchPredictions
+from ml.dtype import DATASET, HANDS, BeatSketchPredictions, MODELS
 from ml.models.interface import MlModelInterface
 from ml.models.testing import TestingModel
 
 # TODO: Add the correct models
-models_type = Literal["testing"] | Literal["mlp"]
-models: dict[models_type, MlModelInterface] = {"testing": TestingModel("")}
+models: dict[MODELS, MlModelInterface] = {"testing": TestingModel("")}
 
 
-def create_predictions(model: models_type, data: DATASET):
+def create_predictions(model: MODELS, data: DATASET):
     """Run the data through the specified model
 
     Args:

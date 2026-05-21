@@ -27,7 +27,7 @@ def determine_cut_direction(
 
     Args:
         data: The data to process
-        strat: 
+        strat:
             The way in which the direction is determined. There are two options:
                 - average (taking the average direction vector)
                 - startend (difference between start and end points)
@@ -36,7 +36,7 @@ def determine_cut_direction(
         The CutDirection of the block
     """
     count = len(data["tracking"])
-    tracking = np.array(data["tracking"])
+    tracking = np.array(data["tracking"])[:, :3]
     if strat == "startend":
         return get_orientation(compute_angle(tracking[-1] - tracking[0]))
     elif strat == "average":
@@ -56,7 +56,14 @@ def compute_angle(vec: np.ndarray) -> float:
     """
     # Do cheapo projection (just setting the z axis to 0) to compute the cut angle
     vec[2] = 0
-    angle = np.arccos(vec.dot(base_vec) / (np.linalg.norm(vec))) / np.pi * 180
+
+    # Prevent zero division error
+    norm = np.linalg.norm(vec)
+    if norm == 0:
+        return 0
+
+    # Compute the angle
+    angle = np.arccos(vec.dot(base_vec) / norm) / np.pi * 180
     cross = np.linalg.cross(base_vec, vec)
     left_side = cross[2] < 0
     return 360 - angle if left_side else angle
