@@ -19,6 +19,7 @@ The ML models are generated using the Python Script [here](https://github.com/Be
 - [ ] Overwriting data if continuing at older time
 - [X] **For training data, can use bsor and this parser: https://github.com/Schippi/py-bsor**
 - [ ] Open existing map
+- [ ] Fix Windows launch
 
 
 ## Methodology

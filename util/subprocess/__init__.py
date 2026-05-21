@@ -1,5 +1,6 @@
 from gui.elements import dialog
 import colorama
+import platform
 
 from ml.dtype import MODELS
 from util.subprocess.runner import BeatSketchVRAppRunner
@@ -27,7 +28,7 @@ def start_vr_app(
     if proc and proc.isRunning():
         return False, proc
 
-    if not _wayland_checks():
+    if not _wayland_checks() and platform.system() == "Linux":
         dialog.open_msg_dialog(
             "Gamescope is not installed. Please install it using your distribution's package manager",
             title="Launching VR Application failed",
