@@ -35,6 +35,12 @@
             "description": "The folder in which the picker should open. Has to end in slash",
             "default": "~/Downloads/",
             "pattern": "^(^(~|\\.|\\.\\.)?\\/)?([\\w\\/.-]+(?!.*[^\\w\\/.-]+))\\/$"
+        },
+        "used_model": {
+            "type": "string",
+            "description": "The model to use for processing. TODO: Add all opts",
+            "default": "testing",
+            "pattern": "^(testing|mlp)"
         }
     },
     "additionalProperties": false

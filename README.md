@@ -1,6 +1,9 @@
 # launcher
 The BeatSketch launcher. You may be looking for the VR application, which can be found [here](https://github.com/BeatSketch/BeatSketch)
 
+# Models
+The ML models are generated using the Python Script [here](https://github.com/BeatSketch/dataset).
+
 ## TODOs
 - [ ] Windows and Mac launch (Mac should be similar to Linux that is already implemented)
 - [X] GUI using PyQT is probably the easiest
