@@ -37,7 +37,6 @@ class BeatMapBPMEvent(TypedDict):
     m: int
 
 
-# FIXME: b may need to be set to float (very likely)
 class BeatMapColorNote(TypedDict):
     """The blocks to be placed
 
@@ -49,7 +48,7 @@ class BeatMapColorNote(TypedDict):
         d: The cut direction
     """
 
-    b: int
+    b: float
     x: int
     y: int
     c: SaberHand

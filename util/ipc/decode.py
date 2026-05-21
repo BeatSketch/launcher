@@ -90,7 +90,7 @@ class BeatSketchInstanceDataHandler:
             self._alive = False
         return data
 
-    def parse_single_tracking_data_frame(self, data: dict) -> BeatSketchVRData:
+    def parse_single_tracking_data_frame(self, data: dict | list) -> BeatSketchVRData:
         """Parse the VR data into a usable format. For a single data point only
 
         Args:
@@ -102,7 +102,7 @@ class BeatSketchInstanceDataHandler:
         Raises:
             ValueError: If the passed in data is not in fact a dict
         """
-        if not isinstance(type(data), dict):
+        if not isinstance(data, dict):
             raise ValueError("Passed in data is not a dictionary")
 
         return {
@@ -112,7 +112,7 @@ class BeatSketchInstanceDataHandler:
                 "direction": np.array(data["left"]["direction"]),
                 "quat": np.array(data["left"]["quat"]),
                 "tip": np.array(data["left"]["tip"]),
-                "timestamp": int(data["left"]["timestamp"]),
+                "timestamp": float(data["left"]["timestamp"]),
             },
             "right": {
                 "buttons": data["right"]["buttons"],
@@ -120,7 +120,7 @@ class BeatSketchInstanceDataHandler:
                 "direction": np.array(data["right"]["direction"]),
                 "quat": np.array(data["right"]["quat"]),
                 "tip": np.array(data["right"]["tip"]),
-                "timestamp": int(data["right"]["timestamp"]),
+                "timestamp": float(data["right"]["timestamp"]),
             },
             "head": {
                 "buttons": data["head"]["buttons"],
@@ -128,7 +128,7 @@ class BeatSketchInstanceDataHandler:
                 "direction": np.array(data["head"]["direction"]),
                 "quat": np.array(data["head"]["quat"]),
                 "tip": np.array(data["head"]["tip"]),
-                "timestamp": int(data["head"]["timestamp"]),
+                "timestamp": float(data["head"]["timestamp"]),
             },
             "paused": data["paused"],
         }

@@ -2,7 +2,7 @@ import os
 from typing import Callable, TypedDict
 
 from gui.elements import dialog
-from util.subprocess_manager import start_vr_app
+from util.subprocess import start_vr_app
 
 
 class BeatSketchSelectedFileList(TypedDict):
@@ -33,7 +33,7 @@ def launch_wrapper(
     """
     if files["song"] == "" or bpm == "" or njs == "":
         dialog.open_msg_dialog(
-            "Song file and/or BPM are missing", title="Missing configuration"
+            "Song file, BPM and/or NJS are missing", title="Missing configuration"
         )
         return
 
@@ -55,7 +55,6 @@ def launch_wrapper(
         # TODO: More elaborate checks
         print("Missing config, non-critical for now")
 
-    # TODO: Where to get the rotations (rotation offsets for sabers) from?
     launch_func()
     status, proc = start_vr_app(
         [
@@ -65,8 +64,13 @@ def launch_wrapper(
             f"ry={0}",
             f"rz={0}",
             f"njs={njs}",
-        ]
+        ],
+        int(bpm),
+        float(njs),
+        "testing",
     )
+    # TODO: Load rotation offsets for sabers from config
+    # TODO: Change model here, or move to somewhere else, like config
 
     def launch_status_handler(status: int):
         if status != 0:

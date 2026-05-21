@@ -1,3 +1,4 @@
+from util.ipc.decode import BeatSketchBlock
 from util.map.dtype.beatmap import BeatMapData, CutDirection, SaberHand
 import json
 
@@ -40,6 +41,17 @@ class BeatMap:
         """
         self._data["colorNotes"].append(
             {"b": beat, "x": x, "y": y, "c": hand, "d": direction}
+        )
+
+    def add_block_from_internal_block_type(self, block: BeatSketchBlock):
+        self._data["colorNotes"].append(
+            {
+                "b": block["beat"],
+                "x": block["x"],
+                "y": block["y"],
+                "c": block["hand"],
+                "d": block["orientation"],
+            }
         )
 
     def add_bpm_event(self, beat: int, bpm: int):
