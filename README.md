@@ -1,6 +1,8 @@
 # launcher
 The BeatSketch launcher. You may be looking for the VR application, which can be found [here](https://github.com/BeatSketch/BeatSketch)
 
+If you can't code and still want to help out, [uploading BSOR files](https://polybox.ethz.ch/index.php/s/RbRFRgc7WnmotAg) is an easy way.
+
 # Models
 The ML models are generated using the Python Script [here](https://github.com/BeatSketch/dataset).
 
