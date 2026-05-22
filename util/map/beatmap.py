@@ -80,7 +80,37 @@ class BeatMap:
         return self._data["bpmEvents"][len(self._data["bpmEvents"]) - 1]["m"]
 
     def get_blocks(self) -> list[BeatMapColorNote]:
+        """Get the blocks in the BeatSaber format.
+
+        Returns:
+            The blocks in the BeatSaber format. Time: O(1)
+        """
         return self._data["colorNotes"]
 
+    def get_blocks_as_internal_block_type(self) -> list[BeatSketchBlock]:
+        """Get the blocks as the type used by BeatSketch
+
+        Returns:
+            The blocks in BeatSketch format. Time: O(n)
+        """
+        blocks: list[BeatSketchBlock] = []
+        for block in self._data["colorNotes"]:
+            blocks.append(
+                {
+                    "beat": block["b"],
+                    "x": block["x"],
+                    "y": block["y"],
+                    "hand": SaberHand.LEFT if block["c"] == 0 else SaberHand.RIGHT,
+                    "orientation": block["d"],
+                }
+            )
+
+        return blocks
+
     def remove_block(self, idx: int):
+        """Remove a single block by its index
+
+        Args:
+            idx: The index in the blocks
+        """
         self._data["colorNotes"].remove(self._data["colorNotes"][idx])

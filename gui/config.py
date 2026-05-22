@@ -23,6 +23,8 @@ def create_config_interface(
     box = qt.QVBoxLayout()
     files: BeatSketchSelectedFileList = {"save": "", "cover": "", "song": ""}
 
+    # TODO: Redo UI entirely here (use Popup or similar to create beatmap)
+    # Then have main window be used to configure specific beatmaps
     song_name, get_song = input_widget("Song name")
     song_artist, get_artist = input_widget("Song artist")
     mapper, get_mapper = input_widget("Mapper names")

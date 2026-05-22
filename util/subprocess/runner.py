@@ -2,6 +2,7 @@ from time import time
 from PyQt6.QtCore import QThread, pyqtSignal
 from ml.dtype import MODELS
 from util.ipc import BeatSketchVRApplication
+from util.map import BeatSaberMap
 from util.subprocess import processing
 
 
@@ -11,13 +12,24 @@ class BeatSketchVRAppRunner(QThread):
     launch_success = pyqtSignal(bool)
     _com: BeatSketchVRApplication | None
 
-    def __init__(self, args: list[str], bpm: int, njs: float, model: MODELS, debug: bool = False) -> None:
-        super().__init__()
+    def __init__(
+        self,
+        args: list[str],
+        map: BeatSaberMap,
+        beatmap_name: str,
+        model: MODELS,
+        debug: bool = False,
+    ) -> None:
+        # TODO: Generate a beatmap first, then pass it in
         self._args = args
-        self._njs = njs
-        self._bpm = bpm
+        self._beatmap_name = beatmap_name
+        self._njs = map.get_njs(beatmap_name)
+        self._bpm = map.get_bpm()
+        self._map = map
+        self._beatmap_name = beatmap_name
         self._model: MODELS = model
         self._debug = debug
+        super().__init__()
 
     def __del__(self) -> None:
         if self._com:
@@ -50,13 +62,15 @@ class BeatSketchVRAppRunner(QThread):
                 data_processing = processing.DataProcessing(
                     processor, self._bpm, self._njs, self._model
                 )
+            elif data.startswith("proc:overwrite-from:"):
+                print("Overwriting song data")
+                # TODO: Implement this
             elif self._debug:
                 print(data)
-            # TODO: Instruction to jump back to earlier time (maybe not explicitly needed)
 
             # Send data to VR
             if data_processing and data_processing.is_complete():
-                # TODO: Map stiching, for when processing done mid-map, or jumping back
+                # TODO: Map stiching, for when processing done mid-map, or jumping back, or map has existing parts
                 self._com.send_blocks(data_processing.get_data())
                 data_processing = None
 
@@ -71,7 +85,10 @@ class BeatSketchVRAppRunner(QThread):
         processed = processing.DataProcessing(
             processor, self._bpm, self._njs, self._model
         ).await_completion()
-        print(processed)
+        self._map.add_blocks_to_beatmap_from_internal_type(
+            self._beatmap_name, processed
+        )
+        self._map.save()
 
         # TODO: Save the map
         if self._com.get_status_code() != 0:

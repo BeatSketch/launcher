@@ -1,7 +1,10 @@
 import os
 from typing import Callable, TypedDict
 from gui.elements import dialog
+from util.map import BeatSaberMap
+from util.map.dtype.info import DifficultyLevels
 from util.subprocess import start_vr_app
+
 
 class BeatSketchSelectedFileList(TypedDict):
     song: str
@@ -13,12 +16,15 @@ def launch_wrapper(
     song_name: str,
     song_artist: str,
     mapper: str,
+    map: BeatSaberMap,
+    beatmap_name: str,
+    difficulty: DifficultyLevels,
     bpm: str,
     njs: str,
     files: BeatSketchSelectedFileList,
     launch_func: Callable[[], None],
     testing_mode: bool = False,
-    vr_debug: bool = False
+    vr_debug: bool = False,
 ):
     """A convenience wrapper for the VR app launch procedure.
 
@@ -56,6 +62,7 @@ def launch_wrapper(
         print("Missing config, non-critical for now")
 
     launch_func()
+    # TODO: Load rotation offsets for sabers from config
     args = [
         f'song="{files["song"]}"',
         f"bpm={bpm}",
@@ -69,14 +76,10 @@ def launch_wrapper(
         bpm = "100"
         njs = "10"
 
-    status, proc = start_vr_app(
-        args,
-        int(bpm),
-        float(njs),
-        "testing",
-        debug=vr_debug
-    )
-    # TODO: Load rotation offsets for sabers from config
+    # Add difficulty
+    # TODO: What to do for existing maps?
+    map.add_difficulty(beatmap_name, difficulty, float(njs))
+    status, proc = start_vr_app(args, map, beatmap_name, "testing", debug=vr_debug)
     # TODO: Change model here, or move to somewhere else, like config
 
     def launch_status_handler(status: int):

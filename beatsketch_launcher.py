@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 
-from sys import argv
-from gui import close_window, create_launcher_app
-import colorama
+try:
+    from sys import argv
+    from gui import close_window, create_launcher_app
+    import colorama
+except ModuleNotFoundError:
+    print("--> ERROR: Required python modules are not installed.")
+    print("Aborting.")
+    exit(1)
 
 if __name__ == "__main__":
     print(colorama.Fore.BLUE + colorama.Style.BRIGHT + """

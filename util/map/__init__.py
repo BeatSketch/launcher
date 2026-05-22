@@ -68,7 +68,7 @@ class BeatSaberMap:
 
         return path
 
-    def save_map(self):
+    def save(self):
         """Save the map to the configured folder"""
         self._info.save(self._out_dir + "/Info.dat")
         for name in self._maps:
@@ -177,6 +177,18 @@ class BeatSaberMap:
         """
         # TODO: Also return the difficulty for each of them?
         return cast(list[str], self._maps.keys())
+
+    def _get_idx_from_name(self, beatmap_name: str) -> int:
+        return self.list_beatmaps().index(beatmap_name)
+
+    def get_beatmap_difficulty(self, beatmap_name: str) -> DifficultyLevels:
+        return self._info.get_difficulty(self._get_idx_from_name(beatmap_name))
+
+    def get_bpm(self) -> int:
+        return self._bpm
+
+    def get_njs(self, beatmap_name: str) -> float:
+        return self._info.get_njs(self._get_idx_from_name(beatmap_name))
 
 
 # Used to load existing maps

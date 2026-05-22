@@ -75,3 +75,9 @@ class BeatSaberInfoFile:
                 "noteJumpStartBeatOffset": 0,
             }
         )
+
+    def get_njs(self, beatmap_idx: int):
+        return self._data["difficultyBeatmaps"][beatmap_idx]["noteJumpMovementSpeed"]
+
+    def get_difficulty(self, beatmap_idx: int) -> DifficultyLevels:
+        return self._data["difficultyBeatmaps"][beatmap_idx]["difficulty"]

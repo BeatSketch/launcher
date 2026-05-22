@@ -45,14 +45,18 @@ class NoRunningBeatSketchInstanceError(Exception):
 
 
 class BeatSketchInstanceDataHandler:
-    def __init__(self, args: list[str] = []) -> None:
+    def __init__(self, args: list[str] = [], dev_mode: bool = False) -> None:
         """Initialize a new VR application
 
         Args:
             args: The CLI args to pass in. Typically should be list of key=val,
             because that's what the VR app uses
         """
-        self._com = BeatSketchInstance(["lovr", "../vr/"], ["BeatSketch.exe"], args)
+        # TODO: Update the windows commands
+        if dev_mode:
+            self._com = BeatSketchInstance(["lovr", "../vr/"], ["BeatSketch.exe"], args)
+        else:
+            self._com = BeatSketchInstance(["./BeatSketch"], ["BeatSketch.exe"], args)
         self._alive = self._com.await_launch("[BeatSketch] IPC INIT COMPLETE")
 
     def get_alive(self) -> bool:
