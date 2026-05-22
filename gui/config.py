@@ -4,6 +4,7 @@ from gui.elements.button import create_button
 from gui.elements.file_picker import directory_picker, file_picker
 from gui.elements.input import input_widget
 from util.launch import BeatSketchSelectedFileList, launch_wrapper
+from util.map import BeatSaberMap
 
 
 def ident_func():
@@ -56,12 +57,34 @@ def create_config_interface(
 
     box.addLayout(directory_picker("Map save directory", lambda x: set_file(x, "save")))
 
+    # TODO: Make sure int conversion doesn't cause crash
+    # TODO: Get song duration
+    song_bpm = 150
+    try:
+        song_bpm = int(get_bpm())
+    except ValueError:
+        print("Failed to determine BPM. Using fallback of 150")
+
+    map = BeatSaberMap(
+        files["save"],
+        files["song"],
+        files["cover"],
+        get_song(),
+        "",
+        get_artist(),
+        song_bpm,
+        150,
+    )
+
     box.addWidget(
         create_button(
             lambda: launch_wrapper(
                 get_song(),
                 get_artist(),
                 get_mapper(),
+                map,
+                "",
+                "Easy",
                 get_bpm(),
                 get_njs(),
                 files,

@@ -12,7 +12,12 @@ proc: None | BeatSketchVRAppRunner = None
 
 
 def start_vr_app(
-    args: list[str], map: BeatSaberMap, beatmap_name: str, model: MODELS, debug: bool = False
+    args: list[str],
+    map: BeatSaberMap,
+    beatmap_name: str,
+    model: MODELS,
+    debug: bool = False,
+    dev_mode: bool = False,
 ) -> tuple[bool, BeatSketchVRAppRunner | None]:
     """Start the VR Application. Automatically manages the process.
     Any arguments passed should be of form key=value since this is the format
@@ -43,7 +48,7 @@ def start_vr_app(
         + colorama.Style.RESET_ALL
     )
 
-    proc = BeatSketchVRAppRunner(args, map, beatmap_name, model, debug)
+    proc = BeatSketchVRAppRunner(args, map, beatmap_name, model, debug, dev_mode)
     proc.start()
 
     return True, proc

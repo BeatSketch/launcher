@@ -1,4 +1,3 @@
-from typing import cast
 from util.ipc.decode import BeatSketchBlock
 from util.map.beatmap import BeatMap
 from util.map.dtype.beatmap import BeatMapColorNote, CutDirection, SaberHand
@@ -18,6 +17,7 @@ class BeatSaberMap:
         self,
         folder: str,
         audio_file: str,
+        cover_file: str,
         song_name: str,
         song_subtitle: str,
         song_artist: str,
@@ -44,7 +44,17 @@ class BeatSaberMap:
 
         # Copy over the audio file
         filetype = audio_file.split(".")[-1]
-        shutil.copy(audio_file, folder + "/song." + filetype)
+        try:
+            shutil.copy(audio_file, folder + "/song." + filetype)
+        except FileNotFoundError:
+            print("Failed to copy song. File not found")
+
+        # Copy over the cover file
+        try:
+            cover_ft = cover_file.split(".")[-1]
+            shutil.copy(cover_file, folder + "/cover." + cover_ft)
+        except FileNotFoundError:
+            print("Failed to copy cover. File not found")
 
         self._info = BeatSaberInfoFile(
             song_name, song_subtitle, song_artist, bpm, duration, "song." + filetype
@@ -70,6 +80,9 @@ class BeatSaberMap:
 
     def save(self):
         """Save the map to the configured folder"""
+        if self._out_dir == "":
+            print("SAVE FAILED. Dir name invalid")
+            return
         self._info.save(self._out_dir + "/Info.dat")
         for name in self._maps:
             self._maps[name].save(
@@ -175,8 +188,10 @@ class BeatSaberMap:
         Returns:
             A list of the beatmap names
         """
-        # TODO: Also return the difficulty for each of them?
-        return cast(list[str], self._maps.keys())
+        maps: list[str] = []
+        for map in self._maps.keys():
+            maps.append(map)
+        return maps
 
     def _get_idx_from_name(self, beatmap_name: str) -> int:
         return self.list_beatmaps().index(beatmap_name)

@@ -78,16 +78,17 @@ def launch_wrapper(
 
     # Add difficulty
     # TODO: What to do for existing maps?
-    map.add_difficulty(beatmap_name, difficulty, float(njs))
-    status, proc = start_vr_app(args, map, beatmap_name, "testing", debug=vr_debug)
-    # TODO: Change model here, or move to somewhere else, like config
-
     def launch_status_handler(status: int):
         if status != 0:
             dialog.open_msg_dialog(
                 "The VR Application has failed to launch. Exit code: " + str(status),
                 title="Launching VR Application failed",
             )
+
+    map.add_difficulty(beatmap_name, difficulty, float(njs))
+    status, proc = start_vr_app(args, map, beatmap_name, "testing", debug=vr_debug, dev_mode=testing_mode)
+
+    # TODO: Change model here, or move to somewhere else, like config
 
     if proc and status:
         proc.exit_code.connect(launch_status_handler)

@@ -1,4 +1,4 @@
-from time import time
+from time import sleep, time
 from PyQt6.QtCore import QThread, pyqtSignal
 from ml.dtype import MODELS
 from util.ipc import BeatSketchVRApplication
@@ -19,6 +19,7 @@ class BeatSketchVRAppRunner(QThread):
         beatmap_name: str,
         model: MODELS,
         debug: bool = False,
+        dev_mode: bool = False,
     ) -> None:
         # TODO: Generate a beatmap first, then pass it in
         self._args = args
@@ -29,6 +30,7 @@ class BeatSketchVRAppRunner(QThread):
         self._beatmap_name = beatmap_name
         self._model: MODELS = model
         self._debug = debug
+        self._dev_mode = dev_mode
         super().__init__()
 
     def __del__(self) -> None:
@@ -37,10 +39,11 @@ class BeatSketchVRAppRunner(QThread):
 
     def run(self) -> None:
         # Launch the VR application
-        self._com = BeatSketchVRApplication(self._args + ["launcher=true"])
+        self._com = BeatSketchVRApplication(self._args + ["launcher=true"], dev_mode=self._dev_mode)
         if not self._com.get_alive():
             self.exit_code.emit(self._com.get_status_code())
-            exit(255)
+            sleep(2)
+            return
 
         # Initialize processing utils
         processor = processing.VRDataStorage()
@@ -90,7 +93,6 @@ class BeatSketchVRAppRunner(QThread):
         )
         self._map.save()
 
-        # TODO: Save the map
         if self._com.get_status_code() != 0:
             self.exit_code.emit()
             exit(self._com.get_status_code())
