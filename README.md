@@ -20,6 +20,7 @@ The ML models are generated using the Python Script [here](https://github.com/Be
 - [X] **For training data, can use bsor and this parser: https://github.com/Schippi/py-bsor**
 - [ ] Open existing map
 - [ ] Fix Windows launch
+- [ ] For user guide: https://bsmg.wiki/mapping/basic-audio.html on how to edit the audio file
 
 
 ## Methodology
