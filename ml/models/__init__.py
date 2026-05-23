@@ -1,9 +1,13 @@
 from ml.dtype import DATASET, HANDS, BeatSketchPredictions, MODELS
 from ml.models.interface import MlModelInterface
+from ml.models.onnx.sklearn import SkLearnONNXModel
 from ml.models.testing import TestingModel
 
 # TODO: Add the correct models
-models: dict[MODELS, MlModelInterface] = {"testing": TestingModel("")}
+models: dict[MODELS, tuple[type[MlModelInterface], str]] = {
+    "testing": (TestingModel, "TEST"),
+    "mlp": (SkLearnONNXModel, "../dataset/models/mlp.onnx"),  # TODO: Update the path
+}
 
 
 def create_predictions(model: MODELS, data: DATASET):
@@ -18,7 +22,13 @@ def create_predictions(model: MODELS, data: DATASET):
         indicating if the corresponding field should be filled
     """
     predictions: BeatSketchPredictions = {"left": [], "right": []}
+    loaded_model = load_model(model)
     for idx, hand in enumerate(HANDS):
-        predictions[hand] = models[model].predict(data[idx])
+        if data[idx].shape[0] != 0:
+            predictions[hand] = loaded_model.predict(data[idx])
 
     return predictions
+
+
+def load_model(model: MODELS):
+    return models[model][0](models[model][1])

@@ -22,7 +22,7 @@ class BeatSketchInstance:
         self._main_name_unix = unix_cmd
         self._main_name_windows = windows_cmd
         if dev_mode:
-            print(self._command(app_args))
+            print("VR Launch Arguments:", self._command(app_args))
 
         self._process = sp.Popen(
             self._command(app_args),

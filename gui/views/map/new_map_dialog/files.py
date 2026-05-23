@@ -23,7 +23,7 @@ def files_inputs():
     file_pickers.addWidget(
         file_picker_button(
             lambda x: set_file(x, "cover"),
-            "Image files (*.jpg *.png *.JPG)",
+            "Image files (*.png)",
             "Select the Cover art",
             "Cover Art",
         )

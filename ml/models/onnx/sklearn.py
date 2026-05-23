@@ -15,8 +15,7 @@ class SkLearnONNXModel(MlModelInterface):
         )
 
     def predict(self, data: np.ndarray) -> list[bool]:
-        data.astype(np.float32)
-        # TODO: Convert data format
+        data = data.astype(np.float32)
         pred = cast(np.ndarray, self._session.run(None, {"X": data})[0])
         predictions: list[bool] = []
         for el in pred:
