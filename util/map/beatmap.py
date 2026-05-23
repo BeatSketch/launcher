@@ -45,7 +45,7 @@ class BeatMap:
             direction: The direction in which the block was cut
         """
         self._data["colorNotes"].append(
-            {"b": beat, "x": x, "y": y, "c": hand, "d": direction}
+            {"b": beat, "x": x, "y": y, "c": hand.value, "d": direction.value}
         )
 
     def add_block_from_real_type(self, block: BeatMapColorNote):
@@ -57,8 +57,8 @@ class BeatMap:
                 "b": block["beat"],
                 "x": block["x"],
                 "y": block["y"],
-                "c": block["hand"],
-                "d": block["orientation"],
+                "c": block["hand"].value,
+                "d": block["orientation"].value,
             }
         )
 
@@ -101,7 +101,7 @@ class BeatMap:
                     "x": block["x"],
                     "y": block["y"],
                     "hand": SaberHand.LEFT if block["c"] == 0 else SaberHand.RIGHT,
-                    "orientation": block["d"],
+                    "orientation": CutDirection(block["d"]),
                 }
             )
 

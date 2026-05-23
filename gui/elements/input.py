@@ -15,7 +15,7 @@ def input_widget(
     Returns:
         A QHBoxLayout that can be added to a layout with addLayout
     """
-    le = simple_input_widget(max_length)
+    le, get_text = simple_input_widget(max_length)
 
     t = QLabel()
     t.setText(msg)
@@ -25,13 +25,10 @@ def input_widget(
     layout.addWidget(t)
     layout.addWidget(le)
 
-    def get_text():
-        return le.text()
-
     return layout, get_text
 
 
-def simple_input_widget(max_length: int = 50) -> QLineEdit:
+def simple_input_widget(max_length: int = 50) -> tuple[QLineEdit, Callable[[], str]]:
     """Create a QLineEdit Widget (single line text input) widget
     with the default styling applied
 
@@ -43,4 +40,8 @@ def simple_input_widget(max_length: int = 50) -> QLineEdit:
     """
     le = QLineEdit()
     le.setMaxLength(max_length)
-    return le
+
+    def get_text():
+        return le.text()
+
+    return le, get_text

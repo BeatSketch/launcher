@@ -54,9 +54,9 @@ class BeatSketchInstanceDataHandler:
         """
         # TODO: Update the windows commands
         if dev_mode:
-            self._com = BeatSketchInstance(["lovr", "../vr/"], ["BeatSketch.exe"], args)
+            self._com = BeatSketchInstance(["lovr", "../vr/"], ["BeatSketch.exe"], args, dev_mode)
         else:
-            self._com = BeatSketchInstance(["./BeatSketch"], ["BeatSketch.exe"], args)
+            self._com = BeatSketchInstance(["./BeatSketch"], ["BeatSketch.exe"], args, dev_mode)
         self._alive = self._com.await_launch("[BeatSketch] IPC INIT COMPLETE")
 
     def get_alive(self) -> bool:

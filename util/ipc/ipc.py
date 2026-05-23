@@ -12,17 +12,24 @@ class BeatSketchInstance:
     """Launch a BeatSketch VR instance with the current settings"""
 
     def __init__(
-        self, unix_cmd: list[str], windows_cmd: list[str], app_args: list[str] = []
+        self,
+        unix_cmd: list[str],
+        windows_cmd: list[str],
+        app_args: list[str] = [],
+        dev_mode: bool = False,
     ) -> None:
         self._send_queue: queue.Queue[str] = queue.Queue()
         self._main_name_unix = unix_cmd
         self._main_name_windows = windows_cmd
+        if dev_mode:
+            print(self._command(app_args))
+
         self._process = sp.Popen(
             self._command(app_args),
             text=True,
             stdout=sp.PIPE,
             stderr=sp.PIPE,
-            stdin=sp.PIPE
+            stdin=sp.PIPE,
         )
         self._alive = True
 

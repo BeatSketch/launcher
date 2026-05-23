@@ -79,15 +79,8 @@ def create_config_interface(
     box.addWidget(
         create_button(
             lambda: launch_wrapper(
-                get_song(),
-                get_artist(),
-                get_mapper(),
                 map,
                 "",
-                "Easy",
-                get_bpm(),
-                get_njs(),
-                files,
                 launch_func,
                 testing_mode=testing_mode,
                 vr_debug=vr_debug,

@@ -4,7 +4,7 @@ from util.map.dtype.beatmap import BeatMapColorNote, CutDirection, SaberHand
 from util.map.dtype.info import DifficultyLevels
 from util.map.info import BeatSaberInfoFile
 import shutil
-import regex
+import re
 
 
 class BeatSaberMap:
@@ -12,6 +12,7 @@ class BeatSaberMap:
     _maps: dict[str, BeatMap]
     _out_dir: str
     _bpm: int
+    _savable: bool
 
     def __init__(
         self,
@@ -43,36 +44,44 @@ class BeatSaberMap:
         self._bpm = bpm
 
         # Copy over the audio file
-        filetype = audio_file.split(".")[-1]
-        try:
-            shutil.copy(audio_file, folder + "/song." + filetype)
-        except FileNotFoundError:
-            print("Failed to copy song. File not found")
+        if folder == "":
+            self._info = BeatSaberInfoFile(
+                song_name, song_subtitle, song_artist, bpm, duration, "song.ogg"
+            )
+            self._savable = False
+        else:
+            self._savable = True
+            filetype = audio_file.split(".")[-1]
+            try:
+                shutil.copy(audio_file, folder + "/song." + filetype)
+            except FileNotFoundError:
+                print("Failed to copy song. File not found")
+                self._savable = False
 
-        # Copy over the cover file
-        try:
-            cover_ft = cover_file.split(".")[-1]
-            shutil.copy(cover_file, folder + "/cover." + cover_ft)
-        except FileNotFoundError:
-            print("Failed to copy cover. File not found")
+            # Copy over the cover file
+            try:
+                cover_ft = cover_file.split(".")[-1]
+                shutil.copy(cover_file, folder + "/cover." + cover_ft)
+            except FileNotFoundError:
+                print("Failed to copy cover. File not found")
 
-        self._info = BeatSaberInfoFile(
-            song_name, song_subtitle, song_artist, bpm, duration, "song." + filetype
-        )
+            self._info = BeatSaberInfoFile(
+                song_name, song_subtitle, song_artist, bpm, duration, "song." + filetype
+            )
 
     def _pathify_name(self, name: str) -> str:
         path = ""
-        regexp = regex.compile("/[a-zA-Z]/")
-        regexp.split(name)
-        capitalize_next = False
-        for i in range(len(name)):
-            if regexp.match(name[i]):
+        regex = re.compile("[a-zA-Z]")
+        regex.split(name)
+        capitalize_next = True
+        for letter in name:
+            if regex.match(letter):
                 # A letter
                 if capitalize_next:
-                    path += name[i].capitalize()
+                    path += letter.capitalize()
                     capitalize_next = False
                 else:
-                    path += name[i]
+                    path += letter
             else:
                 capitalize_next = True
 
@@ -83,13 +92,15 @@ class BeatSaberMap:
         if self._out_dir == "":
             print("SAVE FAILED. Dir name invalid")
             return
-        self._info.save(self._out_dir + "/Info.dat")
+        self._info.save(self._out_dir)
         for name in self._maps:
             self._maps[name].save(
                 self._out_dir + "/" + self._pathify_name(name) + ".dat"
             )
 
-    def add_difficulty(self, name: str, difficulty: DifficultyLevels, njs: float):
+    def add_difficulty(
+        self, name: str, difficulty: DifficultyLevels, njs: float, mapper: str
+    ):
         """Add a new beatmap / difficulty to the map
 
         Args:
@@ -97,7 +108,7 @@ class BeatSaberMap:
             difficulty: The difficulty the map is going to be (such as Expert+)
             njs: The note jump speed
         """
-        self._info.add_beatmap(name, difficulty, njs)
+        self._info.add_beatmap(name, difficulty, njs, mapper)
         self._maps[name] = BeatMap(self._bpm)
 
     def add_blocks_to_beatmap_from_real_type(
@@ -199,11 +210,21 @@ class BeatSaberMap:
     def get_beatmap_difficulty(self, beatmap_name: str) -> DifficultyLevels:
         return self._info.get_difficulty(self._get_idx_from_name(beatmap_name))
 
+    def list_beatmaps_with_difficulties(self) -> list[tuple[str, str]]:
+        maps: list[tuple[str, str]] = []
+        for map in self._maps.keys():
+            maps.append((map, self.get_beatmap_difficulty(map)))
+
+        return maps
+
     def get_bpm(self) -> int:
         return self._bpm
 
     def get_njs(self, beatmap_name: str) -> float:
         return self._info.get_njs(self._get_idx_from_name(beatmap_name))
+
+    def get_audio_file(self) -> str:
+        return self._out_dir + "/" + self._info.get_audio_file()
 
 
 # Used to load existing maps

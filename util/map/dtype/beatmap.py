@@ -51,5 +51,5 @@ class BeatMapColorNote(TypedDict):
     b: float
     x: int
     y: int
-    c: SaberHand
-    d: CutDirection
+    c: int
+    d: int

@@ -1,12 +1,16 @@
 from typing import Callable
-from PyQt6.QtGui import QFont
 import PyQt6.QtWidgets as qt
-import PyQt6.QtCore as qtcore
 
-from gui.config import create_config_interface, ident_func
+from gui.util import ident_func
+from gui.views.home import home_view
 
 
-def create_launcher_app(launch_func: Callable[[], None] = ident_func, testing_mode: bool = False, vr_debug: bool = False):
+def create_launcher_app(
+    launch_func: Callable[[], None] = ident_func,
+    testing_mode: bool = False,
+    dev_mode: bool = False,
+    vr_debug: bool = False,
+):
     """Launcher start function. This actually opens the window
 
     Args:
@@ -20,24 +24,14 @@ def create_launcher_app(launch_func: Callable[[], None] = ident_func, testing_mo
     if vr_debug:
         print("VR DEBUG MODE ACTIVE (print output of VR app)")
 
+    # Create the main window
     app = qt.QApplication([])
     window = qt.QMainWindow()
     window.setWindowTitle("BeatSketch Launcher")
 
-    box = qt.QVBoxLayout()
-
-    title_wrapper = qt.QHBoxLayout()
-    title_wrapper.setAlignment(qtcore.Qt.AlignmentFlag.AlignCenter)
-    t = qt.QLabel()
-    t.setText("BeatSketch Launcher")
-    t.setFont(QFont("sans", 40))
-    title_wrapper.addWidget(t)
-    box.addLayout(title_wrapper)
-
-    box.addLayout(create_config_interface(launch_func, testing_mode=testing_mode, vr_debug=vr_debug))
-
+    # Wrap the home view
     wrapper = qt.QWidget()
-    wrapper.setLayout(box)
+    wrapper.setLayout(home_view(launch_func, testing_mode, dev_mode, vr_debug))
     window.setCentralWidget(wrapper)
 
     return app, window

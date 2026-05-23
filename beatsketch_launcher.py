@@ -23,13 +23,16 @@ if __name__ == "__main__":
     # TODO: Parse from CLI
     testing = False
     debug = False
+    dev = False
     for arg in argv:
         if arg == "testing":
             testing = True
         elif arg == "debug":
             debug = True
+        elif arg == "dev":
+            dev = True
 
-    app, window = create_launcher_app(testing_mode=testing, vr_debug=debug)
+    app, window = create_launcher_app(testing_mode=testing, vr_debug=debug, dev_mode=dev)
     try:
         window.show()
         app.exec()

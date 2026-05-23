@@ -53,7 +53,9 @@ class BeatSaberInfoFile:
         with open(dir + "/Info.dat", "w") as file:
             file.write(json.dumps(self._data))
 
-    def add_beatmap(self, name: str, difficulty: DifficultyLevels, njs: float):
+    def add_beatmap(
+        self, name: str, difficulty: DifficultyLevels, njs: float, mapper: str
+    ):
         """Add a beatmap, i.e. difficulty
 
         Args:
@@ -64,7 +66,7 @@ class BeatSaberInfoFile:
         """
         self._data["difficultyBeatmaps"].append(
             {
-                "beatmapAuthors": {"mappers": ["BeatSketch"], "lighters": []},
+                "beatmapAuthors": {"mappers": ["BeatSketch", mapper], "lighters": []},
                 "beatmapDataFilename": name + ".dat",
                 "characteristic": "Standard",
                 "difficulty": difficulty,
@@ -81,3 +83,6 @@ class BeatSaberInfoFile:
 
     def get_difficulty(self, beatmap_idx: int) -> DifficultyLevels:
         return self._data["difficultyBeatmaps"][beatmap_idx]["difficulty"]
+
+    def get_audio_file(self):
+        return self._data["audio"]["songFilename"]

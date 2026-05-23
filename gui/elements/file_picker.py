@@ -23,11 +23,19 @@ def file_picker_button(
     def handler():
         filename, _ = QFileDialog.getOpenFileName(caption=picker_text, filter=filter)
 
+        if filename != "":
+            button.setText(button_text + " (selected)")
+            button.setToolTip("Selected file: " + filename)
+        else:
+            button.setText(button_text)
+            button.setToolTip("Select file")
+
         picked_file(filename)
 
     button = QPushButton()
     button.setText(button_text)
     button.pressed.connect(handler)
+    button.setToolTip("Select file")
     return button
 
 
@@ -80,11 +88,19 @@ def directory_select_button(
     """
 
     def handler():
-        selected_dir(QFileDialog.getExistingDirectory(caption=picker_text))
+        dir = QFileDialog.getExistingDirectory(caption=picker_text)
+        if dir != "":
+            button.setText(button_text + " (selected)")
+            button.setToolTip("Selected folder: " + dir)
+        else:
+            button.setText(button_text)
+            button.setToolTip("Select folder")
+        selected_dir(dir)
 
     button = QPushButton()
     button.setText(button_text)
     button.pressed.connect(handler)
+    button.setToolTip("Select folder")
     return button
 
 
