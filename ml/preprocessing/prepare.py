@@ -28,7 +28,7 @@ def prepare(
     for idx, frame in enumerate(data):
         for i, hand in enumerate(HANDS):
             beat = int(
-                (frame[hand]["timestamp"] + frame[hand]["pos"][2] / njs) / sec_per_unit
+                (frame[hand]["timestamp"] - frame[hand]["pos"][2] / njs) / sec_per_unit
             )
             try:
                 buckets[beat][i].append(idx)
