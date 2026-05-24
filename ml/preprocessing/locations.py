@@ -1,4 +1,10 @@
-from ml.preprocessing.values import GRID_FIELD_HEIGHT, GRID_FIELD_WIDTH, GRID_X_MIN_VAL, GRID_Y_MIN_VAL, THRESHOLD
+from ml.preprocessing.values import (
+    GRID_FIELD_HEIGHT,
+    GRID_FIELD_WIDTH,
+    GRID_X_MIN_VAL,
+    GRID_Y_MIN_VAL,
+    THRESHOLD,
+)
 import numpy as np
 
 
