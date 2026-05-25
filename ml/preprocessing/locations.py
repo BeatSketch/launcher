@@ -26,24 +26,25 @@ def hit_locations(
         for line in range(3):
             for col in range(4):
                 if (
-                    hand[0] < GRID_X_MIN_VAL + (col + 1) * GRID_FIELD_WIDTH
+                    hand[0] <= GRID_X_MIN_VAL + (col + 1) * GRID_FIELD_WIDTH
                     and hand[0] > GRID_X_MIN_VAL + col * GRID_FIELD_WIDTH
                     and (
                         (
-                            hand[1] < GRID_Y_MIN_VAL + (line + 1) * GRID_FIELD_HEIGHT
+                            hand[1] <= GRID_Y_MIN_VAL + (line + 1) * GRID_FIELD_HEIGHT
                             and hand[1] > GRID_Y_MIN_VAL + line * GRID_FIELD_HEIGHT
                         )
                         or (
                             hand[1] - THRESHOLD * dir[1]
-                            < GRID_Y_MIN_VAL + (line + 1) * GRID_FIELD_HEIGHT
+                            <= GRID_Y_MIN_VAL + (line + 1) * GRID_FIELD_HEIGHT
                             and hand[1] - THRESHOLD * dir[1]
                             > GRID_Y_MIN_VAL + line * GRID_FIELD_HEIGHT
                         )
                     )
                 ):
+                    print("x", hand[0], "col", col, "y", hand[1], "line", line)
                     try:
-                        locations.index((line, col))
+                        locations.index((col, line))
                     except Exception:
-                        locations.append((line, col))
+                        locations.append((col, line))
 
     return locations

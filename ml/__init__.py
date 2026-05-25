@@ -27,5 +27,6 @@ def process(
     """
     preprocessed, orig = _preprocess(data, bpm, njs)
     pred = _create_predictions(model, preprocessed)
+    print("number of predictions", len(pred["left"]))
     post = _postprocess(orig, pred)
     return post
