@@ -41,7 +41,6 @@ def hit_locations(
                         )
                     )
                 ):
-                    print("x", hand[0], "col", col, "y", hand[1], "line", line)
                     try:
                         locations.index((col, line))
                     except Exception:
