@@ -53,7 +53,7 @@ class BeatSketchInstance:
         else:
             # FIXME: Handle for Windows (and Mac if we support that)
             # TODO: This is currently set to lanch a non-existent executable
-            return ["start"] + self._main_name_windows + args
+            return self._main_name_windows + args
 
     def check_alive(self) -> bool:
         """Check if the process is still alive
