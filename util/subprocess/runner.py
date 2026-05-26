@@ -21,7 +21,6 @@ class BeatSketchVRAppRunner(QThread):
         debug: bool = False,
         dev_mode: bool = False,
     ) -> None:
-        # TODO: Generate a beatmap first, then pass it in
         self._args = args
         self._beatmap_name = beatmap_name
         self._njs = map.get_njs(beatmap_name)

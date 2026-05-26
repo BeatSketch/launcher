@@ -20,7 +20,6 @@ if __name__ == "__main__":
 
                         LAUNCHER
     """ + colorama.Style.RESET_ALL)
-    # TODO: Parse from CLI
     testing = False
     debug = False
     dev = False

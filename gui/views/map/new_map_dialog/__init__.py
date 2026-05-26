@@ -23,7 +23,7 @@ def open_new_map_dialog(
                 - Audio file
                 - Cover art file
                 - Save path (i.e. where to save the map to)
-        testing_mode: [TODO:description]
+        testing_mode: Wheter or not to enable testing mode
     """
     # Basic setup
     dialog = qt.QDialog()
