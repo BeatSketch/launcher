@@ -61,7 +61,6 @@ class BeatSketchVRAppRunner(QThread):
             elif data == "proc:has-quit":
                 break
             elif data == "proc:do-processing":
-                print(" ==> Starting processing")
                 data_processing = processing.DataProcessing(
                     processor, self._bpm, self._njs, self._model
                 )
@@ -78,13 +77,14 @@ class BeatSketchVRAppRunner(QThread):
                 data_processing = None
 
         # After VR process exit, process the full map
-        print(
-            "\n==> Recorded",
-            processor.get_data_point_count(),
-            "data points in",
-            time() - start_time,
-            "s\n",
-        )
+        if self._debug:
+            print(
+                "\n==> Recorded",
+                processor.get_data_point_count(),
+                "data points in",
+                time() - start_time,
+                "s\n",
+            )
         processed = processing.DataProcessing(
             processor, self._bpm, self._njs, self._model
         ).await_completion()
