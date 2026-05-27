@@ -20,6 +20,7 @@ The ML models are generated using the Python Script [here](https://github.com/Be
 - [X] **For training data, can use bsor and this parser: https://github.com/Schippi/py-bsor**
 - [ ] Load existing map and send blocks for selected difficulty to VR
 - [ ] Open existing map
+- [ ] *Walls* -> Can be handled purely deterministically likely
 - [ ] Fix Windows launch
 - [ ] For user guide: https://bsmg.wiki/mapping/basic-audio.html on how to edit the audio file
 
