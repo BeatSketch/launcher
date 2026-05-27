@@ -38,7 +38,9 @@ class BeatSketchVRAppRunner(QThread):
 
     def run(self) -> None:
         # Launch the VR application
-        self._com = BeatSketchVRApplication(self._args + ["launcher=true"], dev_mode=self._dev_mode)
+        self._com = BeatSketchVRApplication(
+            self._args + ["launcher=true"], dev_mode=self._dev_mode
+        )
         if not self._com.get_alive():
             self.exit_code.emit(self._com.get_status_code())
             sleep(2)
@@ -61,7 +63,7 @@ class BeatSketchVRAppRunner(QThread):
                 break
             elif data == "proc:do-processing":
                 data_processing = processing.DataProcessing(
-                    processor, self._bpm, self._njs, self._model
+                    processor, self._bpm, self._njs, self._model, self._dev_mode
                 )
             elif data.startswith("proc:overwrite-from:"):
                 print("Overwriting song data")
@@ -85,7 +87,7 @@ class BeatSketchVRAppRunner(QThread):
                 "s\n",
             )
         processed = processing.DataProcessing(
-            processor, self._bpm, self._njs, self._model
+            processor, self._bpm, self._njs, self._model, self._dev_mode
         ).await_completion()
         self._map.add_blocks_to_beatmap_from_internal_type(
             self._beatmap_name, processed
@@ -93,5 +95,5 @@ class BeatSketchVRAppRunner(QThread):
         self._map.save()
 
         if self._com.get_status_code() != 0:
-            self.exit_code.emit()
+            self.exit_code.emit(self._com.get_status_code())
             exit(self._com.get_status_code())

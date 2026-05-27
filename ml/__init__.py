@@ -8,6 +8,7 @@ from util.ipc.decode import BeatSketchBlock, BeatSketchVRData
 
 # Optional trailing slash
 MODELS_FOLDER = "./models"
+MODELS_FOLDER_DEV = "../dataset/models"
 
 
 def process(
@@ -15,6 +16,7 @@ def process(
     bpm: int,
     njs: float,
     model: _MODELS,
+    dev_mode: bool = False
 ) -> list[BeatSketchBlock]:
     """Run the tracking data through the model chain.
     All pre and postprocessing happens automatically. Pick a model from the available models
@@ -29,6 +31,6 @@ def process(
         A list of blocks that the model "thinks" best match the movement
     """
     preprocessed, orig = _preprocess(data, bpm, njs)
-    pred = _create_predictions(model, preprocessed, MODELS_FOLDER)
+    pred = _create_predictions(model, preprocessed, MODELS_FOLDER_DEV if dev_mode else MODELS_FOLDER)
     post = _postprocess(orig, pred)
     return post
