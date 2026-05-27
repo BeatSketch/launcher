@@ -7,7 +7,7 @@ import numpy as np
 
 
 def prepare(
-    data: list[BeatSketchVRData], bpm: int, njs: float
+    data: list[BeatSketchVRData], bpm: float, njs: float
 ) -> BeatSketchTrackingData:
     """Convert the BeatSketchVRData into a more easily manageable format
     that is then further processed into other formats

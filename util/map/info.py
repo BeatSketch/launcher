@@ -10,7 +10,7 @@ class BeatSaberInfoFile:
         name: str,
         subtitle: str,
         author: str,
-        bpm: int,
+        bpm: float,
         song_duration: int,
         audio_file: str = "song.ogg",
         cover_file: str = "cover.png",

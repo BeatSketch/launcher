@@ -48,7 +48,7 @@ def new_map(
         return False
 
     try:
-        int(bpm)
+        float(bpm)
     except ValueError:
         dialog.open_msg_dialog(
             "BPM does not contain a valid input", title="Invalid configuration"
@@ -74,7 +74,7 @@ def new_map(
 
     # TODO: Retrieve the duration somehow (optinally can set that after launch of VR)
     duration = 150
-    map = BeatSaberMap(files["save"], files["song"], files["cover"], song_name, "", song_artist, int(bpm), duration)
+    map = BeatSaberMap(files["save"], files["song"], files["cover"], song_name, "", song_artist, float(bpm), duration)
     return True
 
 

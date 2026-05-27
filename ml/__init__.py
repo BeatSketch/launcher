@@ -13,7 +13,7 @@ MODELS_FOLDER_DEV = "../dataset/models"
 
 def process(
     data: list[BeatSketchVRData],
-    bpm: int,
+    bpm: float,
     njs: float,
     model: _MODELS,
     dev_mode: bool = False

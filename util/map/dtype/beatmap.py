@@ -33,8 +33,8 @@ class BeatMapBPMEvent(TypedDict):
         m: The BPM to set
     """
 
-    b: int
-    m: int
+    b: float
+    m: float
 
 
 class BeatMapColorNote(TypedDict):

@@ -11,7 +11,7 @@ import json
 class BeatMap:
     _data: BeatMapData
 
-    def __init__(self, bpm: int) -> None:
+    def __init__(self, bpm: float) -> None:
         """Create a new BeatMap (data for the difficulty)
 
         Args:
@@ -71,7 +71,7 @@ class BeatMap:
         """
         self._data["bpmEvents"].append({"b": beat, "m": bpm})
 
-    def get_current_bpm(self) -> int:
+    def get_current_bpm(self) -> float:
         """Get the current BPM
 
         Returns:

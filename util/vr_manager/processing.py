@@ -48,7 +48,7 @@ class BeatSketchProcessingManager:
     def __init__(
         self,
         data: VRDataStorage,
-        bpm: int,
+        bpm: float,
         njs: float,
         model: MODELS,
         dev_mode: bool = False,
@@ -72,14 +72,14 @@ class _ProcessingProcess(mp.Process):
     def __init__(
         self,
         data: VRDataStorage,
-        bpm: int,
+        bpm: float,
         njs: float,
         model: MODELS,
         queue: mp.Queue,
         dev_mode: bool = False,
     ) -> None:
         self._data: VRDataStorage = data
-        self._bpm: int = bpm
+        self._bpm: float = bpm
         self._njs: float = njs
         self._model: MODELS = model
         self._queue = queue

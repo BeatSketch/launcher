@@ -11,7 +11,7 @@ class BeatSaberMap:
     _info: BeatSaberInfoFile
     _maps: dict[str, BeatMap]
     _out_dir: str
-    _bpm: int
+    _bpm: float
     _savable: bool
 
     def __init__(
@@ -22,7 +22,7 @@ class BeatSaberMap:
         song_name: str,
         song_subtitle: str,
         song_artist: str,
-        bpm: int,
+        bpm: float,
         duration: int,
     ):
         """Create a new map.
@@ -217,7 +217,7 @@ class BeatSaberMap:
 
         return maps
 
-    def get_bpm(self) -> int:
+    def get_bpm(self) -> float:
         return self._bpm
 
     def get_njs(self, beatmap_name: str) -> float:

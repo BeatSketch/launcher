@@ -5,7 +5,7 @@ from util.dtype import BeatSketchVRData
 
 
 def preprocess(
-    data: list[BeatSketchVRData], bpm: int, njs: float
+    data: list[BeatSketchVRData], bpm: float, njs: float
 ) -> tuple[DATASET, BeatSketchTrackingData]:
     """Preprocess the data into the dataset, as can be used by the models
     and the tracking data, as it is used by the postprocessor
