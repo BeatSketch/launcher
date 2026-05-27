@@ -1,7 +1,7 @@
 from ml.dtype import DATASET, BeatSketchTrackingData
 from ml.preprocessing.dataset import generate_model_readable_data
 from ml.preprocessing.prepare import prepare as _prepare
-from util.ipc.decode import BeatSketchVRData
+from util.dtype import BeatSketchVRData
 
 
 def preprocess(

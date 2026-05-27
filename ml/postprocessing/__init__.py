@@ -1,6 +1,6 @@
 from ml.dtype import HANDS, BeatSketchTrackingData, BeatSketchPredictions
 from ml.postprocessing import blocks
-from util.ipc.decode import BeatSketchBlock
+from util.dtype import BeatSketchBlock
 
 
 def postprocess(

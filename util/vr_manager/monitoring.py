@@ -3,10 +3,10 @@ from PyQt6.QtCore import QThread, pyqtSignal
 from ml.dtype import MODELS
 from util.ipc import BeatSketchVRApplication
 from util.map import BeatSaberMap
-from util.subprocess import processing
+from util.vr_manager import processing
 
 
-class BeatSketchVRAppRunner(QThread):
+class BeatSketchVRMonitoringThread(QThread):
     # NOTE: can add more signals here if we want to display more details in the launcher
     exit_code = pyqtSignal(int)
     launch_success = pyqtSignal(bool)
@@ -49,7 +49,7 @@ class BeatSketchVRAppRunner(QThread):
         # Initialize processing utils
         processor = processing.VRDataStorage()
         start_time = time()
-        data_processing: processing.DataProcessing | None = None
+        data_processing: processing.BeatSketchProcessingManager | None = None
         self.launch_success.emit(True)
 
         # Read data from process
@@ -62,7 +62,7 @@ class BeatSketchVRAppRunner(QThread):
             elif data == "proc:has-quit":
                 break
             elif data == "proc:do-processing":
-                data_processing = processing.DataProcessing(
+                data_processing = processing.BeatSketchProcessingManager(
                     processor, self._bpm, self._njs, self._model, self._dev_mode
                 )
             elif data.startswith("proc:overwrite-from:"):
@@ -86,7 +86,7 @@ class BeatSketchVRAppRunner(QThread):
                 time() - start_time,
                 "s\n",
             )
-        processed = processing.DataProcessing(
+        processed = processing.BeatSketchProcessingManager(
             processor, self._bpm, self._njs, self._model, self._dev_mode
         ).await_completion()
         self._map.add_blocks_to_beatmap_from_internal_type(

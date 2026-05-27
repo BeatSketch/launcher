@@ -1,6 +1,6 @@
 from typing import Iterable
 from ml.dtype import MODELS
-from util.ipc.decode import BeatSketchBlock, BeatSketchVRData
+from util.dtype import BeatSketchBlock, BeatSketchVRData
 import ml
 import multiprocessing as mp
 
@@ -44,8 +44,15 @@ class VRDataStorage:
         self.remove_blocks_by_idx(range(a, b))
 
 
-class DataProcessing:
-    def __init__(self, data: VRDataStorage, bpm: int, njs: float, model: MODELS, dev_mode: bool = False):
+class BeatSketchProcessingManager:
+    def __init__(
+        self,
+        data: VRDataStorage,
+        bpm: int,
+        njs: float,
+        model: MODELS,
+        dev_mode: bool = False,
+    ):
         self._queue = mp.Queue()
         self._proc = _ProcessingProcess(data, bpm, njs, model, self._queue, dev_mode)
         self._proc.start()

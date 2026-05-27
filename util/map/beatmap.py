@@ -1,4 +1,4 @@
-from util.ipc.decode import BeatSketchBlock
+from util.dtype import BeatSketchBlock
 from util.map.dtype.beatmap import (
     BeatMapColorNote,
     BeatMapData,

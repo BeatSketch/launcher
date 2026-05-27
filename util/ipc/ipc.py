@@ -8,7 +8,7 @@ class NoAliveSubprocessException(Exception):
     pass
 
 
-class BeatSketchInstance:
+class BeatSketchIPCManager:
     """Launch a BeatSketch VR instance with the current settings"""
 
     def __init__(

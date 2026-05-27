@@ -1,7 +1,7 @@
 from ml.dtype import HANDS, BeatSketchTrackingData
 from ml.preprocessing.values import BEAT_SPLIT, TRACKING_PER_UNIT
 from ml.preprocessing.locations import hit_locations
-from util.ipc.decode import BeatSketchVRData
+from util.dtype import BeatSketchVRData
 import math
 import numpy as np
 

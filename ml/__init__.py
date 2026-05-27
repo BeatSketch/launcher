@@ -4,7 +4,7 @@ from ml.models import (
 )
 from ml.postprocessing import postprocess as _postprocess
 from ml.preprocessing import preprocess as _preprocess
-from util.ipc.decode import BeatSketchBlock, BeatSketchVRData
+from util.dtype import BeatSketchBlock, BeatSketchVRData
 
 # Optional trailing slash
 MODELS_FOLDER = "./models"

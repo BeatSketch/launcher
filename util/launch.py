@@ -1,7 +1,7 @@
 from typing import Callable, TypedDict
 from gui.elements import dialog
 from util.map import BeatSaberMap
-from util.subprocess import start_vr_app
+from util.vr_manager import start_vr_app
 
 
 class BeatSketchSelectedFileList(TypedDict):

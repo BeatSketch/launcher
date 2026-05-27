@@ -1,4 +1,4 @@
-from util.ipc.decode import BeatSketchBlock
+from util.dtype import BeatSketchBlock
 from util.map.beatmap import BeatMap
 from util.map.dtype.beatmap import BeatMapColorNote, CutDirection, SaberHand
 from util.map.dtype.info import DifficultyLevels

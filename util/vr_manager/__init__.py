@@ -4,11 +4,11 @@ import platform
 
 from ml.dtype import MODELS
 from util.map import BeatSaberMap
-from util.subprocess.runner import BeatSketchVRAppRunner
-from util.subprocess.util import wayland_checks as _wayland_checks
+from util.vr_manager.monitoring import BeatSketchVRMonitoringThread
+from util.vr_manager.util import wayland_checks as _wayland_checks
 
 global proc
-proc: None | BeatSketchVRAppRunner = None
+proc: None | BeatSketchVRMonitoringThread = None
 
 
 def start_vr_app(
@@ -18,7 +18,7 @@ def start_vr_app(
     model: MODELS,
     debug: bool = False,
     dev_mode: bool = False,
-) -> tuple[bool, BeatSketchVRAppRunner | None]:
+) -> tuple[bool, BeatSketchVRMonitoringThread | None]:
     """Start the VR Application. Automatically manages the process.
     Any arguments passed should be of form key=value since this is the format
     the VR application uses, but this is not enforced
@@ -48,7 +48,7 @@ def start_vr_app(
         + colorama.Style.RESET_ALL
     )
 
-    proc = BeatSketchVRAppRunner(args, map, beatmap_name, model, debug, dev_mode)
+    proc = BeatSketchVRMonitoringThread(args, map, beatmap_name, model, debug, dev_mode)
     proc.start()
 
     return True, proc
