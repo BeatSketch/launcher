@@ -6,7 +6,7 @@ import numpy as np
 
 # https://scikit-learn.org/stable/model_persistence.html
 # https://onnxruntime.ai/docs/api/python/tutorial.html
-class SkLearnONNXModel(MlModelInterface):
+class ONNXModel(MlModelInterface):
     def __init__(self, model_path: str) -> None:
         with open(model_path, "rb") as f:
             model_data = f.read()

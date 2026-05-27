@@ -1,12 +1,12 @@
 from ml.dtype import DATASET, HANDS, BeatSketchPredictions, MODELS
 from ml.models.interface import MlModelInterface
-from ml.models.onnx.sklearn import SkLearnONNXModel
+from ml.models.onnx import ONNXModel
 from ml.models.testing import TestingModel
 
 # TODO: Add the correct models
 models: dict[MODELS, tuple[type[MlModelInterface], str]] = {
     "testing": (TestingModel, "TEST"),
-    "mlp": (SkLearnONNXModel, "mlp.onnx"),
+    "mlp": (ONNXModel, "mlp.onnx"),
 }
 
 
