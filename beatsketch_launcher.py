@@ -4,8 +4,11 @@ try:
     from sys import argv
     from gui import close_window, create_launcher_app
     import colorama
-except ModuleNotFoundError:
+except ModuleNotFoundError as e:
     print("--> ERROR: Required python modules are not installed.")
+    inp = input("Pring stack trace? (y/N) ")
+    if inp.lower() == "y":
+        print(e)
     print("Aborting.")
     exit(1)
 
