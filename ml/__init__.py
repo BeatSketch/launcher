@@ -6,6 +6,9 @@ from ml.postprocessing import postprocess as _postprocess
 from ml.preprocessing import preprocess as _preprocess
 from util.ipc.decode import BeatSketchBlock, BeatSketchVRData
 
+# Optional trailing slash
+MODELS_FOLDER = "./models"
+
 
 def process(
     data: list[BeatSketchVRData],
@@ -26,6 +29,6 @@ def process(
         A list of blocks that the model "thinks" best match the movement
     """
     preprocessed, orig = _preprocess(data, bpm, njs)
-    pred = _create_predictions(model, preprocessed)
+    pred = _create_predictions(model, preprocessed, MODELS_FOLDER)
     post = _postprocess(orig, pred)
     return post
