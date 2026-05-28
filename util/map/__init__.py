@@ -52,7 +52,6 @@ class BeatSaberMap:
         else:
             self._savable = True
             filetype = audio_file.split(".")[-1]
-            print(folder + "/song." + filetype)
             try:
                 shutil.copy(audio_file, folder + "/song." + filetype)
             except FileNotFoundError:
