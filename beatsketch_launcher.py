@@ -4,6 +4,7 @@ try:
     from sys import argv
     from gui import close_window, create_launcher_app
     import colorama
+    import multiprocessing as mp
 except ModuleNotFoundError as e:
     print("--> ERROR: Required python modules are not installed.")
     inp = input("Pring stack trace? (y/N) ")
@@ -13,6 +14,9 @@ except ModuleNotFoundError as e:
     exit(1)
 
 if __name__ == "__main__":
+    mp.freeze_support()
+    # The above needs to exist due to multiprocessing being frozen
+    # https://github.com/pyinstaller/pyinstaller/wiki/Recipe-Multiprocessing
     print(colorama.Fore.BLUE + colorama.Style.BRIGHT + """
  ___               _   ___   _           _         _
 (  _ \\            ( )_(  _ \\( )         ( )_      ( )

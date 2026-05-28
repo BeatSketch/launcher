@@ -62,8 +62,7 @@ class BeatSketchVRMonitoringThread(QThread):
             elif data == "proc:has-quit":
                 break
             elif data == "proc:do-processing":
-                if self._dev_mode:
-                    print("Starting processing")
+                print("Starting processing")
 
                 data_processing = processing.BeatSketchProcessingManager(
                     processor, self._bpm, self._njs, self._model, self._dev_mode
@@ -78,8 +77,7 @@ class BeatSketchVRMonitoringThread(QThread):
             if data_processing and data_processing.is_complete():
                 # TODO: Map stiching, for when processing done mid-map, or jumping back, or map has existing parts
                 data = data_processing.get_data()
-                if self._dev_mode:
-                    print("Processing complete, generated", len(data), "blocks")
+                print("Processing complete, generated", len(data), "blocks")
                 self._com.send_blocks(data)
                 data_processing = None
 

@@ -54,8 +54,11 @@ class BeatSketchProcessingManager:
         dev_mode: bool = False,
     ):
         self._queue = mp.Queue()
+        print("Hello World")
         self._proc = _ProcessingProcess(data, bpm, njs, model, self._queue, dev_mode)
+        print("Process created")
         self._proc.start()
+        print("Process started")
 
     def is_complete(self) -> bool:
         return not self._proc.is_alive()
@@ -87,6 +90,7 @@ class _ProcessingProcess(mp.Process):
         super().__init__()
 
     def run(self):
+        print("Process startup waiting")
         self._queue.put(
             ml.process(
                 self._data.get_data(), self._bpm, self._njs, self._model, self._dev_mode
