@@ -70,6 +70,9 @@ class BeatSketchVRMonitoringThread(QThread):
             elif data.startswith("proc:overwrite-from:"):
                 print("Overwriting song data")
                 # TODO: Implement this
+            elif data.startswith("proc:duration:"):
+                print(data[14:])
+                self._map.set_duration(float(data[14:]))
             elif self._debug:
                 print(data)
 

@@ -1,4 +1,5 @@
 from util.dtype import BeatSketchBlock
+from util.map import lightshow
 from util.map.beatmap import BeatMap
 from util.map.dtype.beatmap import BeatMapColorNote, CutDirection, SaberHand
 from util.map.dtype.info import DifficultyLevels
@@ -38,7 +39,6 @@ class BeatSaberMap:
             bpm: The BPM of the song
             duration: The duration of the song
         """
-        # TODO: Can theoretically get duration from the VR app
         self._out_dir = folder
         self._maps = {}
         self._bpm = bpm
@@ -52,6 +52,7 @@ class BeatSaberMap:
         else:
             self._savable = True
             filetype = audio_file.split(".")[-1]
+            print(folder + "/song." + filetype)
             try:
                 shutil.copy(audio_file, folder + "/song." + filetype)
             except FileNotFoundError:
@@ -93,6 +94,7 @@ class BeatSaberMap:
             print("SAVE FAILED. Dir name invalid")
             return
         self._info.save(self._out_dir)
+        lightshow.save_lightshow(self._out_dir + "/Lightshow.dat")
         for name in self._maps:
             self._maps[name].save(
                 self._out_dir + "/" + self._pathify_name(name) + ".dat"
@@ -216,6 +218,9 @@ class BeatSaberMap:
             maps.append((map, self.get_beatmap_difficulty(map)))
 
         return maps
+
+    def set_duration(self, duration: float):
+        return self._info.set_duration(duration)
 
     def get_bpm(self) -> float:
         return self._bpm

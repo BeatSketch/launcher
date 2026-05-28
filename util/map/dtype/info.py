@@ -45,7 +45,6 @@ class BeatMapAudioDetails(TypedDict):
     Attributes:
         songFilename: The file name for the audio file to use
         songDuration: The duration of the song
-        audioDataFilename: The file containing audio data
         bpm: The song bpm (default or most common, displayed in UI)
         lufs: Loudness of the song (defaults to 0 for no change)
         previewStartTime: The point in the song from which to start the preview
@@ -53,8 +52,7 @@ class BeatMapAudioDetails(TypedDict):
     """
 
     songFilename: str
-    songDuration: int
-    # audioDataFilename: str
+    songDuration: float
     bpm: float
     lufs: int
     previewStartTime: int

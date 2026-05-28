@@ -77,6 +77,12 @@ class BeatSaberInfoFile:
             }
         )
 
+    def set_duration(self, duration: float):
+        self._data["audio"]["songDuration"] = duration
+        self._data["audio"]["previewDuration"] = int(
+            duration - self._data["audio"]["previewStartTime"]
+        )
+
     def get_njs(self, beatmap_idx: int):
         return self._data["difficultyBeatmaps"][beatmap_idx]["noteJumpMovementSpeed"]
 
