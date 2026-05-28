@@ -108,7 +108,7 @@ class BeatSaberMap:
             difficulty: The difficulty the map is going to be (such as Expert+)
             njs: The note jump speed
         """
-        self._info.add_beatmap(name, difficulty, njs, mapper)
+        self._info.add_beatmap(self._pathify_name(name), difficulty, njs, mapper)
         self._maps[name] = BeatMap(self._bpm)
 
     def add_blocks_to_beatmap_from_real_type(

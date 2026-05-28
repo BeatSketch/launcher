@@ -54,7 +54,7 @@ class BeatMapAudioDetails(TypedDict):
 
     songFilename: str
     songDuration: int
-    audioDataFilename: str
+    # audioDataFilename: str
     bpm: float
     lufs: int
     previewStartTime: int

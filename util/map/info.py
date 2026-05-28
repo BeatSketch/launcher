@@ -32,7 +32,6 @@ class BeatSaberInfoFile:
             "song": {"title": name, "author": author, "subtitle": subtitle},
             "audio": {
                 "songFilename": audio_file,
-                "audioDataFilename": "BPMInfo.dat",
                 "bpm": bpm,
                 "lufs": 0,
                 "previewStartTime": 20,
