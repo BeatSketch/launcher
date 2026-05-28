@@ -62,6 +62,19 @@ def new_map(
         )
         return False
 
+    if files["save"] == "":
+        dialog.open_msg_dialog(
+            "No map output folder selected", title="Missing configuration"
+        )
+        return False
+
+    if not os.access(files["save"], os.R_OK):
+        dialog.open_msg_dialog(
+            "Map output folder does not exist",
+            title="Invalid configuration",
+        )
+        return False
+
     if (
         files["cover"] == ""
         or files["save"] == ""
