@@ -35,6 +35,9 @@ def open_new_map_dialog(
     container.addLayout(label.centered_label("Create new map", 20))
 
     # ── Configs ─────────────────────────────────────────────────────────
+    container.addWidget(
+        label.simple_label("NOTE: Only .ogg and .egg Vorbis Audio files are supported")
+    )
     file_pickers, get_files = files_inputs()
     container.addLayout(file_pickers)
 
