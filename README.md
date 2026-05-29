@@ -33,7 +33,10 @@ To make your life a bit easier when developing, you can pass in the following ar
 - [ ] Saber angle computation (seems to be quite a bit off)
 - [ ] New, better trained classifier
 - [ ] After processing, cache the generated map and only regenerate if data has changed on save
-- [ ] **Fix hand assignment (looks like currently for some systems they are swapped)**
+- [ ] Time offsets for rendering the blocks not correct (due to workaround for the out of bounds crash) -> Fix it properly
+- [X] **Fix hand assignment (looks like currently for some systems they are swapped)**
+- [ ] Heuristics to clean up the output of the classifiers
+- [ ] Settings for the heuristics (i.e. how aggressive and what kind to enable)
 - [X] Fix Windows launch
 - [ ] *Build signing for Windows*
 - [ ] For user guide: https://bsmg.wiki/mapping/basic-audio.html on how to edit the audio file
