@@ -7,7 +7,7 @@ import numpy as np
 
 
 def prepare(
-    data: list[BeatSketchVRData], bpm: float, njs: float
+    data: list[BeatSketchVRData], bpm: float, njs: float, dev_mode: bool = False
 ) -> BeatSketchTrackingData:
     """Convert the BeatSketchVRData into a more easily manageable format
     that is then further processed into other formats
@@ -49,9 +49,10 @@ def prepare(
             els: list[np.ndarray] = []
 
             if len(indices) < TRACKING_PER_UNIT:
-                print(
-                    f"WARNING: Data point filled in with {TRACKING_PER_UNIT - len(indices)} 0s"
-                )
+                if dev_mode:
+                    print(
+                        f"WARNING: Data point filled in with {TRACKING_PER_UNIT - len(indices)} 0s"
+                    )
                 for _ in range(TRACKING_PER_UNIT - len(indices)):
                     els.append(np.array([0, 0, 0, 0, 0, 0]))
 

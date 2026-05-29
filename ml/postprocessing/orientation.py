@@ -37,12 +37,16 @@ def determine_cut_direction(
     """
     count = len(data["tracking"])
     tracking = np.array(data["tracking"])[:, :3]
+    orientation = CutDirection.UP
+    vec = np.array([])
     if strat == "startend":
-        return get_orientation(compute_angle(tracking[-1] - tracking[0]))
+        vec = tracking[-1] - tracking[0]
+        orientation = get_orientation(compute_angle(vec))
     elif strat == "average":
         # Numpy magic
-        avgs: np.ndarray = (tracking[1:] - tracking[:-1]).sum(0) / (count - 1)
-        return get_orientation(compute_angle(avgs))
+        vec: np.ndarray = (tracking[1:] - tracking[:-1]).sum(0) / (count - 1)
+        orientation = get_orientation(compute_angle(vec))
+    return orientation
 
 
 def compute_angle(vec: np.ndarray) -> float:

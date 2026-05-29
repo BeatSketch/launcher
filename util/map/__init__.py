@@ -90,7 +90,7 @@ class BeatSaberMap:
 
     def save(self):
         """Save the map to the configured folder"""
-        if self._out_dir == "":
+        if self._out_dir == "" or not self._savable:
             print("SAVE FAILED. Dir name invalid")
             return
         self._info.save(self._out_dir)
@@ -229,7 +229,6 @@ class BeatSaberMap:
         return self._info.get_njs(self._get_idx_from_name(beatmap_name))
 
     def get_audio_file(self) -> str:
-        print(self._info.get_audio_file())
         return self._out_dir + "/" + self._info.get_audio_file()
 
 

@@ -26,10 +26,10 @@ To make your life a bit easier when developing, you can pass in the following ar
 - [X] **For training data, can use bsor and this parser: https://github.com/Schippi/py-bsor**
 - [ ] Load existing map and send blocks for selected difficulty to VR
 - [ ] *Walls* -> Can be handled purely deterministically likely
-- [ ] **Fix map import into BeatSaber**
-- [ ] **Verify map import into unmodded BeatSaber**
-- [ ] Switch to V2.0.0 map info file format? (see branch for it)
-- [ ] **Audio Data file (BPMInfo.dat typically)** (this should fix the map import error)
+- [X] **Fix map import into BeatSaber**
+- [X] **Verify map import into unmodded BeatSaber**
+- [X] Switch to V2.0.0 map info file format? (see branch for it)
+- [ ] ~**Audio Data file (BPMInfo.dat typically)** (this should fix the map import error)~ -> Not needed with map V2.0 format
 - [ ] Saber angle computation (seems to be quite a bit off)
 - [ ] New, better trained classifier
 - [ ] After processing, cache the generated map and only regenerate if data has changed on save

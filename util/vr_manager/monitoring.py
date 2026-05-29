@@ -62,9 +62,6 @@ class BeatSketchVRMonitoringThread(QThread):
             elif data == "proc:has-quit":
                 break
             elif data == "proc:do-processing":
-                if self._dev_mode:
-                    print("Starting processing")
-
                 data_processing = processing.BeatSketchProcessingManager(
                     processor, self._bpm, self._njs, self._model, self._dev_mode
                 )
@@ -72,7 +69,6 @@ class BeatSketchVRMonitoringThread(QThread):
                 print("Overwriting song data")
                 # TODO: Implement this
             elif data.startswith("proc:duration:"):
-                print(data[14:])
                 self._map.set_duration(float(data[14:]))
             elif self._debug:
                 print(data)
