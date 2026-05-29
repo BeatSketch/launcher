@@ -30,12 +30,13 @@ To make your life a bit easier when developing, you can pass in the following ar
 - [X] **Verify map import into unmodded BeatSaber**
 - [X] Switch to V2.0.0 map info file format? (see branch for it)
 - [ ] ~**Audio Data file (BPMInfo.dat typically)** (this should fix the map import error)~ -> Not needed with map V2.0 format
-- [ ] Saber angle computation (seems to be quite a bit off)
+- [X] Saber angle computation (seems to be quite a bit off)
 - [ ] New, better trained classifier
 - [ ] After processing, cache the generated map and only regenerate if data has changed on save
 - [ ] Time offsets for rendering the blocks not correct (due to workaround for the out of bounds crash) -> Fix it properly
+- [ ] *Saving the tracking data?*
 - [X] **Fix hand assignment (looks like currently for some systems they are swapped)**
-- [ ] Heuristics to clean up the output of the classifiers
+- [ ] Heuristics to clean up the output of the classifiers (and angle computations)
 - [ ] Settings for the heuristics (i.e. how aggressive and what kind to enable)
 - [X] Fix Windows launch
 - [ ] *Build signing for Windows*
