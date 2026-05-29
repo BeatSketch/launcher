@@ -1,4 +1,4 @@
-from util.map.dtype.info import DifficultyLevels, InfoFile
+from util.map.dtype.info import DifficultyLevels, DifficultyLevelsConversion, InfoFile
 import json
 
 
@@ -12,6 +12,7 @@ class BeatSaberInfoFile:
         author: str,
         bpm: float,
         song_duration: int,
+        mapper: str,
         audio_file: str = "song.ogg",
         cover_file: str = "cover.png",
     ) -> None:
@@ -27,20 +28,20 @@ class BeatSaberInfoFile:
             cover_file: The cover art file (optional, defaults to cover.png)
         """
         self._data = {
-            "version": "4.0.0",
-            "difficultyBeatmaps": [],
-            "song": {"title": name, "author": author, "subtitle": subtitle},
-            "audio": {
-                "songFilename": audio_file,
-                "bpm": bpm,
-                "lufs": 0,
-                "previewStartTime": 20,
-                "previewDuration": song_duration - 20,
-                "songDuration": song_duration,
-            },
-            "coverImageFilename": cover_file,
-            "environmentNames": ["DefaultEnvironment"],
-            "songPreviewFilename": audio_file,
+            "_version": "2.0.0",
+            "_difficultyBeatmapSets": [
+                {"_beatmapCharacteristicName": "Standard", "_difficultyBeatmaps": []}
+            ],
+            "_songName": name,
+            "_songAuthorName": author,
+            "_songSubName": subtitle,
+            "_levelAuthorName": "BeatSketch," + mapper,
+            "_coverImageFilename": cover_file,
+            "_beatsPerMinute": bpm,
+            "_environmentName": "DefaultEnvironment",
+            "_previewDuration": song_duration - 20,
+            "_previewStartTime": 20,
+            "_songFilename": audio_file,
         }
 
     def save(self, dir: str):
@@ -52,9 +53,7 @@ class BeatSaberInfoFile:
         with open(dir + "/Info.dat", "w") as file:
             file.write(json.dumps(self._data))
 
-    def add_beatmap(
-        self, name: str, difficulty: DifficultyLevels, njs: float, mapper: str
-    ):
+    def add_beatmap(self, name: str, difficulty: DifficultyLevels, njs: float):
         """Add a beatmap, i.e. difficulty
 
         Args:
@@ -63,17 +62,13 @@ class BeatSaberInfoFile:
             njs: The NoteJumpSpeed
             njs_offset: The NoteJumpSpeed Offset (typically 0)
         """
-        self._data["difficultyBeatmaps"].append(
+        self._data["_difficultyBeatmapSets"][0]["_difficultyBeatmaps"].append(
             {
-                "beatmapAuthors": {"mappers": ["BeatSketch", mapper], "lighters": []},
-                "beatmapDataFilename": name + ".dat",
-                "characteristic": "Standard",
-                "difficulty": difficulty,
-                "environmentNameIdx": 0,
-                "lightShowDataFilename": "Lightshow.dat",
-                "beatmapColorSchemeIdx": -1,
-                "noteJumpMovementSpeed": njs,
-                "noteJumpStartBeatOffset": 0,
+                "_beatmapFilename": name,
+                "_difficulty": difficulty,
+                "_difficultyRank": DifficultyLevelsConversion[difficulty],
+                "_noteJumpMovementSpeed": njs,
+                "_noteJumpStartBeatOffset": 0,
             }
         )
 
@@ -84,10 +79,14 @@ class BeatSaberInfoFile:
         )
 
     def get_njs(self, beatmap_idx: int):
-        return self._data["difficultyBeatmaps"][beatmap_idx]["noteJumpMovementSpeed"]
+        return self._data["_difficultyBeatmapSets"][0]["_difficultyBeatmaps"][
+            beatmap_idx
+        ]["_noteJumpMovementSpeed"]
 
     def get_difficulty(self, beatmap_idx: int) -> DifficultyLevels:
-        return self._data["difficultyBeatmaps"][beatmap_idx]["difficulty"]
+        return self._data["_difficultyBeatmapSets"][0]["_difficultyBeatmaps"][
+            beatmap_idx
+        ]["_difficulty"]
 
     def get_audio_file(self):
-        return self._data["audio"]["songFilename"]
+        return self._data["_songFilename"]

@@ -23,6 +23,7 @@ class BeatSaberMap:
         song_name: str,
         song_subtitle: str,
         song_artist: str,
+        mapper: str,
         bpm: float,
         duration: int,
     ):
@@ -46,7 +47,7 @@ class BeatSaberMap:
         # Copy over the audio file
         if folder == "":
             self._info = BeatSaberInfoFile(
-                song_name, song_subtitle, song_artist, bpm, duration, "song.ogg"
+                song_name, song_subtitle, song_artist, bpm, duration, mapper, "song.ogg"
             )
             self._savable = False
         else:
@@ -66,7 +67,7 @@ class BeatSaberMap:
                 print("Failed to copy cover. File not found")
 
             self._info = BeatSaberInfoFile(
-                song_name, song_subtitle, song_artist, bpm, duration, "song." + filetype
+                song_name, song_subtitle, song_artist, bpm, duration, mapper, "song." + filetype
             )
 
     def _pathify_name(self, name: str) -> str:
@@ -100,7 +101,7 @@ class BeatSaberMap:
             )
 
     def add_difficulty(
-        self, name: str, difficulty: DifficultyLevels, njs: float, mapper: str
+        self, name: str, difficulty: DifficultyLevels, njs: float
     ):
         """Add a new beatmap / difficulty to the map
 
@@ -109,7 +110,7 @@ class BeatSaberMap:
             difficulty: The difficulty the map is going to be (such as Expert+)
             njs: The note jump speed
         """
-        self._info.add_beatmap(self._pathify_name(name), difficulty, njs, mapper)
+        self._info.add_beatmap(self._pathify_name(name), difficulty, njs)
         self._maps[name] = BeatMap(self._bpm)
 
     def add_blocks_to_beatmap_from_real_type(
@@ -228,6 +229,7 @@ class BeatSaberMap:
         return self._info.get_njs(self._get_idx_from_name(beatmap_name))
 
     def get_audio_file(self) -> str:
+        print(self._info.get_audio_file())
         return self._out_dir + "/" + self._info.get_audio_file()
 
 

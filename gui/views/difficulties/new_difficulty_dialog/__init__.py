@@ -20,15 +20,12 @@ def open_new_difficulty_dialog(
     container.addLayout(label.centered_label("Add difficulty", 20))
 
     # Inputs
-    mapper, get_mapper = simple_input_widget()
     name, get_name = simple_input_widget()
     njs, get_njs = simple_input_widget()
     difficulty, get_difficulty = simple_dropdown(
         ["Easy", "Normal", "Hard", "Expert", "Expert+"]
     )
 
-    box.addWidget(label.simple_label("Mapper name"), 0, 0)
-    box.addWidget(mapper, 0, 1)
     box.addWidget(label.simple_label("Map name"), 1, 0)
     box.addWidget(name, 1, 1)
     box.addWidget(label.simple_label("Note Jump Speed"), 2, 0)
@@ -46,7 +43,6 @@ def open_new_difficulty_dialog(
         if map_manager.new_difficulty(
             get_name(),
             cast(DifficultyLevels, get_difficulty()),
-            get_mapper(),
             get_njs(),
             testing_mode,
         ):

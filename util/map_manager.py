@@ -13,6 +13,7 @@ def _default_map():
         "Test",
         "",
         "Janis Hutz",
+        "",
         150,
         150,
     )
@@ -33,6 +34,7 @@ def new_map(
     song_name: str,
     song_artist: str,
     bpm: str,
+    mapper: str,
     files: BeatSketchSelectedFileList,
     testing_mode: bool = False,
 ) -> bool:
@@ -87,19 +89,18 @@ def new_map(
 
     # TODO: Retrieve the duration somehow (optinally can set that after launch of VR)
     duration = 150
-    map = BeatSaberMap(files["save"], files["song"], files["cover"], song_name, "", song_artist, float(bpm), duration)
+    map = BeatSaberMap(files["save"], files["song"], files["cover"], song_name, "", song_artist, mapper, float(bpm), duration)
     return True
 
 
 def new_difficulty(
     beatmap_name: str,
     difficulty: DifficultyLevels,
-    mapper: str,
     njs: str,
     testing_mode: bool = False,
 ) -> bool:
     if testing_mode:
-        map.add_difficulty("test", "Easy", 10, "")
+        map.add_difficulty("test", "Easy", 10)
         return True
 
     if njs == "" or beatmap_name == "":
@@ -116,7 +117,7 @@ def new_difficulty(
         )
         return False
 
-    map.add_difficulty(beatmap_name, difficulty, float(njs), mapper)
+    map.add_difficulty(beatmap_name, difficulty, float(njs))
     return True
 
 
