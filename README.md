@@ -13,7 +13,7 @@ To make your life a bit easier when developing, you can pass in the following ar
 - `debug`: Prints any extra output of the VR application to stdout of the launcher (data that is past the init hook)
 
 ## TODOs
-- [ ] Windows and Mac launch (Mac should be similar to Linux that is already implemented)
+- [X] Windows and Mac launch (Mac should be similar to Linux that is already implemented)
 - [X] GUI using PyQT is probably the easiest
 - [X] Build for Windows probably using something like Pyinstaller (TBD)
 - [X] For Arch Linux I will provide a PKGBUILD, for RPM and DEB distros I will try to get a build done
@@ -25,9 +25,17 @@ To make your life a bit easier when developing, you can pass in the following ar
 - [ ] Overwriting data if continuing at older time
 - [X] **For training data, can use bsor and this parser: https://github.com/Schippi/py-bsor**
 - [ ] Load existing map and send blocks for selected difficulty to VR
-- [ ] Open existing map
 - [ ] *Walls* -> Can be handled purely deterministically likely
-- [ ] Fix Windows launch
+- [ ] **Fix map import into BeatSaber**
+- [ ] **Verify map import into unmodded BeatSaber**
+- [ ] Switch to V2.0.0 map info file format? (see branch for it)
+- [ ] **Audio Data file (BPMInfo.dat typically)** (this should fix the map import error)
+- [ ] Saber angle computation (seems to be quite a bit off)
+- [ ] New, better trained classifier
+- [ ] After processing, cache the generated map and only regenerate if data has changed on save
+- [ ] **Fix hand assignment (looks like currently for some systems they are swapped)**
+- [X] Fix Windows launch
+- [ ] *Build signing for Windows*
 - [ ] For user guide: https://bsmg.wiki/mapping/basic-audio.html on how to edit the audio file
 
 
