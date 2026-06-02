@@ -1,5 +1,6 @@
 from typing import Callable, TypedDict
 from gui.elements import dialog
+from util import config
 from util.map import BeatSaberMap
 from util.vr_manager import start_vr_app
 
@@ -31,12 +32,13 @@ def launch_wrapper(
     njs = map.get_njs(beatmap_name)
 
     # TODO: Load rotation offsets for sabers from config
+    conf = config.get_config()
     args = [
         f'song="{map.get_audio_file()}"',
         f"bpm={map.get_bpm()}",
-        f"rx={0}",
-        f"ry={0}",
-        f"rz={0}",
+        f"rx={conf['saber_angle']['x']}",
+        f"ry={conf['saber_angle']['x']}",
+        f"rz={conf['saber_angle']['x']}",
         f"njs={njs}",
     ]
     if testing_mode:

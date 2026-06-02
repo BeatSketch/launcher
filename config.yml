@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=config.schema.json
+
+saber_angle:
+  x: 20
+  y: 0
+  z: 0
+
+default_save_path: ~/BeatSketch/
+mirror: false
+folder_loc_for_picker: ~/Downloads/

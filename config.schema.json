@@ -19,7 +19,7 @@
                 "z": {
                     "type": "number",
                     "description": "The angle in degrees rotated around the z axis, clockwise",
-                    "default": 20
+                    "default": 0
                 }
             },
             "additionalProperties": false

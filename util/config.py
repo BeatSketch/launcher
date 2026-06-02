@@ -1,16 +1,16 @@
-from typing import TypedDict, cast
-import jsonschema
-import json
-import yaml
+from typing import TypedDict as _TypedDict, cast as _cast
+import jsonschema as _jsonschema
+import json as _json
+import yaml as _yaml
 
 
-class BeatSketchConfig(TypedDict):
+class BeatSketchConfig(_TypedDict):
     saber_angle: BeatSketchSaberAngleConfig
     default_save_path: str
     folder_loc_for_picker: str
 
 
-class BeatSketchSaberAngleConfig(TypedDict):
+class BeatSketchSaberAngleConfig(_TypedDict):
     x: int
     y: int
     z: int
@@ -18,7 +18,7 @@ class BeatSketchSaberAngleConfig(TypedDict):
 
 # Load schema
 with open("config.schema.json") as file:
-    schema = json.load(file)
+    _schema = _json.load(file)
     file.close()
 
 
@@ -32,7 +32,7 @@ def _load_config_file(file: str) -> dict:
         A dict containing the parsed yaml file
     """
     with open(file, "r") as f:
-        parsed = yaml.load(f, Loader=yaml.FullLoader)
+        parsed = _yaml.load(f, Loader=_yaml.FullLoader)
     return parsed
 
 
@@ -46,11 +46,11 @@ def _validate(config: dict | list) -> bool:
         True if the config passed schema validation, false otherwise
     """
     try:
-        jsonschema.validate(config, schema)
-    except jsonschema.SchemaError:
+        _jsonschema.validate(config, _schema)
+    except _jsonschema.SchemaError:
         print("Schema invalid")
         return False
-    except jsonschema.ValidationError:
+    except _jsonschema.ValidationError:
         print("Config invalid")
         return False
 
@@ -118,10 +118,21 @@ def load_and_validate_config(path: str) -> tuple[bool, BeatSketchConfig]:
 
         return combined
 
+    global _config
     if _validate(loaded_config):
-        return (
-            True,
-            cast(BeatSketchConfig, merge(cast(dict, _default_config()), loaded_config)),
+        conf = _cast(
+            BeatSketchConfig, merge(_cast(dict, _default_config()), loaded_config)
         )
+        _config = conf
+        return (True, conf)
     else:
+        _config = _default_config()
         return (False, _default_config())
+
+
+global _config
+_config = _default_config()
+
+
+def get_config() -> BeatSketchConfig:
+    return _config

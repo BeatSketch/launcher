@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
+from util import config
+
 try:
     from sys import argv
     from gui import close_window, create_launcher_app
+    from gui.elements import dialog
     import colorama
     import multiprocessing as mp
 except ModuleNotFoundError as e:
@@ -38,10 +41,17 @@ if __name__ == "__main__":
         elif arg == "dev":
             dev = True
 
-    app, window = create_launcher_app(testing_mode=testing, vr_debug=debug, dev_mode=dev)
+    app, window = create_launcher_app(
+        testing_mode=testing, vr_debug=debug, dev_mode=dev
+    )
     try:
         window.show()
         app.exec()
+        if not config.load_and_validate_config("./config.yml")[0]:
+            dialog.open_msg_dialog(
+                "Your configuration is invalid. A default config has been loaded",
+                title="Invalid configuration",
+            )
     except KeyboardInterrupt:
         close_window(app)
         exit(130)
