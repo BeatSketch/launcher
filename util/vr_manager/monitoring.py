@@ -4,6 +4,7 @@ from ml.dtype import MODELS
 from util.ipc import BeatSketchVRApplication
 from util.map import BeatSaberMap
 from util.vr_manager import processing
+from util.vr_manager.storage import VRDataStorage
 
 
 class BeatSketchVRMonitoringThread(QThread):
@@ -47,7 +48,7 @@ class BeatSketchVRMonitoringThread(QThread):
             return
 
         # Initialize processing utils
-        processor = processing.VRDataStorage()
+        storage = VRDataStorage()
         start_time = time()
         data_processing: processing.BeatSketchProcessingManager | None = None
         self.launch_success.emit(True)
@@ -58,12 +59,12 @@ class BeatSketchVRMonitoringThread(QThread):
 
             # Handle the data
             if isinstance(data, dict):
-                processor.add_data(self._com.parse_single_tracking_data_frame(data))
+                storage.add_data(self._com.parse_single_tracking_data_frame(data))
             elif data == "proc:has-quit":
                 break
             elif data == "proc:do-processing":
                 data_processing = processing.BeatSketchProcessingManager(
-                    processor, self._bpm, self._njs, self._model, self._dev_mode
+                    storage, self._bpm, self._njs, self._model, self._dev_mode
                 )
             elif data.startswith("proc:overwrite-from:"):
                 print("Overwriting song data")
@@ -79,23 +80,29 @@ class BeatSketchVRMonitoringThread(QThread):
                 data = data_processing.get_data()
                 if self._dev_mode:
                     print("Processing complete, generated", len(data), "blocks")
+                storage.add_blocks(data)
                 self._com.send_blocks(data)
                 data_processing = None
 
-        # After VR process exit, process the full map
         if self._debug:
             print(
                 "\n==> Recorded",
-                processor.get_data_point_count(),
+                storage.get_data_point_count(),
                 "data points in",
                 time() - start_time,
                 "s\n",
             )
-        processed = processing.BeatSketchProcessingManager(
-            processor, self._bpm, self._njs, self._model, self._dev_mode
-        ).await_completion()
+
+        # Only do processing if there is new data
+        if storage.get_is_modified():
+            processed = processing.BeatSketchProcessingManager(
+                storage, self._bpm, self._njs, self._model, self._dev_mode
+            ).await_completion()
+            storage.add_blocks(processed)
+
+        # Save the map
         self._map.add_blocks_to_beatmap_from_internal_type(
-            self._beatmap_name, processed
+            self._beatmap_name, storage.get_blocks()
         )
         self._map.save()
 
