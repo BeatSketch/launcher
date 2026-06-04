@@ -31,16 +31,20 @@ To make your life a bit easier when developing, you can pass in the following ar
 - [X] Switch to V2.0.0 map info file format? (see branch for it)
 - [ ] ~**Audio Data file (BPMInfo.dat typically)** (this should fix the map import error)~ -> Not needed with map V2.0 format
 - [X] Saber angle computation (seems to be quite a bit off)
+- [X] **Fix angle computations**
+- [ ] **Possibly an issue with reassigning time based on z values** -> We may need to handle it in postprocessing instead of preprocessing to move the blocks forward a bit
 - [ ] New, better trained classifier
 - [ ] After processing, cache the generated map and only regenerate if data has changed on save
 - [ ] Time offsets for rendering the blocks not correct (due to workaround for the out of bounds crash) -> Fix it properly
 - [ ] *Saving the tracking data?*
 - [X] **Fix hand assignment (looks like currently for some systems they are swapped)**
+- [X] Fix angle computations (scope them to the current field)
 - [ ] Heuristics to clean up the output of the classifiers (and angle computations)
 - [ ] Settings for the heuristics (i.e. how aggressive and what kind to enable)
 - [X] Fix Windows launch
 - [ ] *Build signing for Windows*
 - [ ] For user guide: https://bsmg.wiki/mapping/basic-audio.html on how to edit the audio file
+- [ ] May take code [here](https://kivalevan.me/BeatSaber-MapCheck/) for inspiration [repo](https://github.com/KivalEvan/BeatSaber-MapCheck/tree/main/src/ts/checks)
 
 
 ## Methodology

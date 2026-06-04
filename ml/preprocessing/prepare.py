@@ -20,7 +20,7 @@ def prepare(
     Returns:
         The converted tracking data.
     """
-    processed: BeatSketchTrackingData = {"left": [], "right": []}
+    processed: BeatSketchTrackingData = {"left": [], "right": [], "bpm": bpm}
     sec_per_unit = 60 / (bpm * BEAT_SPLIT)
 
     # Determine which time unit each data point belongs to

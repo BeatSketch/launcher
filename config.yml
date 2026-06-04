@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=config.schema.json
 
 saber_angle:
-  x: 20
+  x: -20
   y: 0
   z: 0
 

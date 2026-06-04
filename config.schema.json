@@ -9,7 +9,7 @@
                 "x": {
                     "type": "number",
                     "description": "The angle in degrees rotated around the x axis, clockwise",
-                    "default": 20
+                    "default": -20
                 },
                 "y": {
                     "type": "number",

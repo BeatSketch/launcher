@@ -64,7 +64,7 @@ def _default_config() -> BeatSketchConfig:
         The default configuration
     """
     return {
-        "saber_angle": {"x": 20, "y": 0, "z": 0},
+        "saber_angle": {"x": -20, "y": 0, "z": 0},
         "default_save_path": "~/",
         "folder_loc_for_picker": "~/Downloads/",
     }

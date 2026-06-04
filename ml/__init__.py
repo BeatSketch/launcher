@@ -32,5 +32,4 @@ def process(
     """
     preprocessed, orig = _preprocess(data, bpm, njs, dev_mode)
     pred = _create_predictions(model, preprocessed, MODELS_FOLDER_DEV if dev_mode else MODELS_FOLDER)
-    post = _postprocess(orig, pred)
-    return post
+    return _postprocess(orig, pred, dev_mode)

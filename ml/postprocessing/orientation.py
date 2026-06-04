@@ -2,6 +2,12 @@ from typing import Literal
 from ml.dtype import BeatSketchTrackingDataDetails
 import numpy as np
 
+from ml.preprocessing.values import (
+    GRID_FIELD_HEIGHT,
+    GRID_FIELD_WIDTH,
+    GRID_X_MIN_VAL,
+    GRID_Y_MIN_VAL,
+)
 from util.map.dtype.beatmap import CutDirection
 
 # TODO: Check what base vector produces correct results (likely will be e_y)
@@ -20,7 +26,9 @@ translation = [
 
 def determine_cut_direction(
     data: BeatSketchTrackingDataDetails,
-    strat: Literal["average"] | Literal["startend"] = "startend",
+    strat: (
+        Literal["average"] | Literal["startend"] | Literal["block-scoped"]
+    ) = "block-scoped",
 ) -> CutDirection:
     """Determine in which direction the cut happened.
     Combines the other two functions provided by this script
@@ -46,6 +54,36 @@ def determine_cut_direction(
         # Numpy magic
         vec: np.ndarray = (tracking[1:] - tracking[:-1]).sum(0) / (count - 1)
         orientation = get_orientation(compute_angle(vec))
+    elif strat == "block-scoped":
+        # Only use the tracking data that concerns this block directly
+        inside: list[int] = []
+        col = data["x"]
+        line = data["y"]
+        for idx, pos in enumerate(tracking):
+            if (
+                pos[0] <= GRID_X_MIN_VAL + (col + 1) * GRID_FIELD_WIDTH
+                and pos[0] > GRID_X_MIN_VAL + col * GRID_FIELD_WIDTH
+                and (
+                    pos[1] <= GRID_Y_MIN_VAL + (line + 1) * GRID_FIELD_HEIGHT
+                    and pos[1] > GRID_Y_MIN_VAL + line * GRID_FIELD_HEIGHT
+                )
+            ):
+                inside.append(idx)
+
+        if len(inside) > 1:
+            orientation = get_orientation(compute_angle(tracking[inside[-1]] - tracking[inside[0]]))
+        elif len(inside) == 1:
+            if inside[0] == 0:
+                orientation = get_orientation(compute_angle(tracking[1] - tracking[0]))
+            else:
+                orientation = get_orientation(
+                    compute_angle(tracking[inside[0]] - tracking[inside[0] - 1])
+                )
+        else:
+            # Fall back to startend method
+            vec = tracking[-1] - tracking[0]
+            orientation = get_orientation(compute_angle(vec))
+
     return orientation
 
 

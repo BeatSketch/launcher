@@ -64,7 +64,7 @@ class BeatSaberInfoFile:
         """
         self._data["_difficultyBeatmapSets"][0]["_difficultyBeatmaps"].append(
             {
-                "_beatmapFilename": name,
+                "_beatmapFilename": name + ".dat",
                 "_difficulty": difficulty,
                 "_difficultyRank": DifficultyLevelsConversion[difficulty],
                 "_noteJumpMovementSpeed": njs,
@@ -73,9 +73,7 @@ class BeatSaberInfoFile:
         )
 
     def set_duration(self, duration: float):
-        self._data["_previewDuration"] = int(
-            duration - self._data["_previewStartTime"]
-        )
+        self._data["_previewDuration"] = int(duration - self._data["_previewStartTime"])
 
     def get_njs(self, beatmap_idx: int):
         return self._data["_difficultyBeatmapSets"][0]["_difficultyBeatmaps"][

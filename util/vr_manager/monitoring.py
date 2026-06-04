@@ -78,6 +78,7 @@ class BeatSketchVRMonitoringThread(QThread):
             if data_processing and data_processing.is_complete():
                 # TODO: Map stiching, for when processing done mid-map, or jumping back, or map has existing parts
                 data = data_processing.get_data()
+                print("=> Map processed")
                 if self._dev_mode:
                     print("Processing complete, generated", len(data), "blocks")
                 storage.add_blocks(data)
@@ -105,6 +106,7 @@ class BeatSketchVRMonitoringThread(QThread):
             self._beatmap_name, storage.get_blocks()
         )
         self._map.save()
+        print("=> Map saved")
 
         if self._com.get_status_code() != 0:
             self.exit_code.emit(self._com.get_status_code())

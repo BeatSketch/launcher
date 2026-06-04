@@ -5,6 +5,7 @@ import numpy as np
 class BeatSketchTrackingData(TypedDict):
     left: list[BeatSketchTrackingDataDetails]
     right: list[BeatSketchTrackingDataDetails]
+    bpm: float
 
 
 class BeatSketchTrackingDataDetails(TypedDict):
