@@ -5,8 +5,8 @@ from gui.elements import button
 from gui.views.difficulties import add_difficulty_controls
 from gui.views.map import add_map_controls
 from gui.views.title import title
-from util import map_manager
-from util.launch import launch_wrapper
+from map_handler import map as map_manager
+from map_handler import launch_wrapper
 
 
 def home_view(

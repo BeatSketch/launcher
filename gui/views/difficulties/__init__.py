@@ -4,7 +4,7 @@ from gui.elements.dropdown import dropdown, update_dropdown
 from gui.views.difficulties.new_difficulty_dialog import open_new_difficulty_dialog
 import PyQt6.QtWidgets as qt
 
-from util import map_manager
+import map_handler.map as map_manager
 
 
 def add_difficulty_controls(callback: Callable[[], None], testing_mode: bool = False):

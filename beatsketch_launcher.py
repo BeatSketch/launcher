@@ -12,7 +12,7 @@ except ModuleNotFoundError as e:
     print("--> ERROR: Required python modules are not installed.")
     inp = input("Pring stack trace? (y/N) ")
     if inp.lower() == "y":
-        print(e)
+        raise e
     print("Aborting.")
     exit(1)
 

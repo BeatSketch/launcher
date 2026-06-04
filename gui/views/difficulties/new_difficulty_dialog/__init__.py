@@ -3,8 +3,8 @@ from typing import Callable, cast
 from gui.elements import button, label
 from gui.elements.dropdown import simple_dropdown
 from gui.elements.input import simple_input_widget
-from util import map_manager
-from util.map.dtype.info import DifficultyLevels
+from map_handler import map as map_manager
+from map_handler.map.dtype.info import DifficultyLevels
 
 
 def open_new_difficulty_dialog(

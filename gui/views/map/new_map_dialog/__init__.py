@@ -4,7 +4,7 @@ import PyQt6.QtWidgets as qt
 from gui.elements import button, label
 from gui.elements.input import simple_input_widget
 from gui.views.map.new_map_dialog.files import files_inputs
-from util import map_manager
+from map_handler import map as map_manager
 
 
 def open_new_map_dialog(
