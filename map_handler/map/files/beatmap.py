@@ -21,6 +21,11 @@ class BeatMap:
             "version": "3.0.0",
             "bpmEvents": [{"b": 0, "m": bpm}],
             "colorNotes": [],
+            "bombNotes": [],
+            "burstSliders": [],
+            "obstacles": [],
+            "rotationEvents": [],
+            "sliders": [],
         }
 
     def save(self, path: str):
@@ -45,7 +50,7 @@ class BeatMap:
             direction: The direction in which the block was cut
         """
         self._data["colorNotes"].append(
-            {"b": beat, "x": x, "y": y, "c": hand.value, "d": direction.value}
+            {"b": beat, "x": x, "y": y, "c": hand.value, "d": direction.value, "a": 0}
         )
 
     def add_block_from_real_type(self, block: BeatMapColorNote):
@@ -59,6 +64,7 @@ class BeatMap:
                 "y": block["y"],
                 "c": block["hand"].value,
                 "d": block["orientation"].value,
+                "a": 0,
             }
         )
 

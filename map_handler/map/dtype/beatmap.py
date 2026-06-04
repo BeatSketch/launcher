@@ -23,6 +23,11 @@ class BeatMapData(TypedDict):
     version: str
     bpmEvents: list[BeatMapBPMEvent]
     colorNotes: list[BeatMapColorNote]
+    bombNotes: list
+    obstacles: list
+    sliders: list
+    burstSliders: list
+    rotationEvents: list
 
 
 class BeatMapBPMEvent(TypedDict):
@@ -46,6 +51,7 @@ class BeatMapColorNote(TypedDict):
         y: The layer number (0 - 2)
         c: The hand used for the slice
         d: The cut direction
+        a: Angle offset
     """
 
     b: float
@@ -53,3 +59,4 @@ class BeatMapColorNote(TypedDict):
     y: int
     c: int
     d: int
+    a: int
