@@ -37,8 +37,8 @@ def launch_wrapper(
         f'song="{map.get_audio_file()}"',
         f"bpm={map.get_bpm()}",
         f"rx={conf['saber_angle']['x']}",
-        f"ry={conf['saber_angle']['x']}",
-        f"rz={conf['saber_angle']['x']}",
+        f"ry={conf['saber_angle']['y']}",
+        f"rz={conf['saber_angle']['z']}",
         f"njs={njs}",
     ]
     if testing_mode:
