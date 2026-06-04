@@ -26,6 +26,8 @@ class BeatMap:
             "obstacles": [],
             "rotationEvents": [],
             "sliders": [],
+            "basicBeatmapEvents": [],
+            "basicEventTypesWithKeywords": {}
         }
 
     def save(self, path: str):

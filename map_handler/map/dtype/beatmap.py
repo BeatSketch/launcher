@@ -28,6 +28,8 @@ class BeatMapData(TypedDict):
     sliders: list
     burstSliders: list
     rotationEvents: list
+    basicBeatmapEvents: list
+    basicEventTypesWithKeywords: dict
 
 
 class BeatMapBPMEvent(TypedDict):
