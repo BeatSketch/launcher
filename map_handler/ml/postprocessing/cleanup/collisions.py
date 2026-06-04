@@ -1,4 +1,7 @@
-from map_handler.ml.postprocessing.cleanup.dtype import BeatSketchCleanup, BeatSketchCleanupGroup
+from map_handler.ml.postprocessing.cleanup.dtype import (
+    BeatSketchCleanup,
+    BeatSketchCleanupGroup,
+)
 from map_handler.ml.preprocessing.values import (
     GRID_FIELD_HEIGHT,
     GRID_FIELD_WIDTH,
@@ -63,6 +66,7 @@ def solve(data: BeatSketchCleanup) -> BeatSketchCleanup:
     # Add blocks for the other hand too
     curr_idx = 0
     length = len(to_skip_idxs_right)
+    to_skip_idxs_right.sort()
     for idx, group in enumerate(data["right"]):
         if curr_idx < length and to_skip_idxs_right[curr_idx] == idx:
             curr_idx += 1
