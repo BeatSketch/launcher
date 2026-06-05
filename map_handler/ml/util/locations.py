@@ -10,7 +10,9 @@ import numpy as np
 
 def hit_locations(
     tracking: list[np.ndarray],
+    # prev: np.ndarray,
 ) -> list[tuple[int, int]]:
+    # TODO: Improve this to produce fewer locations, see main README
     locations: list[tuple[int, int]] = []
     """Determine possible locations where a block could be placed
 

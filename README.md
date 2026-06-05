@@ -58,3 +58,15 @@ To make your life a bit easier when developing, you can pass in the following ar
 ### Map data editing
 - Send old map data right after launch
 - Send tracking data at end
+
+### Cleanup
+#### Pre-Processing
+Only send location to classifier if it meets the following conditions:
+- Cut on this location would be considered valid by BeatSaber (-> need to take into account previous frame's tracking data)
+- Cut far enough inside the location (such that BeatSaber would accept)
+Then, check if there are blocks in a line perpendicular (ish) to cut direction, tie break the location using minimum distance to cut vector
+TODO: Think of what to do for block stacks? -> Probably some heuristics there to allow them to show up properly
+
+#### Post
+- Collision detection
+- Block counts / frequency -> Remove excessive blocks, but maintain flow
