@@ -5,10 +5,8 @@ from map_handler.ml.dtype import (
 from map_handler.ml.postprocessing.cleanup import (
     collisions as _collisions,
     converter as _converter,
-    impossible_hits as _impossible_hits,
 )
 from map_handler.dtype import BeatSketchBlock as _BeatSketchBlock
-from map_handler.ml.postprocessing.cleanup.config import enable_impossible_hit_cleanup
 
 
 def clean_up_classifier_output(
@@ -42,22 +40,7 @@ def clean_up_classifier_output(
         if dev_mode:
             raise e
 
-    # 2. impossible hits
-    if enable_impossible_hit_cleanup:
-        try:
-            data = _impossible_hits.solve(data)
-            if dev_mode:
-                print(
-                    "Number of data points after impossible hit cleanup",
-                    len(data["left"]) + len(data["right"]),
-                )
-        except Exception as e:
-            print("WARN: Impossible hit removal has failed")
-            if dev_mode:
-                raise e
-
-    # 3. hand mixups
-    # 4. Flow
+    # 2. Flow
     # The idea is to chain these into one another
     if dev_mode:
         print("Cleanup completed")

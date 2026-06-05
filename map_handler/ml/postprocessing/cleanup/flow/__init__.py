@@ -2,7 +2,7 @@ from map_handler.ml.dtype import HANDS
 from ml.postprocessing.cleanup.dtype import BeatSketchCleanup
 
 
-def solve_flow_issues(data: BeatSketchCleanup) -> BeatSketchCleanup:
+def solve(data: BeatSketchCleanup) -> BeatSketchCleanup:
     """May change the cut direction of a block, or mark it as any direction,
     if a specific pattern is recognized
 

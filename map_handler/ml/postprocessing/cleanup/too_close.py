@@ -1,10 +1,10 @@
 from map_handler.ml.dtype import HANDS
-from map_handler.ml.postprocessing.cleanup.dtype import BeatSketchCleanup
+from ml.postprocessing.cleanup.dtype import BeatSketchCleanup
 
 
-def solve_hand_mixups(data: BeatSketchCleanup) -> BeatSketchCleanup:
-    """May recolour blocks that are deemed to be assigned to the wrong hand.
-    This is caused by the precedences of the colours. Parts of this cannot be disabled
+def solve(data: BeatSketchCleanup) -> BeatSketchCleanup:
+    """May change the cut direction of a block, or mark it as any direction,
+    if a specific pattern is recognized
 
     Args:
         data: The cleanup data, as processed by the converter
