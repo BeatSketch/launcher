@@ -54,11 +54,11 @@ def prepare(
                         f"WARNING: Data point filled in with {TRACKING_PER_UNIT - len(indices)} 0s"
                     )
                 for _ in range(TRACKING_PER_UNIT - len(indices)):
-                    els.append(np.array([0, 0, 0, 0, 0, 0]))
+                    els.append(np.array([0, 0, 0, 0, 0, 0, -1]))
 
             for k in range(min(TRACKING_PER_UNIT, len(indices))):
                 loc = data[indices[math.floor(one_every_n_els * k)]][hand]
-                els.append(np.concatenate((loc["tip"], loc["direction"])))
+                els.append(np.concatenate((loc["tip"], loc["direction"], [loc["timestamp"]])))
 
             # Add the to be processed buckets
             hits = hit_locations(els)
