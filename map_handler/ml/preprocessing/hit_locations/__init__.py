@@ -1,10 +1,11 @@
 from typing import Literal
-
+from map_handler.ml.preprocessing.hit_locations import speed_pos
 from map_handler.ml.preprocessing.values import (
     GRID_FIELD_HEIGHT,
     GRID_FIELD_WIDTH,
     GRID_X_MIN_VAL,
     GRID_Y_MIN_VAL,
+    THRESHOLD,
 )
 import numpy as np
 
@@ -23,6 +24,11 @@ def hit_locations(
         A list of coordinates on the grid that were touched by the tip
     """
     # TODO: Check if total speed is lower than threshold
+    # or possibly use the total distance instead
+    data = np.array(tracking)
+    if speed_pos.from_tracking_array(data) < THRESHOLD:
+        return []
+
     for pos in tracking:
         hand = pos[:3]
         # TODO: Check if speed is too slow for block slice to be recognized

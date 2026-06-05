@@ -3,8 +3,9 @@ GRID_FIELD_WIDTH = 0.666
 GRID_FIELD_HEIGHT = 0.666
 GRID_Y_MIN_VAL = 0
 GRID_X_MIN_VAL = -1.333
-# In percent of the saber length, how much of it is considered the tip
-THRESHOLD = 0.3
+
+# 
+THRESHOLD = 20
 
 # Into how many parts to split each beat (should be power of 2 and no more than 8)
 # I do also think we should make this configurable for the user? (or provide 2 settings?)
