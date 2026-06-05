@@ -25,7 +25,6 @@ def launch_wrapper(
 
     njs = map.get_njs(beatmap_name)
 
-    # TODO: Load rotation offsets for sabers from config
     conf = config.get_config()
     args = [
         f'song="{map.get_audio_file()}"',
@@ -42,7 +41,12 @@ def launch_wrapper(
 
     # TODO: Handle existing maps
     def launch_status_handler(status: int):
-        if status != 0:
+        if status == 254:
+            dialog.open_msg_dialog(
+                "VR App is already running",
+                title="VR Application already running",
+            )
+        elif status != 0:
             dialog.open_msg_dialog(
                 "The VR Application has failed to launch. Exit code: " + str(status),
                 title="Launching VR Application failed",

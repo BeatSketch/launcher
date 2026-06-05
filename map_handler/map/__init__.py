@@ -77,19 +77,38 @@ def new_map(
         )
         return False
 
-    if (
-        files["cover"] == ""
-        or files["save"] == ""
-        or song_name == ""
-        or song_artist == ""
-    ):
-        # TODO: Err msg, same checks also for other params
-        # TODO: More elaborate checks
-        print("Missing config, non-critical for now")
+    if song_name == "" or song_artist == "":
+        dialog.open_msg_dialog(
+            "Missing song name and/or artist",
+            title="Invalid configuration",
+        )
+        return False
 
-    # TODO: Retrieve the duration somehow (optinally can set that after launch of VR)
-    duration = 150
-    map = BeatSaberMap(files["save"], files["song"], files["cover"], song_name, "", song_artist, mapper, float(bpm), duration)
+    if mapper == "":
+        dialog.open_msg_dialog(
+            "No mapper name set",
+            title="Invalid configuration",
+        )
+        return False
+
+    if files["cover"] == "":
+        dialog.open_msg_dialog(
+            "No song cover provided. The map can still be created without one",
+            title="Incomplete configuration",
+        )
+
+    duration = 120
+    map = BeatSaberMap(
+        files["save"],
+        files["song"],
+        files["cover"],
+        song_name,
+        "",
+        song_artist,
+        mapper,
+        float(bpm),
+        duration,
+    )
     return True
 
 

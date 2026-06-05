@@ -10,6 +10,7 @@ try:
     import multiprocessing as mp
 except ModuleNotFoundError as e:
     print("--> ERROR: Required python modules are not installed.")
+    print(e)
     inp = input("Pring stack trace? (y/N) ")
     if inp.lower() == "y":
         raise e
