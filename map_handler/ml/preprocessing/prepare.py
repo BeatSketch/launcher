@@ -1,6 +1,6 @@
 from map_handler.ml.dtype import HANDS, BeatSketchTrackingData
 from map_handler.ml.preprocessing.values import BEAT_SPLIT, TRACKING_PER_UNIT
-from map_handler.ml.util.locations import hit_locations
+from map_handler.ml.preprocessing.hit_locations import hit_locations
 from map_handler.dtype import BeatSketchVRData
 import math
 import numpy as np
