@@ -5,7 +5,8 @@ from map_handler.ml.preprocessing.values import (
     GRID_FIELD_WIDTH,
     GRID_X_MIN_VAL,
     GRID_Y_MIN_VAL,
-    THRESHOLD,
+    SPD_THRESHOLD,
+    TRACKING_PER_UNIT,
 )
 import numpy as np
 
@@ -15,7 +16,8 @@ def hit_locations(
     # prev: np.ndarray,
 ) -> list[tuple[int, int]]:
     locations: list[tuple[int, int]] = []
-    """Determine possible locations where a block could be placed
+    """Determine possible locations where a block could be placed.
+    Already includes filtering such that impossible hits can't even be generated
 
     Args:
         tracking: The tracking data to process
@@ -23,35 +25,32 @@ def hit_locations(
     Returns:
         A list of coordinates on the grid that were touched by the tip
     """
-    # TODO: Check if total speed is lower than threshold
-    # or possibly use the total distance instead
+    # Check if total speed is lower than threshold
+    # TODO: possibly use the total distance instead?
     data = np.array(tracking)
-    if speed_pos.from_tracking_array(data) < THRESHOLD:
+    if speed_pos.overall(data) < SPD_THRESHOLD * (TRACKING_PER_UNIT - 1):
         return []
 
-    for pos in tracking:
-        hand = pos[:3]
-        # TODO: Check if speed is too slow for block slice to be recognized
-        for line in range(3):
-            for col in range(4):
-                # TODO: Improve this check to make sure the cut is not just barely hitting the location
-                if (
-                    hand[0] <= GRID_X_MIN_VAL + (col + 1) * GRID_FIELD_WIDTH
-                    and hand[0] > GRID_X_MIN_VAL + col * GRID_FIELD_WIDTH
-                    and (
-                        (
-                            hand[1] <= GRID_Y_MIN_VAL + (line + 1) * GRID_FIELD_HEIGHT
-                            and hand[1] > GRID_Y_MIN_VAL + line * GRID_FIELD_HEIGHT
-                        )
-                    )
-                ):
-                    try:
-                        locations.index((col, line))
-                    except Exception:
-                        locations.append((col, line))
+    # Check if speed is too slow for block slice to be recognized
+    vecs = speed_pos.direction_vectors(data)
+    spd_ok = speed_pos.speed_from_dir_vecs(vecs) > SPD_THRESHOLD
+    x = np.astype((data[:, 0] / GRID_FIELD_WIDTH).round() - GRID_X_MIN_VAL, np.int32)[
+        spd_ok
+    ]
+    y = np.astype((data[:, 1] / GRID_FIELD_HEIGHT).round() - GRID_Y_MIN_VAL, np.int32)[
+        spd_ok
+    ]
+    # FIXME: need to clamp it to 0-3 and 0-2 respectively
 
     # TODO: Check that there are no neighbouring blocks parallel to cut direction
     # These would not be valid anyway, so we don't send them to the classifier
     # and would need to be cleaned up afterwards anyway
+    for idx, coord in enumerate(x):
+        locations.append((coord, y[idx]))
+
+    # Iterate over tracking tracking vectors, compute the normals, determine the neighbouring blocks
+    # then check if locations include the location, if so, apply tie-breaker (distance to the point)
+    for vec in vecs:
+        pass
 
     return locations
