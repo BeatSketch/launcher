@@ -1,5 +1,5 @@
 from typing import Literal
-from map_handler.ml.preprocessing.hit_locations import speed_pos
+from map_handler.ml.preprocessing.hit_locations import speed_pos, tiebreaker
 from map_handler.ml.preprocessing.values import (
     GRID_FIELD_HEIGHT,
     GRID_FIELD_WIDTH,
@@ -9,6 +9,8 @@ from map_handler.ml.preprocessing.values import (
     TRACKING_PER_UNIT,
 )
 import numpy as np
+
+from map_handler.ml.util import orientation
 
 
 def hit_locations(
@@ -43,31 +45,30 @@ def hit_locations(
         spd_ok
     ]
     # Clamp it to 0-3 and 0-2 respectively
-    x_filtered = x[x >= 0 and x < 4]
-    y_filtered = y[y >= 0 and y < 3]
+    clamp = np.unique(np.concatenate((x >= 0 and x < 4, y >= 0 and y < 3)))
+    x_filtered = x[clamp]
+    y_filtered = y[clamp]
+    data_filtered = (data[spd_ok])[clamp]
 
     # Check that there are no neighbouring blocks parallel to cut direction
     # These would not be valid anyway, so we don't send them to the classifier
     # and would need to be cleaned up afterwards anyway
-    for idx, coord in enumerate(x_filtered):
-        locations.append((coord, y_filtered[idx]))
+    marked: list[list[bool]] = [[False] * 4] * 3
+    for idx, x_coord in enumerate(x_filtered):
+        if idx == 0:
+            o = orientation.get_simple_direction(orientation.compute_angle(vecs[0]))
+        else:
+            o = orientation.get_simple_direction(
+                orientation.compute_angle(vecs[idx - 1])
+            )
+        tiebreaker.execute(data_filtered[idx], marked, x_coord, y_filtered[idx], o)
 
-    # TODO:
-    # Iterate over tracking tracking vectors, compute the normals, determine the neighbouring blocks
-    # then check if locations include the location, if so, apply tie-breaker (distance to the point)
-    normals = speed_pos.compute_normals(vecs)
-    for normal in normals:
-        # Check in both directions
-        # For each direction, do
-        #   Compute all touched fields for it
-        #
-        pass
+    # Convert marks into list
+    for y_coord, layers in enumerate(marked):
+        for x_coord, is_set in enumerate(layers):
+            if is_set:
+                locations.append((y_coord, x_coord))
 
-    # TODO:
-    # Alternative:
-    # Compute direction, then compute locations in both directions perpendicular to it (2 or 3 locations)
-    # Then, if a block is in more than one of them, compute distance to the vector and only retain closest location
-
-    # TODO: What to do with diagonal cuts? (They can be tricky)
+    # TODO: Remove duplicates (using np.unique possibly)
 
     return locations

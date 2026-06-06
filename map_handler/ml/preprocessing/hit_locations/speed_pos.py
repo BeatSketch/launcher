@@ -19,7 +19,9 @@ def time_deltas(tracking: np.ndarray):
 
 
 def speed_from_dir_vecs(vectors: np.ndarray, time_delta: np.ndarray):
-    return np.linalg.vector_norm(vectors) / time_delta
+    # TODO: Extrapolate first point
+    spd = np.linalg.vector_norm(vectors) / time_delta
+    return np.concatenate(([0], spd))
 
 
 def between_points(tracking: np.ndarray):

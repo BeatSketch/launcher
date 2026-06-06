@@ -2,13 +2,9 @@ from map_handler.ml.postprocessing.cleanup.dtype import (
     BeatSketchCleanup,
     BeatSketchCleanupGroup,
 )
-from map_handler.ml.preprocessing.values import (
-    GRID_FIELD_HEIGHT,
-    GRID_FIELD_WIDTH,
-    GRID_X_MIN_VAL,
-    GRID_Y_MIN_VAL,
-)
 import numpy as np
+
+from map_handler.ml.util import center_distance
 
 
 def solve(data: BeatSketchCleanup) -> BeatSketchCleanup:
@@ -88,7 +84,7 @@ def _resolve(data: list[BeatSketchCleanupGroup]):
     min_dist = 10000000
     min_dist_idx = 0
     for idx, group in enumerate(data):
-        dist = _center_dist(
+        dist = center_distance.compute(
             np.array(group["tracking"]), group["block"]["x"], group["block"]["y"]
         )
         if dist < min_dist:
@@ -96,25 +92,3 @@ def _resolve(data: list[BeatSketchCleanupGroup]):
             min_dist_idx = idx
 
     return min_dist_idx
-
-
-def _center_dist(tracking: np.ndarray, x: int, y: int):
-    """Compute the minimum distance to centre for the tracking data
-
-    Args:
-        tracking: Numpy array containing the tracking data
-        x: The x coordinate of the block
-        y: The y coordinate of the block
-
-    Returns:
-        The distance from centre
-    """
-    squares_x = (
-        tracking[:, 0]
-        - (GRID_X_MIN_VAL + x * GRID_FIELD_WIDTH + 0.5 * GRID_FIELD_WIDTH)
-    ) ** 2
-    squares_y = (
-        tracking[:, 1]
-        - (GRID_Y_MIN_VAL + y * GRID_FIELD_HEIGHT + 0.5 * GRID_FIELD_HEIGHT)
-    ) ** 2
-    return np.sqrt(squares_x.min() + squares_y.min())
