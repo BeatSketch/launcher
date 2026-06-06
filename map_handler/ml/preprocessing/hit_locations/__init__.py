@@ -33,7 +33,9 @@ def hit_locations(
 
     # Check if speed is too slow for block slice to be recognized
     vecs = speed_pos.direction_vectors(data)
-    spd_ok = speed_pos.speed_from_dir_vecs(vecs) > SPD_THRESHOLD
+    spd_ok = (
+        speed_pos.speed_from_dir_vecs(vecs, speed_pos.time_deltas(data)) > SPD_THRESHOLD
+    )
     x = np.astype((data[:, 0] / GRID_FIELD_WIDTH).round() - GRID_X_MIN_VAL, np.int32)[
         spd_ok
     ]
@@ -53,7 +55,19 @@ def hit_locations(
     # TODO:
     # Iterate over tracking tracking vectors, compute the normals, determine the neighbouring blocks
     # then check if locations include the location, if so, apply tie-breaker (distance to the point)
-    for vec in vecs:
+    normals = speed_pos.compute_normals(vecs)
+    for normal in normals:
+        # Check in both directions
+        # For each direction, do
+        #   Compute all touched fields for it
+        #
         pass
+
+    # TODO:
+    # Alternative:
+    # Compute direction, then compute locations in both directions perpendicular to it (2 or 3 locations)
+    # Then, if a block is in more than one of them, compute distance to the vector and only retain closest location
+
+    # TODO: What to do with diagonal cuts? (They can be tricky)
 
     return locations

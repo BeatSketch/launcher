@@ -71,7 +71,9 @@ def determine_cut_direction(
                 inside.append(idx)
 
         if len(inside) > 1:
-            orientation = get_orientation(compute_angle(tracking[inside[-1]] - tracking[inside[0]]))
+            orientation = get_orientation(
+                compute_angle(tracking[inside[-1]] - tracking[inside[0]])
+            )
         elif len(inside) == 1:
             if inside[0] == 0:
                 orientation = get_orientation(compute_angle(tracking[1] - tracking[0]))
@@ -85,6 +87,10 @@ def determine_cut_direction(
             orientation = get_orientation(compute_angle(vec))
 
     return orientation
+
+
+def get_simple_direction(angle: float) -> int:
+    return int(((angle + 22.5) % 360) // 45)
 
 
 def compute_angle(vec: np.ndarray) -> float:
