@@ -1,10 +1,17 @@
 import numpy as np
 
+from map_handler.ml.preprocessing.values import BEAT_SPLIT
+
 base_vec = np.array([0, 0, 1])
 
 
 def overall(tracking: np.ndarray):
-    return between_points(tracking).sum()
+    time_delta = (
+        tracking[-1][6] - tracking[0][6]
+        if tracking.shape[0] > 1
+        else 1 / 120 * BEAT_SPLIT
+    )
+    return between_points(tracking).sum() / time_delta
 
 
 def speed_from_dir_vecs(vectors: np.ndarray):

@@ -40,14 +40,17 @@ def hit_locations(
     y = np.astype((data[:, 1] / GRID_FIELD_HEIGHT).round() - GRID_Y_MIN_VAL, np.int32)[
         spd_ok
     ]
-    # FIXME: need to clamp it to 0-3 and 0-2 respectively
+    # Clamp it to 0-3 and 0-2 respectively
+    x_filtered = x[x >= 0 and x < 4]
+    y_filtered = y[y >= 0 and y < 3]
 
-    # TODO: Check that there are no neighbouring blocks parallel to cut direction
+    # Check that there are no neighbouring blocks parallel to cut direction
     # These would not be valid anyway, so we don't send them to the classifier
     # and would need to be cleaned up afterwards anyway
-    for idx, coord in enumerate(x):
-        locations.append((coord, y[idx]))
+    for idx, coord in enumerate(x_filtered):
+        locations.append((coord, y_filtered[idx]))
 
+    # TODO:
     # Iterate over tracking tracking vectors, compute the normals, determine the neighbouring blocks
     # then check if locations include the location, if so, apply tie-breaker (distance to the point)
     for vec in vecs:
