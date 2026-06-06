@@ -1,17 +1,10 @@
 import numpy as np
 
-from map_handler.ml.preprocessing.values import BEAT_SPLIT
-
 base_vecs = np.array([[0.0, 0.0, 1.0] * 10])
 
 
 def overall(tracking: np.ndarray):
-    time_delta = (
-        tracking[-1][6] - tracking[0][6]
-        if tracking.shape[0] > 1
-        else 1 / 120 * BEAT_SPLIT
-    )
-    return between_points(tracking).sum() / time_delta
+    return speed_from_dir_vecs(direction_vectors(tracking), time_deltas(tracking)).sum()
 
 
 def time_deltas(tracking: np.ndarray):
@@ -20,12 +13,8 @@ def time_deltas(tracking: np.ndarray):
 
 def speed_from_dir_vecs(vectors: np.ndarray, time_delta: np.ndarray):
     # TODO: Extrapolate first point
-    spd = np.linalg.vector_norm(vectors) / time_delta
-    return np.concatenate(([0], spd))
-
-
-def between_points(tracking: np.ndarray):
-    return np.linalg.vector_norm(tracking[1:, :2] - tracking[:-1, :2])
+    spd = np.abs(np.linalg.vector_norm(vectors) / time_delta)
+    return np.concatenate(([1], spd))
 
 
 def direction_vectors(tracking: np.ndarray):

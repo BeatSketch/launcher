@@ -103,7 +103,10 @@ def compute_angle(vec: np.ndarray) -> float:
         The cut angle
     """
     # Do cheapo projection (just setting the z axis to 0) to compute the cut angle
-    vec[2] = 0
+    if vec.size == 2:
+        vec = np.append(vec, 0)
+    else:
+        vec[2] = 0
 
     # Prevent zero division error
     norm = np.linalg.norm(vec)

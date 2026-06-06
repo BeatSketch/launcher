@@ -6,7 +6,7 @@ GRID_X_MIN_VAL = -1.333
 
 # 
 MOVE_THRESHOLD = 0.1
-SPD_THRESHOLD = 0.2
+SPD_THRESHOLD = 5
 
 # Into how many parts to split each beat (should be power of 2 and no more than 8)
 # I do also think we should make this configurable for the user? (or provide 2 settings?)
