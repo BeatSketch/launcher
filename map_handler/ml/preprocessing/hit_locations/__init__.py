@@ -15,7 +15,6 @@ from map_handler.ml.util import orientation
 
 def hit_locations(
     tracking: list[np.ndarray[tuple[Literal[7]], np.dtype[np.float64]]],
-    # prev: np.ndarray,
 ) -> list[tuple[int, int]]:
     locations: list[tuple[int, int]] = []
     """Determine possible locations where a block could be placed.
@@ -29,7 +28,7 @@ def hit_locations(
     """
     # Check if total speed is lower than threshold
     # TODO: possibly use the total distance instead?
-    data = np.array(tracking)
+    data = np.array([_extrapolate(tracking)] + tracking)
     if speed_pos.overall(data) < SPD_THRESHOLD * TRACKING_PER_UNIT * 0.5:
         return []
 
@@ -37,10 +36,10 @@ def hit_locations(
     vecs = speed_pos.direction_vectors(data)
     speeds = speed_pos.speed_from_dir_vecs(vecs, speed_pos.time_deltas(data))
     spd_ok = speeds > SPD_THRESHOLD
-    x = np.astype((data[:, 0] / GRID_FIELD_WIDTH).round() - GRID_X_MIN_VAL, np.int32)[
+    x = np.astype((data[1:, 0] / GRID_FIELD_WIDTH).round() - GRID_X_MIN_VAL, np.int32)[
         spd_ok
     ]
-    y = np.astype((data[:, 1] / GRID_FIELD_HEIGHT).round() - GRID_Y_MIN_VAL, np.int32)[
+    y = np.astype((data[1:, 1] / GRID_FIELD_HEIGHT).round() - GRID_Y_MIN_VAL, np.int32)[
         spd_ok
     ]
 
@@ -50,7 +49,7 @@ def hit_locations(
     clamp = (x >= 0) & (x < 4) & (y >= 0) & (y < 3)
     x_filtered = x[clamp]
     y_filtered = y[clamp]
-    data_filtered = (data[spd_ok])[clamp]
+    data_filtered = (data[1:][spd_ok])[clamp]
 
     # Check that there are no neighbouring blocks parallel to cut direction
     # These would not be valid anyway, so we don't send them to the classifier
@@ -72,6 +71,9 @@ def hit_locations(
             if is_set:
                 locations.append((y_coord, x_coord))
 
-    # TODO: Remove duplicates
-
     return locations
+
+
+def _extrapolate(tracking: list[np.ndarray]):
+    vec = tracking[0] - tracking[1]
+    return tracking[0] - vec

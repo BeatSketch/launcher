@@ -18,7 +18,7 @@ def execute(point: np.ndarray, marked: list[list[bool]], x: int, y: int, o: int)
 
     # Treat horizontals and verticals (up to 3 locations)
     if o == 0 or o == 4:
-        # Horizontals
+        # Vertical cuts -> Horizontal checks
         if x < 3 and marked[y][x + 1]:
             _resolve(x + 1, y, "x")
         elif x > 0 and marked[y][x - 1]:
@@ -26,7 +26,7 @@ def execute(point: np.ndarray, marked: list[list[bool]], x: int, y: int, o: int)
         else:
             marked[y][x] = True
     elif o == 2 or o == 6:
-        # Verticals
+        # Horizontal cuts -> Vertical checks
         if y < 2 and marked[y + 1][x]:
             _resolve(x, y + 1, "y")
         elif y > 0 and marked[y - 1][x]:
