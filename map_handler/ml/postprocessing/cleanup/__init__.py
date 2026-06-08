@@ -7,7 +7,10 @@ from map_handler.ml.postprocessing.cleanup import (
     converter as _converter,
 )
 from map_handler.dtype import BeatSketchBlock as _BeatSketchBlock
-from map_handler.ml.config import enable_collision_resolution
+from map_handler.ml.config import (
+    enable_collision_resolution,
+    enable_too_close_resolution,
+)
 
 
 def clean_up_classifier_output(
@@ -42,11 +45,17 @@ def clean_up_classifier_output(
             if dev_mode:
                 raise e
 
-    # 2. Flow
+    # 2. Too close
+    if enable_too_close_resolution:
+        try:
+            data = _collisions.solve(data)
+        except Exception as e:
+            print("WARN: Collision removal has failed")
+            if dev_mode:
+                raise e
+    # 3. Flow
     # The idea is to chain these into one another
     if dev_mode:
         print("Cleanup completed")
 
-    converted = _converter.to_blocks(data)
-    return converted
-    # return _converter.to_blocks(data)
+    return _converter.to_blocks(data)
