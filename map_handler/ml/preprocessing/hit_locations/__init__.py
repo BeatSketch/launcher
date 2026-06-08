@@ -67,10 +67,10 @@ def hit_locations(
         tiebreaker.execute(data_filtered[idx], marked, x_coord, y_filtered[idx], o)
 
     # Convert marks into list
-    for y_coord, layers in enumerate(marked):
-        for x_coord, is_set in enumerate(layers):
+    for y_coord, layer in enumerate(marked):
+        for x_coord, is_set in enumerate(layer):
             if is_set:
-                locations.append((y_coord, x_coord))
+                locations.append((x_coord, y_coord))
 
     return locations
 
