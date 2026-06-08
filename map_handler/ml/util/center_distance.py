@@ -40,6 +40,6 @@ def compute(
     if mode == "both":
         return np.sqrt(squares_x.min() ** 2 + squares_y.min() ** 2)
     elif mode == "x":
-        return squares_x.min()
+        return np.abs(squares_x).min()
     elif mode == "y":
-        return squares_y.min()
+        return np.abs(squares_y).min()

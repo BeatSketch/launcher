@@ -11,7 +11,8 @@ from map_handler.ml.preprocessing.values import (
 import numpy as np
 
 from map_handler.ml.util import orientation
-
+x_offset = GRID_X_MIN_VAL + 0.5 * GRID_FIELD_WIDTH
+y_offset = GRID_Y_MIN_VAL + 0.5 * GRID_FIELD_HEIGHT
 
 def hit_locations(
     tracking: list[np.ndarray[tuple[Literal[7]], np.dtype[np.float64]]],
@@ -36,10 +37,10 @@ def hit_locations(
     speeds = speed_pos.speed_from_dir_vecs(vecs, speed_pos.time_deltas(data))
     spd_ok = speeds > SPD_THRESHOLD
     x = np.astype(
-        ((data[1:, 0] - GRID_X_MIN_VAL) / GRID_FIELD_WIDTH).round(), np.int32
+        ((data[1:, 0] - x_offset) / GRID_FIELD_WIDTH).round(), np.int32
     )[spd_ok]
     y = np.astype(
-        ((data[1:, 1] - GRID_Y_MIN_VAL) / GRID_FIELD_HEIGHT).round(), np.int32
+        ((data[1:, 1] - y_offset) / GRID_FIELD_HEIGHT).round(), np.int32
     )[spd_ok]
 
     # Clamp it to 0-3 and 0-2 respectively
