@@ -33,4 +33,6 @@ def execute(point: np.ndarray, marked: list[list[bool]], x: int, y: int, o: int)
             _resolve(x, y - 1, "y")
         else:
             marked[y][x] = True
+    else:
+        marked[y][x] = True
     # TODO: What to do with diagonal cuts? (They can be tricky)

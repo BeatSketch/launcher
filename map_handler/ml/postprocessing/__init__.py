@@ -1,6 +1,7 @@
 from map_handler.ml.dtype import HANDS, BeatSketchTrackingData, BeatSketchPredictions
 from map_handler.ml.postprocessing import blocks, cleanup
 from map_handler.dtype import BeatSketchBlock
+from map_handler.ml.config import enable_heuristics
 
 
 def postprocess(
@@ -21,4 +22,7 @@ def postprocess(
     for hand in HANDS:
         processed += blocks.generate(data[hand], predictions[hand], hand)
 
-    return cleanup.clean_up_classifier_output(data, predictions, processed, dev_mode)
+    if enable_heuristics:
+        return cleanup.clean_up_classifier_output(data, predictions, processed, dev_mode)
+    else:
+        return processed
