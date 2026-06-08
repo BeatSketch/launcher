@@ -27,7 +27,6 @@ def hit_locations(
         A list of coordinates on the grid that were touched by the tip
     """
     # Check if total speed is lower than threshold
-    # TODO: possibly use the total distance instead?
     data = np.array([_extrapolate(tracking)] + tracking)
     if speed_pos.overall(data) < SPD_THRESHOLD * TRACKING_PER_UNIT * 0.5:
         return []
@@ -36,12 +35,12 @@ def hit_locations(
     vecs = speed_pos.direction_vectors(data)
     speeds = speed_pos.speed_from_dir_vecs(vecs, speed_pos.time_deltas(data))
     spd_ok = speeds > SPD_THRESHOLD
-    x = np.astype((data[1:, 0] / GRID_FIELD_WIDTH).round() - GRID_X_MIN_VAL, np.int32)[
-        spd_ok
-    ]
-    y = np.astype((data[1:, 1] / GRID_FIELD_HEIGHT).round() - GRID_Y_MIN_VAL, np.int32)[
-        spd_ok
-    ]
+    x = np.astype(
+        ((data[1:, 0] - GRID_X_MIN_VAL) / GRID_FIELD_WIDTH).round(), np.int32
+    )[spd_ok]
+    y = np.astype(
+        ((data[1:, 1] - GRID_Y_MIN_VAL) / GRID_FIELD_HEIGHT).round(), np.int32
+    )[spd_ok]
 
     # Clamp it to 0-3 and 0-2 respectively
     if x.size == 0:
@@ -50,18 +49,20 @@ def hit_locations(
     x_filtered = x[clamp]
     y_filtered = y[clamp]
     data_filtered = (data[1:][spd_ok])[clamp]
+    vecs_filtered = (vecs[spd_ok])[clamp]
 
     # Check that there are no neighbouring blocks parallel to cut direction
     # These would not be valid anyway, so we don't send them to the classifier
     # and would need to be cleaned up afterwards anyway
-    # FIXME: Looks like something here is messing up
-    marked: list[list[bool]] = [[False] * 4] * 3
+    marked: list[list[bool]] = [[False] * 4 for _ in range(3)]
     for idx, x_coord in enumerate(x_filtered):
         if idx == 0:
-            o = orientation.get_simple_direction(orientation.compute_angle(vecs[0]))
+            o = orientation.get_simple_direction(
+                orientation.compute_angle(vecs_filtered[0])
+            )
         else:
             o = orientation.get_simple_direction(
-                orientation.compute_angle(vecs[idx - 1])
+                orientation.compute_angle(vecs_filtered[idx - 1])
             )
         tiebreaker.execute(data_filtered[idx], marked, x_coord, y_filtered[idx], o)
 
