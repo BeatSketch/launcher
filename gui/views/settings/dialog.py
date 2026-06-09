@@ -1,8 +1,10 @@
 import PyQt6.QtWidgets as qt
 
 from gui.elements import button, label
+from gui.elements.dialog import open_msg_dialog
 from gui.elements.dropdown import dropdown
 from gui.elements.input import simple_input_widget
+from util import config
 
 
 def open_settings_dialog():
@@ -14,32 +16,42 @@ def open_settings_dialog():
     container = qt.QVBoxLayout()
 
     # Title
-    container.addLayout(label.centered_label("Create new map", 20))
+    container.addLayout(label.centered_label("Settings", 25))
 
     # ── Configs ─────────────────────────────────────────────────────────
-
     # Inputs
     box = qt.QGridLayout()
 
     rx, get_rx = simple_input_widget()
     ry, get_ry = simple_input_widget()
     rz, get_rz = simple_input_widget()
+    rx.setText(str(config.get_config()["saber_angle"]["x"]))
+    ry.setText(str(config.get_config()["saber_angle"]["y"]))
+    rz.setText(str(config.get_config()["saber_angle"]["z"]))
+    global coll_enabled, dist_enabled
     coll_enabled = False
     dist_enabled = False
-    enable_collision_resolution = dropdown(["Enabled", "Disabled"], lambda val: ((coll_enabled := (val == "Enabled")), None)[-1])
-    enable_distance_resolution = dropdown(["Enabled", "Disabled"])
 
-    box.addWidget(label.simple_label("Song name"), 0, 0)
+    def update_dropdown_data(_):
+        global coll_enabled, dist_enabled
+        coll_enabled = enable_collision_resolution.currentText() == "Enabled"
+        dist_enabled = enable_distance_resolution.currentText() == "Enabled"
+
+    enable_collision_resolution = dropdown(
+        ["Enabled", "Disabled"], update_dropdown_data
+    )
+    enable_distance_resolution = dropdown(["Enabled", "Disabled"], update_dropdown_data)
+
+    box.addWidget(label.simple_label("Saber rotation around X axis"), 0, 0)
     box.addWidget(rx, 0, 1)
-    box.addWidget(label.simple_label("Song name"), 0, 0)
-    box.addWidget(ry, 0, 1)
-    box.addWidget(label.simple_label("Song name"), 0, 0)
-    box.addWidget(rz, 0, 1)
-    box.addWidget(label.simple_label("Song name"), 0, 0)
-    box.addWidget(enable_collision_resolution, 0, 1)
-    box.addWidget(label.simple_label("Song name"), 0, 0)
-    box.addWidget(enable_distance_resolution, 0, 1)
-
+    box.addWidget(label.simple_label("Saber rotation around Y axis"), 1, 0)
+    box.addWidget(ry, 1, 1)
+    box.addWidget(label.simple_label("Saber rotation around Z axis"), 2, 0)
+    box.addWidget(rz, 2, 1)
+    box.addWidget(label.simple_label("Song name"), 3, 0)
+    box.addWidget(enable_collision_resolution, 3, 1)
+    box.addWidget(label.simple_label("Song name"), 4, 0)
+    box.addWidget(enable_distance_resolution, 4, 1)
 
     container.addLayout(box)
 
@@ -48,10 +60,17 @@ def open_settings_dialog():
         dialog.close()
 
     def save():
-        pass
+        # TODO: update the config
+        config.update_rotation("x", get_rx())
+        config.update_rotation("y", get_ry())
+        config.update_rotation("z", get_rz())
+        config.update_enabled_cleanup("collisions", coll_enabled)
+        config.update_enabled_cleanup("distance", dist_enabled)
+        config.save_config()
+        open_msg_dialog("Settings saved")
 
     controls = qt.QHBoxLayout()
-    controls.addWidget(button.create_button(close_dialog, "Cancel"))
+    controls.addWidget(button.create_button(close_dialog, "Close"))
     controls.addWidget(button.create_button(save, "Save"))
 
     container.addLayout(controls)
