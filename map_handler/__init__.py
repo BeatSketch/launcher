@@ -35,7 +35,7 @@ def launch_wrapper(
         f"njs={njs}",
     ]
     if testing_mode:
-        args = []
+        args = ["dev=true"]
 
     launch_func()
 
