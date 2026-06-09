@@ -53,5 +53,4 @@ def add_difficulty_controls(callback: Callable[[], None], testing_mode: bool = F
     # TODO: Edit button for details (of both difficulty and map)
     # TODO: Remove edit button again when new map is loaded
 
-    # TODO: Return update function
     return (difficulty_controls, new_map_loaded_handler)

@@ -47,12 +47,12 @@ if __name__ == "__main__":
     )
     try:
         window.show()
-        app.exec()
         if not config.load_and_validate_config("./config.yml")[0]:
             dialog.open_msg_dialog(
                 "Your configuration is invalid. A default config has been loaded",
                 title="Invalid configuration",
             )
+        app.exec()
     except KeyboardInterrupt:
         close_window(app)
         exit(130)

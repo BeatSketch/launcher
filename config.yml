@@ -1,10 +1,13 @@
-# yaml-language-server: $schema=config.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/BeatSketch/launcher/refs/heads/main/config.schema.json
 
+cleanup:
+  collisions: false
+  distance: false
+default_save_path: ~/BeatSketch/
+folder_loc_for_picker: ~/Downloads/
+mirror: false
 saber_angle:
   x: -20
   y: 0
   z: 0
-
-default_save_path: ~/BeatSketch/
-mirror: false
-folder_loc_for_picker: ~/Downloads/
+used_model: mlp
