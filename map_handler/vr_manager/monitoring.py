@@ -48,9 +48,10 @@ class BeatSketchVRMonitoringThread(QThread):
             return
 
         # Initialize processing utils
-        storage = VRDataStorage()
+        storage = VRDataStorage(self._bpm)
         start_time = time()
         data_processing: processing.BeatSketchProcessingManager | None = None
+        overwrite_enabled = False
         self.launch_success.emit(True)
 
         # Read data from process
@@ -63,12 +64,16 @@ class BeatSketchVRMonitoringThread(QThread):
             elif data == "proc:has-quit":
                 break
             elif data == "proc:do-processing":
+                if overwrite_enabled:
+                    overwrite_enabled = False
+                    storage.remove_blocks_in_recorded_time()
+
                 data_processing = processing.BeatSketchProcessingManager(
                     storage, self._bpm, self._njs, self._model, self._dev_mode
                 )
-            elif data.startswith("proc:overwrite-from:"):
-                print("Overwriting song data")
-                # TODO: Implement this
+            elif data.startswith("proc:overwrite"):
+                overwrite_enabled = True
+                storage.clear_tracking()
             elif data.startswith("proc:duration:"):
                 self._map.set_duration(float(data[14:]))
             elif self._debug:
