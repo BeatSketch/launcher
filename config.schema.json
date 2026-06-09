@@ -27,7 +27,7 @@
         "default_save_path": {
             "type": "string",
             "description": "The default path for where to save the map to (creates a folder there for each map). Has to end in slash",
-            "default": "~/",
+            "default": "~/BeatSketch/",
             "pattern": "^(^(~|\\.|\\.\\.)?\\/)?([\\w\\/.-]+(?!.*[^\\w\\/.-]+))\\/$"
         },
         "folder_loc_for_picker": {
@@ -41,6 +41,22 @@
             "description": "The model to use for processing. TODO: Add all opts",
             "default": "testing",
             "pattern": "^(testing|mlp)"
+        },
+        "cleanup": {
+            "type": "object",
+            "properties": {
+                "collisions": {
+                    "type": "boolean",
+                    "description": "Whether or not to enable collision detection and resolution",
+                    "default": true
+                },
+                "distance": {
+                    "type": "boolean",
+                    "description": "Whether or not to enable removal of blocks that are too close together",
+                    "default": true
+                }
+            },
+            "additionalProperties": false
         },
         "mirror": {
             "type": "boolean",

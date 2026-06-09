@@ -4,6 +4,7 @@ import PyQt6.QtWidgets as qt
 from gui.elements import button
 from gui.views.difficulties import add_difficulty_controls
 from gui.views.map import add_map_controls
+from gui.views.settings import add_settings_button
 from gui.views.title import title
 from map_handler import map as map_manager
 from map_handler import launch_wrapper
@@ -17,6 +18,9 @@ def home_view(
 ):
     main_box = qt.QVBoxLayout()
     main_box.addLayout(title())
+
+    # Settings button
+    main_box.addWidget(add_settings_button())
 
     controls_box = qt.QVBoxLayout()
 
