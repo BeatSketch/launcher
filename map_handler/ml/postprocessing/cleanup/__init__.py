@@ -5,10 +5,12 @@ from map_handler.ml.dtype import (
 from map_handler.ml.postprocessing.cleanup import (
     collisions as _collisions,
     converter as _converter,
-    impossible_hits as _impossible_hits,
 )
 from map_handler.dtype import BeatSketchBlock as _BeatSketchBlock
-from map_handler.ml.postprocessing.cleanup.config import enable_impossible_hit_cleanup
+from map_handler.ml.config import (
+    enable_collision_resolution,
+    enable_too_close_resolution,
+)
 
 
 def clean_up_classifier_output(
@@ -35,33 +37,25 @@ def clean_up_classifier_output(
         print("Number of blocks pre cleanup", len(blocks))
 
     # 1. collisions
-    try:
-        data = _collisions.solve(data)
-    except Exception as e:
-        print("WARN: Collision removal has failed")
-        if dev_mode:
-            raise e
-
-    # 2. impossible hits
-    if enable_impossible_hit_cleanup:
+    if enable_collision_resolution:
         try:
-            data = _impossible_hits.solve(data)
-            if dev_mode:
-                print(
-                    "Number of data points after impossible hit cleanup",
-                    len(data["left"]) + len(data["right"]),
-                )
+            data = _collisions.solve(data)
         except Exception as e:
-            print("WARN: Impossible hit removal has failed")
+            print("WARN: Collision removal has failed")
             if dev_mode:
                 raise e
 
-    # 3. hand mixups
-    # 4. Flow
+    # 2. Too close
+    if enable_too_close_resolution:
+        try:
+            data = _collisions.solve(data)
+        except Exception as e:
+            print("WARN: Collision removal has failed")
+            if dev_mode:
+                raise e
+    # 3. Flow
     # The idea is to chain these into one another
     if dev_mode:
         print("Cleanup completed")
 
-    converted = _converter.to_blocks(data)
-    return converted
-    # return _converter.to_blocks(data)
+    return _converter.to_blocks(data)

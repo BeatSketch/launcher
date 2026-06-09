@@ -20,7 +20,7 @@ def generate_model_readable_data(
             tracking = details["tracking"]
             dataset_frame: list[float] = [details["x"], details["y"], details["beat"]]
             for point in tracking:
-                dataset_frame += point.tolist()
+                dataset_frame += point[:6].tolist()
 
             processed[hand_idx].append(np.array(dataset_frame))
 
