@@ -1,6 +1,7 @@
 import os
 from gui.elements import dialog
 from map_handler.dtype import BeatSketchSelectedFileList
+from map_handler.map.load import load_map
 from map_handler.map.map import BeatSaberMap
 from map_handler.map.dtype.info import DifficultyLevels
 
@@ -24,6 +25,16 @@ selected_difficulty = ""
 
 global map
 map = _default_map()
+
+
+def import_map(path: str) -> bool:
+    global map
+    data = load_map(path)
+    if data:
+        map = data
+        return True
+    else:
+        return False
 
 
 def get_map():

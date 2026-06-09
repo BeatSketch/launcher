@@ -4,6 +4,7 @@ from gui.elements.file_picker import directory_select_button
 from gui.views.map.new_map_dialog import open_new_map_dialog
 import PyQt6.QtWidgets as qt
 import gui.elements.dialog as dialog
+from map_handler.map import import_map
 
 
 def add_map_controls(
@@ -25,7 +26,12 @@ def add_map_controls(
 
 def load_map(map: str):
     if map != "":
-        print("fixme: load the map", map)
-        dialog.open_msg_dialog("This operation is not yet supported")
+        if import_map(map):
+            dialog.open_msg_dialog(
+                "Map loaded. Please note that if you edit a map not created with BeatSketch, some of your edits made using other editors will be lost, as BeatSketch does not yet support loading all features of the map format.",
+                title="Map warning",
+            )
+        else:
+            dialog.open_msg_dialog("Map failed to import")
     else:
         dialog.open_msg_dialog("No map selected")
