@@ -13,7 +13,6 @@ class BeatSaberMap:
     _maps: dict[str, BeatMap]
     _out_dir: str
     _bpm: float
-    _savable: bool
 
     def __init__(
         self,
@@ -40,7 +39,7 @@ class BeatSaberMap:
             bpm: The BPM of the song
             duration: The duration of the song
         """
-        self._out_dir = folder
+        self._out_dir = folder + ("" if folder.endswith("/") else "/")
         self._maps = {}
         self._bpm = bpm
 
@@ -49,15 +48,12 @@ class BeatSaberMap:
             self._info = BeatSaberInfoFile(
                 song_name, song_subtitle, song_artist, bpm, duration, mapper, "song.ogg"
             )
-            self._savable = False
         else:
-            self._savable = True
             filetype = audio_file.split(".")[-1]
             try:
-                shutil.copy(audio_file, folder + "/song." + filetype)
+                shutil.copy(audio_file, folder + "song." + filetype)
             except FileNotFoundError:
                 print("Failed to copy song. File not found")
-                self._savable = False
 
             # Copy over the cover file
             try:
@@ -96,7 +92,7 @@ class BeatSaberMap:
 
     def save(self):
         """Save the map to the configured folder"""
-        if self._out_dir == "" or not self._savable:
+        if self._out_dir == "":
             print("SAVE FAILED. Dir name invalid")
             return
         self._info.save(self._out_dir)
@@ -198,6 +194,23 @@ class BeatSaberMap:
             A list of blocks
         """
         return self._maps[beatmap].get_blocks()
+
+    def get_blocks_in_beatsketch_format(self, beatmap: str):
+        blocks: list[BeatSketchBlock] = []
+        for block in self.get_blocks(beatmap):
+            blocks.append(
+                {
+                    "beat": block["b"],
+                    "hand": SaberHand(block["c"]),
+                    "orientation": CutDirection(block["d"]),
+                    "x": block["x"],
+                    "y": block["y"],
+                }
+            )
+        return blocks
+
+    def get_block_count(self, beatmap: str):
+        return len(self.get_blocks(beatmap))
 
     def list_beatmaps(self) -> list[str]:
         """List all the beatmaps for the current map

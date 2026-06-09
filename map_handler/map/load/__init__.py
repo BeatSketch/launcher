@@ -19,7 +19,7 @@ def load_map(path: str) -> BeatSaberMap | None:
         return None
 
     for map_details in beatmaps:
-        _parse_beatmap(base_path + map_details["file"], map_details, map)
+        _parse_beatmap(base_path, map_details, map)
 
     return map
 
@@ -57,7 +57,7 @@ def _parse_beatmap(
     Returns:
         True if parsing was successful, False otherwise
     """
-    with open(path, "r") as f:
+    with open(path + details["file"], "r") as f:
         data = _json.loads(f.read())
         try:
             # Parse V3 format (more coming in the future)

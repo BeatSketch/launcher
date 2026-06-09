@@ -20,7 +20,7 @@ def parse(
                         try:
                             beatmaps.append(
                                 {
-                                    "file": "",
+                                    "file": difficulty["_beatmapFilename"],
                                     "difficulty": DifficultyLevelsConversionInverse[
                                         cast(
                                             DifficultyLevelsRank,

@@ -28,6 +28,14 @@ map = _default_map()
 
 
 def import_map(path: str) -> bool:
+    """Import an existing map into BeatSketch
+
+    Args:
+        path: The path to the folder of the map
+
+    Returns:
+        True if successful, False otherwise
+    """
     global map
     data = load_map(path)
     if data:

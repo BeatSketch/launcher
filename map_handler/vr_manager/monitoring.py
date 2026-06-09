@@ -76,6 +76,10 @@ class BeatSketchVRMonitoringThread(QThread):
                 storage.clear_tracking()
             elif data.startswith("proc:duration:"):
                 self._map.set_duration(float(data[14:]))
+            elif data.startswith("proc:existing-blocks"):
+                self._com.send_blocks(
+                    self._map.get_blocks_in_beatsketch_format(self._beatmap_name)
+                )
             elif self._debug:
                 print(data)
 

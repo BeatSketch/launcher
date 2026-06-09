@@ -10,6 +10,19 @@ from map_handler.map import import_map
 def add_map_controls(
     map_select_callback: Callable[[], None], testing_mode: bool = False
 ):
+    def load_map(map: str):
+        if map != "":
+            if import_map(map):
+                dialog.open_msg_dialog(
+                    "Map loaded. Please note that if you edit a map not created with BeatSketch, some of your edits made using other editors will be lost, as BeatSketch does not yet support loading all features of the map format.",
+                    title="Map warning",
+                )
+                map_select_callback()
+            else:
+                dialog.open_msg_dialog("Map failed to import")
+        else:
+            dialog.open_msg_dialog("No map selected")
+
     map_controls = qt.QHBoxLayout()
     map_controls.addWidget(
         button.create_button(
@@ -22,16 +35,3 @@ def add_map_controls(
     )
 
     return map_controls
-
-
-def load_map(map: str):
-    if map != "":
-        if import_map(map):
-            dialog.open_msg_dialog(
-                "Map loaded. Please note that if you edit a map not created with BeatSketch, some of your edits made using other editors will be lost, as BeatSketch does not yet support loading all features of the map format.",
-                title="Map warning",
-            )
-        else:
-            dialog.open_msg_dialog("Map failed to import")
-    else:
-        dialog.open_msg_dialog("No map selected")
