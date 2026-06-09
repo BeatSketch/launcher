@@ -9,6 +9,13 @@ DifficultyLevelsConversion: dict[DifficultyLevels, DifficultyLevelsRank] = {
     "Expert": 7,
     "Expert+": 9,
 }
+DifficultyLevelsConversionInverse: dict[DifficultyLevelsRank, DifficultyLevels] = {
+    1: "Easy",
+    3: "Normal",
+    5: "Hard",
+    7: "Expert",
+    9: "Expert+",
+}
 
 
 class InfoFile(TypedDict):

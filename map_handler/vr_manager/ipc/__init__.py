@@ -25,7 +25,6 @@ class BeatSketchVRApplication:
             args: The CLI args to pass in. Typically should be list of key=val,
             because that's what the VR app uses
         """
-        # TODO: Update the windows commands
         if dev_mode:
             self._com = BeatSketchIPCManager(
                 ["lovr", "../vr/"], ["BeatSketch.exe"], args, dev_mode
