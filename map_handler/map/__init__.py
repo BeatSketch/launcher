@@ -15,7 +15,7 @@ def _default_map():
         "",
         "Janis Hutz",
         "",
-        150,
+        120,
         150,
     )
 
