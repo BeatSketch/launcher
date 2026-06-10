@@ -8,7 +8,6 @@ from map_handler.vr_manager.storage import VRDataStorage
 
 
 class BeatSketchVRMonitoringThread(QThread):
-    # NOTE: can add more signals here if we want to display more details in the launcher
     exit_code = pyqtSignal(int)
     launch_success = pyqtSignal(bool)
     _com: BeatSketchVRApplication | None
@@ -66,7 +65,12 @@ class BeatSketchVRMonitoringThread(QThread):
             elif data == "proc:do-processing":
                 if overwrite_enabled:
                     overwrite_enabled = False
-                    storage.remove_blocks_in_recorded_time()
+                    locs = storage.remove_blocks_in_recorded_time()
+                    self._map.remove_blocks_from_beatmap_by_time(
+                        self._beatmap_name,
+                        locs[0],
+                        locs[1],
+                    )
 
                 data_processing = processing.BeatSketchProcessingManager(
                     storage, self._bpm, self._njs, self._model, self._dev_mode
@@ -85,7 +89,6 @@ class BeatSketchVRMonitoringThread(QThread):
 
             # Send data to VR
             if data_processing and data_processing.is_complete():
-                # TODO: Map stiching, for when processing done mid-map, or jumping back, or map has existing parts
                 data = data_processing.get_data()
                 print("=> Map processed")
                 if self._dev_mode:

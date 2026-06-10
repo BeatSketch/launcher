@@ -163,5 +163,4 @@ class BeatSketchIPCManager:
             The exit code of the application
         """
         self._process.communicate()
-        # TODO: Make sure this works reliably
         return self._process.wait()

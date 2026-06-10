@@ -1,11 +1,9 @@
-# TODO: Find out what the grid size actually is
 GRID_FIELD_WIDTH = 0.666
 GRID_FIELD_HEIGHT = 0.666
 GRID_Y_MIN_VAL = 0
 GRID_X_MIN_VAL = -1.333
 
-# 
-MOVE_THRESHOLD = 0.1
+# Thresholds for movement speeds of the saber tip
 SPD_THRESHOLD = 5
 
 # Into how many parts to split each beat (should be power of 2 and no more than 8)

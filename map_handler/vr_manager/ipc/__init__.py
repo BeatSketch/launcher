@@ -127,8 +127,6 @@ class BeatSketchVRApplication:
         Args:
             data: The data to send
         """
-        # TODO: Probably want to use a queue here,
-        # or in the abstraction to not block the VR app
         serialized = json.dumps(data)
         self._com.write("json:" + serialized)
 

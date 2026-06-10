@@ -60,7 +60,6 @@ def open_settings_dialog():
         dialog.close()
 
     def save():
-        # TODO: update the config
         config.update_rotation("x", get_rx())
         config.update_rotation("y", get_ry())
         config.update_rotation("z", get_rz())

@@ -12,7 +12,6 @@ def time_deltas(tracking: np.ndarray):
 
 
 def speed_from_dir_vecs(vectors: np.ndarray, time_delta: np.ndarray):
-    # TODO: Extrapolate first point
     spd = np.abs(np.linalg.vector_norm(vectors) / time_delta)
     return np.where(spd != np.nan, spd, 0.1)
 

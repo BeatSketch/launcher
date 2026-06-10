@@ -14,8 +14,6 @@ class VRDataStorage:
         if not data["paused"]:
             self._data.append(data)
             self._modified = True
-        # TODO: Jump back support (i.e. partial re-recording)...
-        # Also: consider how to remove blocks from the Beatmap object
 
     def get_data_point_count(self) -> int:
         return len(self._data)
@@ -54,10 +52,14 @@ class VRDataStorage:
 
     def remove_blocks_in_recorded_time(self):
         if len(self._data) > 1:
+            a = self._data[0]["left"]["timestamp"] * 60 / self._bpm
+            b = self._data[-1]["left"]["timestamp"] * 60 / self._bpm
             self.remove_blocks_in_time_range(
-                self._data[0]["left"]["timestamp"] * 60 / self._bpm,
-                self._data[-1]["left"]["timestamp"] * 60 / self._bpm,
+                a,
+                b,
             )
+            return a, b
+        return -1.0, -1.0
 
     def remove_blocks_in_time_range(self, a: float, b: float):
         """Remove all blocks in a time range, where the time range is specified in BEATS

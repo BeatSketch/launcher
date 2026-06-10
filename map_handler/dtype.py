@@ -12,7 +12,7 @@ class BeatSketchTrackedItemData(TypedDict):
     timestamp: float
     pos: np.ndarray
     direction: np.ndarray
-    quat: np.ndarray  # TODO: Use the quaternion package instead?
+    quat: np.ndarray
     tip: np.ndarray
     buttons: list[str]
 

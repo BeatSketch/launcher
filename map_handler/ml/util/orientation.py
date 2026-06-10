@@ -1,7 +1,5 @@
 from typing import Literal
 from map_handler.ml.dtype import BeatSketchTrackingDataDetails
-import numpy as np
-
 from map_handler.ml.preprocessing.values import (
     GRID_FIELD_HEIGHT,
     GRID_FIELD_WIDTH,
@@ -9,8 +7,9 @@ from map_handler.ml.preprocessing.values import (
     GRID_Y_MIN_VAL,
 )
 from map_handler.map.dtype.beatmap import CutDirection
+import numpy as np
 
-# TODO: Check what base vector produces correct results (likely will be e_y)
+
 base_vec = np.array([0, 1, 0])
 translation = [
     CutDirection.UP,

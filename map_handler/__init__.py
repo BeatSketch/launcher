@@ -39,7 +39,6 @@ def launch_wrapper(
 
     launch_func()
 
-    # TODO: Handle existing maps
     def launch_status_handler(status: int):
         if status == 254:
             dialog.open_msg_dialog(
@@ -52,9 +51,13 @@ def launch_wrapper(
                 title="Launching VR Application failed",
             )
 
-    # TODO: Load model from config
     status, proc = start_vr_app(
-        args, map, beatmap_name, "mlp", debug=vr_debug, dev_mode=dev_mode
+        args,
+        map,
+        beatmap_name,
+        config.get_config()["used_model"],
+        debug=vr_debug,
+        dev_mode=dev_mode,
     )
 
     if proc and status:
