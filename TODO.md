@@ -1,14 +1,14 @@
 # TODOs
-- [ ] Overwriting data if continuing at older time
-- [ ] Load existing map and send blocks for selected difficulty to VR
+- [X] Overwriting data if continuing at older time
+- [X] Load existing map and send blocks for selected difficulty to VR
 - [ ] *Walls* -> Can be handled purely deterministically likely
 - [ ] **Possibly an issue with reassigning time based on z values** -> We may need to handle it in postprocessing instead of preprocessing to move the blocks forward a bit
 - [ ] New, better trained classifier
 - [X] After processing, cache the generated map and only regenerate if data has changed on save
-- [ ] Time offsets for rendering the blocks not correct (due to workaround for the out of bounds crash) -> Fix it properly
+- [X] Time offsets for rendering the blocks not correct (due to workaround for the out of bounds crash) -> Was not that, but me dumb (BPM for testing mode did not match)
 - [ ] *Saving the tracking data?*
-- [ ] Heuristics to clean up the output of the classifiers (and angle computations)
-- [ ] Settings for the heuristics (i.e. how aggressive and what kind to enable)
+- [X] Heuristics to clean up the output of the classifiers (and angle computations)
+- [X] Settings for the heuristics (i.e. how aggressive and what kind to enable)
 - [ ] *Build signing for Windows*
 - [ ] For user guide: https://bsmg.wiki/mapping/basic-audio.html on how to edit the audio file
 - [ ] May take code [here](https://kivalevan.me/BeatSaber-MapCheck/) for inspiration [repo](https://github.com/KivalEvan/BeatSaber-MapCheck/tree/main/src/ts/checks)
