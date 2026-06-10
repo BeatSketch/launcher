@@ -51,10 +51,12 @@ def open_settings_dialog():
     box.addWidget(ry, 1, 1)
     box.addWidget(label.simple_label("Saber rotation around Z axis"), 2, 0)
     box.addWidget(rz, 2, 1)
-    box.addWidget(label.simple_label("Song name"), 3, 0)
+    box.addWidget(label.simple_label("Remove block collisions automatically"), 3, 0)
     box.addWidget(enable_collision_resolution, 3, 1)
-    box.addWidget(label.simple_label("Song name"), 4, 0)
+    box.addWidget(label.simple_label("Remove too close blocks automatically"), 4, 0)
     box.addWidget(enable_distance_resolution, 4, 1)
+    box.addWidget(label.simple_label("Enable Vibration"), 5, 0)
+    box.addWidget(enable_vibrate, 5, 1)
 
     container.addLayout(box)
 

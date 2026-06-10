@@ -58,4 +58,5 @@ def default_config() -> BeatSketchConfig:
         "mirror": False,
         "used_model": "mlp",
         "cleanup": {"collisions": True, "distance": True},
+        "vibrate": True,
     }
