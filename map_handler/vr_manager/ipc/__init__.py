@@ -136,6 +136,9 @@ class BeatSketchVRApplication:
         Args:
             data: The blocks
         """
+        if len(data) == 0:
+            self._com.write("data:noblocks")
+            return
         blocks: list[BeatSketchSerializableBlock] = []
         for block in data:
             blocks.append(

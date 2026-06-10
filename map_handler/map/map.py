@@ -13,6 +13,7 @@ class BeatSaberMap:
     _maps: dict[str, BeatMap]
     _out_dir: str
     _bpm: float
+    _savable: bool
 
     def __init__(
         self,
@@ -48,7 +49,9 @@ class BeatSaberMap:
             self._info = BeatSaberInfoFile(
                 song_name, song_subtitle, song_artist, bpm, duration, mapper, "song.ogg"
             )
+            self._savable = False
         else:
+            self._savable = True
             filetype = audio_file.split(".")[-1]
             try:
                 shutil.copy(audio_file, folder + "song." + filetype)
@@ -92,7 +95,7 @@ class BeatSaberMap:
 
     def save(self):
         """Save the map to the configured folder"""
-        if self._out_dir == "":
+        if not self._savable or self._out_dir == "":
             print("SAVE FAILED. Dir name invalid")
             return
         self._info.save(self._out_dir)
