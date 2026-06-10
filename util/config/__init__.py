@@ -66,5 +66,10 @@ def update_enabled_cleanup(kind: Literal["distance", "collisions"], enabled: boo
     _config["cleanup"][kind] = enabled
 
 
+def update_vibrate(enabled: bool):
+    global _config
+    _config["vibrate"] = enabled
+
+
 def save_config():
     _save.save_config(_config, _config_location)

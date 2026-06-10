@@ -8,6 +8,7 @@ class BeatSketchConfig(_TypedDict):
     used_model: Literal["testing", "mlp"]
     cleanup: CleanupFunctions
     mirror: bool
+    vibrate: bool
 
 
 class CleanupFunctions(_TypedDict):

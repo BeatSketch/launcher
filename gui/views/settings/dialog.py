@@ -28,19 +28,22 @@ def open_settings_dialog():
     rx.setText(str(config.get_config()["saber_angle"]["x"]))
     ry.setText(str(config.get_config()["saber_angle"]["y"]))
     rz.setText(str(config.get_config()["saber_angle"]["z"]))
-    global coll_enabled, dist_enabled
+    global coll_enabled, dist_enabled, vibrate_enabled
     coll_enabled = False
     dist_enabled = False
+    vibrate_enabled = False
 
     def update_dropdown_data(_):
-        global coll_enabled, dist_enabled
+        global coll_enabled, dist_enabled, vibrate_enabled
         coll_enabled = enable_collision_resolution.currentText() == "Enabled"
         dist_enabled = enable_distance_resolution.currentText() == "Enabled"
+        vibrate_enabled = enable_vibrate.currentText() == "Enabled"
 
     enable_collision_resolution = dropdown(
         ["Enabled", "Disabled"], update_dropdown_data
     )
     enable_distance_resolution = dropdown(["Enabled", "Disabled"], update_dropdown_data)
+    enable_vibrate = dropdown(["Enabled", "Disabled"], update_dropdown_data)
 
     box.addWidget(label.simple_label("Saber rotation around X axis"), 0, 0)
     box.addWidget(rx, 0, 1)
@@ -65,6 +68,7 @@ def open_settings_dialog():
         config.update_rotation("z", get_rz())
         config.update_enabled_cleanup("collisions", coll_enabled)
         config.update_enabled_cleanup("distance", dist_enabled)
+        config.update_vibrate(vibrate_enabled)
         config.save_config()
         open_msg_dialog("Settings saved")
 

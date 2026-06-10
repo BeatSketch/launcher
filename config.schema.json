@@ -42,6 +42,11 @@
             "default": "testing",
             "pattern": "^(testing|mlp)"
         },
+        "vibrate": {
+            "type": "boolean",
+            "description": "Whether or not to enable vibration in VR",
+            "default": true
+        },
         "cleanup": {
             "type": "object",
             "properties": {
