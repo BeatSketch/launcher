@@ -11,3 +11,4 @@ saber_angle:
   y: 0
   z: 0
 used_model: mlp
+vibrate: false

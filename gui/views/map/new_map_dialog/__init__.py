@@ -27,7 +27,7 @@ def open_new_map_dialog(
     """
     # Basic setup
     dialog = qt.QDialog()
-    dialog.setWindowTitle("New Map")
+    dialog.setWindowTitle("BeatSketch Launcher: New Map")
 
     container = qt.QVBoxLayout()
 

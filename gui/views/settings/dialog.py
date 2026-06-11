@@ -11,7 +11,7 @@ def open_settings_dialog():
     """Open a dialog to configure BeatSketch"""
     # Basic setup
     dialog = qt.QDialog()
-    dialog.setWindowTitle("Settings")
+    dialog.setWindowTitle("BeatSketch Launcher: Settings")
 
     container = qt.QVBoxLayout()
 

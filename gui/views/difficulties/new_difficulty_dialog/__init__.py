@@ -11,7 +11,7 @@ def open_new_difficulty_dialog(
     callback: Callable[[], None], testing_mode: bool = False
 ):
     dialog = qt.QDialog()
-    dialog.setWindowTitle("New Map")
+    dialog.setWindowTitle("BeatSketch Launcher: New Map")
 
     container = qt.QVBoxLayout()
 

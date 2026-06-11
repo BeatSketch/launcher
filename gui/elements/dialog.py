@@ -27,7 +27,7 @@ def open_flexible_dialog(
     title: str, actions: list[DialogAction] = [default_action], msg: str = ""
 ):
     dialog = QDialog()
-    dialog.setWindowTitle("BeatSketch")
+    dialog.setWindowTitle("BeatSketch Launcher")
 
     layout = QVBoxLayout()
 
@@ -66,7 +66,7 @@ def open_msg_dialog(
 ):
     dialog = QMessageBox()
     if title == "":
-        dialog.setWindowTitle("BeatSketch")
+        dialog.setWindowTitle("BeatSketch Launcher")
     else:
         dialog.setWindowTitle(title)
     dialog.setText(msg)
