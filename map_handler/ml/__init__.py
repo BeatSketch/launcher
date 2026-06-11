@@ -16,7 +16,7 @@ def process(
     bpm: float,
     njs: float,
     model: _MODELS,
-    dev_mode: bool = False
+    dev_mode: bool = False,
 ) -> list[BeatSketchBlock]:
     """Run the tracking data through the model chain.
     All pre and postprocessing happens automatically. Pick a model from the available models
@@ -31,5 +31,10 @@ def process(
         A list of blocks that the model "thinks" best match the movement
     """
     preprocessed, orig = _preprocess(data, bpm, njs, dev_mode)
-    pred = _create_predictions(model, preprocessed, MODELS_FOLDER_DEV if dev_mode else MODELS_FOLDER)
+    if dev_mode:
+        print("->", len(orig["left"]) + len(orig["right"]), "locations sent to classifier")
+
+    pred = _create_predictions(
+        model, preprocessed, MODELS_FOLDER_DEV if dev_mode else MODELS_FOLDER
+    )
     return _postprocess(orig, pred, dev_mode)

@@ -4,7 +4,7 @@ GRID_Y_MIN_VAL = 0
 GRID_X_MIN_VAL = -1.333
 
 # Thresholds for movement speeds of the saber tip
-SPD_THRESHOLD = 5
+SPD_THRESHOLD = 4
 
 # Into how many parts to split each beat (should be power of 2 and no more than 8)
 # I do also think we should make this configurable for the user? (or provide 2 settings?)
