@@ -40,7 +40,9 @@ class BeatSaberMap:
             bpm: The BPM of the song
             duration: The duration of the song
         """
-        self._out_dir = folder + ("" if folder.endswith("/") else "/")
+        self._out_dir = folder
+        if not folder.endswith("/"):
+            self._out_dir += "/"
         self._maps = {}
         self._bpm = bpm
 
@@ -249,7 +251,7 @@ class BeatSaberMap:
         return self._info.get_njs(self._get_idx_from_name(beatmap_name))
 
     def get_audio_file(self) -> str:
-        return self._out_dir + "/" + self._info.get_audio_file()
+        return self._out_dir + self._info.get_audio_file()
 
 
 # Used to load existing maps
