@@ -10,4 +10,4 @@ saber_angle:
   x: -20
   y: 0
   z: 0
-used_model: mlp
+used_model: mlp_torch

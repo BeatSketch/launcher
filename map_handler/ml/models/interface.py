@@ -5,7 +5,7 @@ from numpy import ndarray
 
 class MlModelInterface(ABC):
     @abstractmethod
-    def __init__(self, model_path: str) -> None:
+    def __init__(self, model_path: str, input_name: str = "X") -> None:
         """Loading of the model and any processing that can take place before
         predicting
 

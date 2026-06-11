@@ -38,9 +38,9 @@
         },
         "used_model": {
             "type": "string",
-            "description": "The model to use for processing. TODO: Add all opts",
+            "description": "The model to use for processing.",
             "default": "testing",
-            "pattern": "^(testing|mlp)"
+            "pattern": "^(testing|mlp|mlp_torch)"
         },
         "vibrate": {
             "type": "boolean",

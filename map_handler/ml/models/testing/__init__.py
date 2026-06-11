@@ -4,8 +4,8 @@ import numpy as np
 
 
 class TestingModel(MlModelInterface):
-    def __init__(self, model_path: str) -> None:
-        print("Loading test model, path would be", model_path)
+    def __init__(self, model_path: str, input_name: str = "X") -> None:
+        print("Loading test model, path would be", model_path, "input name is", input_name)
         pass
 
     def predict(self, data: np.ndarray) -> list[bool]:
