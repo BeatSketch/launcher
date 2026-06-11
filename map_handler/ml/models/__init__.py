@@ -3,11 +3,10 @@ from map_handler.ml.models.interface import MlModelInterface
 from map_handler.ml.models.onnx import ONNXModel
 from map_handler.ml.models.testing import TestingModel
 
-# TODO: Add the correct models
-models: dict[MODELS, tuple[type[MlModelInterface], str, str]] = {
-    "testing": (TestingModel, "TEST", "X"),
-    "mlp": (ONNXModel, "mlp.onnx", "X"),
-    "mlp_torch": (ONNXModel, "mlp_torch.onnx", "x"),
+models: dict[MODELS, tuple[type[MlModelInterface], str]] = {
+    "testing": (TestingModel, "TEST"),
+    "mlp": (ONNXModel, "mlp.onnx"),
+    "mlp_torch": (ONNXModel, "mlp_torch.onnx"),
 }
 
 
@@ -35,4 +34,4 @@ def load_model(model: MODELS, models_folder: str):
     if not models_folder.endswith("/"):
         models_folder += "/"
 
-    return models[model][0](models_folder + models[model][1], models[model][2])
+    return models[model][0](models_folder + models[model][1])

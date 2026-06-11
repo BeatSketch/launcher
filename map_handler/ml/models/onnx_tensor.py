@@ -4,9 +4,8 @@ import onnxruntime as rt
 import numpy as np
 
 
-# https://scikit-learn.org/stable/model_persistence.html
 # https://onnxruntime.ai/docs/api/python/tutorial.html
-class ONNXModel(MlModelInterface):
+class ONNXTensorModel(MlModelInterface):
     def __init__(self, model_path: str) -> None:
         self._session = rt.InferenceSession(
             model_path,
@@ -14,10 +13,14 @@ class ONNXModel(MlModelInterface):
         )
 
     def predict(self, data: np.ndarray) -> list[bool]:
+        # TODO: Another preprocessing step
         data = data.astype(np.float32)
-        pred = cast(
-            np.ndarray,
-            self._session.run(None, {self._session.get_inputs()[0].name: data})[0],
+        pred = np.argmax(
+            cast(
+                np.ndarray,
+                self._session.run(None, {self._session.get_inputs()[0].name: data})[0],
+            ),
+            axis=0,
         )
         predictions: list[bool] = []
         for el in pred:
