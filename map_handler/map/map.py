@@ -43,6 +43,7 @@ class BeatSaberMap:
         self._out_dir = folder
         if not folder.endswith("/"):
             self._out_dir += "/"
+
         self._maps = {}
         self._bpm = bpm
 
@@ -56,14 +57,14 @@ class BeatSaberMap:
             self._savable = True
             filetype = audio_file.split(".")[-1]
             try:
-                shutil.copy(audio_file, folder + "song." + filetype)
+                shutil.copy(audio_file, self._out_dir + "song." + filetype)
             except FileNotFoundError:
                 print("Failed to copy song. File not found")
 
             # Copy over the cover file
             try:
                 cover_ft = cover_file.split(".")[-1]
-                shutil.copy(cover_file, folder + "/cover." + cover_ft)
+                shutil.copy(cover_file, self._out_dir + "/cover." + cover_ft)
             except FileNotFoundError:
                 print("Failed to copy cover. File not found")
 
