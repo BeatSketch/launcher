@@ -27,7 +27,7 @@ class BeatSketchVRApplication:
         """
         if dev_mode:
             self._com = BeatSketchIPCManager(
-                ["lovr", "../vr/"], ["BeatSketch.exe"], args, dev_mode, debug_mode
+                ["lovr", "../vr/"], ["lovr.exe", "..\\vr"], args, dev_mode, debug_mode
             )
         else:
             self._com = BeatSketchIPCManager(
