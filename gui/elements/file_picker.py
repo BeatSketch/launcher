@@ -1,5 +1,7 @@
 from typing import Callable
 from PyQt6.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QPushButton
+import util.config as config
+import os
 
 
 def file_picker_button(
@@ -7,6 +9,7 @@ def file_picker_button(
     filter: str = "Supported audio (*.ogg *.egg)",
     picker_text: str = "Select the song file",
     button_text: str = "Select File",
+    default_path: str = config.get_config()["folder_loc_for_picker"]
 ):
     """Create a file picker button, launches File Picker and calls callback on File pick
 
@@ -21,7 +24,7 @@ def file_picker_button(
     """
 
     def handler():
-        filename, _ = QFileDialog.getOpenFileName(caption=picker_text, filter=filter)
+        filename, _ = QFileDialog.getOpenFileName(caption=picker_text, filter=filter, directory=os.path.expanduser(default_path))
 
         if filename != "":
             button.setText(button_text + " (selected)")
@@ -45,6 +48,7 @@ def file_picker(
     filter: str = "Supported audio (*.ogg *.mp3 *.egg *.wav)",
     picker_text: str = "Select the song file",
     button_text: str = "Select File",
+    default_path: str = config.get_config()["folder_loc_for_picker"]
 ):
     """Add a file picker button
 
@@ -58,7 +62,7 @@ def file_picker(
     Returns:
         A QHBoxLayout with the message label and file picker button inside of it
     """
-    button = file_picker_button(picked_file, filter, picker_text, button_text)
+    button = file_picker_button(picked_file, filter, picker_text, button_text, default_path)
 
     t = QLabel()
     t.setText(msg)
@@ -75,6 +79,7 @@ def directory_select_button(
     selected_dir: Callable[[str], None],
     picker_text: str = "Select the directory",
     button_text: str = "Select directory",
+    default_path: str = config.get_config()["default_save_path"]
 ):
     """Create a file save dialog button, launches file save dialog
 
@@ -88,7 +93,7 @@ def directory_select_button(
     """
 
     def handler():
-        dir = QFileDialog.getExistingDirectory(caption=picker_text)
+        dir = QFileDialog.getExistingDirectory(caption=picker_text, directory=os.path.expanduser(default_path))
         if dir != "":
             button.setText(button_text + " (selected)")
             button.setToolTip("Selected folder: " + dir)
@@ -109,6 +114,7 @@ def directory_picker(
     selected_dir: Callable[[str], None],
     picker_text: str = "Select the directory",
     button_text: str = "Select directory",
+    default_path: str = config.get_config()["default_save_path"]
 ):
     """Add a directory picker button
 
@@ -121,7 +127,7 @@ def directory_picker(
     Returns:
         A QHBoxLayout with the message label and file picker button inside of it
     """
-    button = directory_select_button(selected_dir, picker_text, button_text)
+    button = directory_select_button(selected_dir, picker_text, button_text, default_path)
 
     t = QLabel()
     t.setText(msg)

@@ -27,14 +27,14 @@
         "default_save_path": {
             "type": "string",
             "description": "The default path for where to save the map to (creates a folder there for each map). Has to end in slash",
-            "default": "~/BeatSketch/",
-            "pattern": "^(^(~|\\.|\\.\\.)?\\/)?([\\w\\/.-]+(?!.*[^\\w\\/.-]+))\\/$"
+            "default": "~",
+            "pattern": "^(~)$|^(^(~|\\.|\\.\\.)?\\/)?([\\w\\/.-]+(?!.*[^\\w\\/.-]+))\\/$"
         },
         "folder_loc_for_picker": {
             "type": "string",
             "description": "The folder in which the picker should open. Has to end in slash",
             "default": "~/Downloads/",
-            "pattern": "^(^(~|\\.|\\.\\.)?\\/)?([\\w\\/.-]+(?!.*[^\\w\\/.-]+))\\/$"
+            "pattern": "^(~)$|(^(^(~|\\.|\\.\\.)?\\/)?([\\w\\/.-]+(?!.*[^\\w\\/.-]+))\\/$)"
         },
         "used_model": {
             "type": "string",

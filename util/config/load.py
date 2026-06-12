@@ -53,7 +53,7 @@ def default_config() -> BeatSketchConfig:
     """
     return {
         "saber_angle": {"x": -20, "y": 0, "z": 0},
-        "default_save_path": "~/BeatSketch/",
+        "default_save_path": "~",
         "folder_loc_for_picker": "~/Downloads/",
         "mirror": False,
         "used_model": "mlp",
