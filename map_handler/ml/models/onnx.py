@@ -19,7 +19,7 @@ class ONNXModel(MlModelInterface):
             np.ndarray,
             self._session.run(None, {self._session.get_inputs()[0].name: data})[0],
         )
-        if self._session.get_outputs()[0].shape[1] == 2:
+        if len(self._session.get_outputs()[0].shape) == 2:
             pred = pred.argmax(axis=1)
 
         predictions: list[bool] = []
