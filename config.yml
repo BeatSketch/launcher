@@ -5,7 +5,7 @@ cleanup:
   distance: false
 default_save_path: "~"
 folder_loc_for_picker: ~/Downloads/
-mirror: false
+mirror: true
 saber_angle:
   x: -20
   y: 0
