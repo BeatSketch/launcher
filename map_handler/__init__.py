@@ -33,7 +33,7 @@ def launch_wrapper(
         f"ry={conf['saber_angle']['y']}",
         f"rz={conf['saber_angle']['z']}",
         f"njs={njs}",
-        f"vibrate={conf['vibrate']}",
+        f"vibrate={'true' if conf['vibrate'] else 'false'}",
     ]
     if testing_mode:
         args = ["dev=true"]
