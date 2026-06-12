@@ -18,7 +18,7 @@ class NoRunningBeatSketchInstanceError(Exception):
 
 
 class BeatSketchVRApplication:
-    def __init__(self, args: list[str] = [], dev_mode: bool = False) -> None:
+    def __init__(self, args: list[str] = [], debug_mode: bool = False, dev_mode: bool = False) -> None:
         """Initialize a new VR application
 
         Args:
@@ -27,11 +27,11 @@ class BeatSketchVRApplication:
         """
         if dev_mode:
             self._com = BeatSketchIPCManager(
-                ["lovr", "../vr/"], ["BeatSketch.exe"], args, dev_mode
+                ["lovr", "../vr/"], ["BeatSketch.exe"], args, dev_mode, debug_mode
             )
         else:
             self._com = BeatSketchIPCManager(
-                ["./BeatSketch"], ["BeatSketch.exe"], args, dev_mode
+                ["./BeatSketch"], ["BeatSketch.exe"], args, dev_mode, debug_mode
             )
         self._alive = self._com.await_launch("[BeatSketch] IPC INIT COMPLETE")
 

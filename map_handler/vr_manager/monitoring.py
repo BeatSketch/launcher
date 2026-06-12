@@ -39,7 +39,7 @@ class BeatSketchVRMonitoringThread(QThread):
     def run(self) -> None:
         # Launch the VR application
         self._com = BeatSketchVRApplication(
-            self._args + ["launcher=true"], dev_mode=self._dev_mode
+            self._args + ["launcher=true"], dev_mode=self._dev_mode, debug_mode=self._debug
         )
         if not self._com.get_alive():
             self.exit_code.emit(self._com.get_status_code())

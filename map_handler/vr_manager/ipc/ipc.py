@@ -17,10 +17,12 @@ class BeatSketchIPCManager:
         windows_cmd: list[str],
         app_args: list[str] = [],
         dev_mode: bool = False,
+        debug_mode: bool = False,
     ) -> None:
         self._send_queue: queue.Queue[str] = queue.Queue()
         self._main_name_unix = unix_cmd
         self._main_name_windows = windows_cmd
+        self._debug_mode = debug_mode
         if dev_mode:
             print("VR Launch Arguments:", self._command(app_args))
 
@@ -151,9 +153,18 @@ class BeatSketchIPCManager:
         if not msg.endswith("\n"):
             msg = msg + "\n"
 
-        while self.read() != msg:
-            if not self.check_alive():
-                return False
+        if self._debug_mode:
+            data =  self.read()
+            while data != msg:
+                print(data, self.read_stderr())
+                data = self.read()
+                if not self.check_alive():
+                    print("Aliveness check failed")
+                    return False
+        else:
+            while self.read() != msg:
+                if not self.check_alive():
+                    return False
         return True
 
     def await_close(self) -> int:
